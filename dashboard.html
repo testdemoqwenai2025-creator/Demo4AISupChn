@@ -22,6 +22,16 @@
             --text-primary: #f8fafc;
             --text-secondary: #94a3b8;
         }
+        
+        /* ===== LIGHT THEME VARIABLES ===== */
+        [data-theme="light"] {
+            --dark: #f8fafc;
+            --dark-lighter: #e2e8f0;
+            --glass-bg: rgba(255,255,255,0.7);
+            --glass-border: rgba(0,0,0,0.1);
+            --text-primary: #0f172a;
+            --text-secondary: #475569;
+        }
         html { scroll-behavior: smooth; }
         body {
             font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
@@ -755,37 +765,34 @@
         .animate-in {
             animation: fadeInUp 0.5s ease forwards;
         }
-    
-        /* ===== THEME TOGGLE ===== */
+        
+        /* ===== THEME TOGGLE BUTTON ===== */
         .theme-toggle {
-            width: 44px;
-            height: 44px;
-            border-radius: 12px;
-            background: var(--input-bg);
-            border: 1px solid var(--border-color);
+            width: 40px;
+            height: 40px;
+            border-radius: 10px;
+            background: var(--glass-bg);
+            border: 1px solid var(--glass-border);
             color: var(--text-secondary);
             cursor: pointer;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 1.15rem;
+            font-size: 1.1rem;
             transition: all 0.3s ease;
+            margin-left: 0.5rem;
         }
-        
         .theme-toggle:hover {
-            background: var(--glass-bg);
+            background: rgba(59,130,246,0.15);
             color: var(--text-primary);
             transform: rotate(15deg);
-            border-color: var(--primary-light);
+            border-color: rgba(59,130,246,0.3);
         }
-        
         .theme-toggle .icon-sun { display: none; }
         .theme-toggle .icon-moon { display: inline-block; }
-        
         [data-theme="light"] .theme-toggle .icon-sun { display: inline-block; }
         [data-theme="light"] .theme-toggle .icon-moon { display: none; }
-
-</style>
+    </style>
 </head>
 <body>
 
@@ -810,7 +817,7 @@
                     <span class="icon-moon">🌙</span>
                     <span class="icon-sun">☀️</span>
                 </button>
-
+</nav>
 
 <!-- ===== DASHBOARD CONTAINER ===== -->
 <div class="dashboard-container">
@@ -1328,25 +1335,29 @@
     <p>© 2025 AISupChain Pro | Enterprise Supply Chain Intelligence Platform | SOC 2 Type II Certified | ISO 27001 | GDPR Compliant</p>
 </footer>
 
-<script>
+    <script>
         // ===== THEME TOGGLE FUNCTIONALITY =====
-        const themeToggle = document.getElementById("themeToggle");
-        const htmlElement = document.documentElement;
-        
-        // Check for saved theme preference or default to dark
-        const savedTheme = localStorage.getItem("theme") || "dark";
-        htmlElement.setAttribute("data-theme", savedTheme);
-        
-        themeToggle.addEventListener("click", () => {
-            const currentTheme = htmlElement.getAttribute("data-theme");
-            const newTheme = currentTheme === "dark" ? "light" : "dark";
+        document.addEventListener("DOMContentLoaded", function() {
+            const themeToggle = document.getElementById("themeToggle");
+            const htmlElement = document.documentElement;
             
-            htmlElement.setAttribute("data-theme", newTheme);
-            localStorage.setItem("theme", newTheme);
+            // Check for saved theme preference or default to dark
+            const savedTheme = localStorage.getItem("theme") || "dark";
+            htmlElement.setAttribute("data-theme", savedTheme);
             
-            // Add a smooth transition effect
-            document.body.style.transition = "background 0.3s ease, color 0.3s ease";
+            if (themeToggle) {
+                themeToggle.addEventListener("click", function() {
+                    const currentTheme = htmlElement.getAttribute("data-theme");
+                    const newTheme = currentTheme === "dark" ? "light" : "dark";
+                    
+                    htmlElement.setAttribute("data-theme", newTheme);
+                    localStorage.setItem("theme", newTheme);
+                    
+                    // Smooth transition
+                    document.body.style.transition = "background 0.3s ease, color 0.3s ease";
+                });
+            }
         });
-</script>
+    </script>
 </body>
 </html>
