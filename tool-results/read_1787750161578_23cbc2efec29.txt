@@ -1,0 +1,1363 @@
+     1→<!DOCTYPE html>
+     2→<html data-theme="dark" lang="en">
+     3→<head>
+     4→    <meta charset="UTF-8">
+     5→    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+     6→    <title>Command Center Dashboard | AI Supply Chain Risk Platform</title>
+     7→    <style>
+     8→        /* ===== CSS RESET & BASE ===== */
+     9→        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    10→        :root {
+    11→            --primary: #1e40af;
+    12→            --primary-light: #3b82f6;
+    13→            --cyan: #06b6d4;
+    14→            --emerald: #059669;
+    15→            --purple: #7c3aed;
+    16→            --rose: #e11d48;
+    17→            --amber: #f59e0b;
+    18→            --dark: #0f172a;
+    19→            --dark-lighter: #1e293b;
+    20→            --glass-bg: rgba(255,255,255,0.04);
+    21→            --glass-border: rgba(255,255,255,0.08);
+    22→            --text-primary: #f8fafc;
+    23→            --text-secondary: #94a3b8;
+    24→        }
+    25→        
+    26→        /* ===== LIGHT THEME VARIABLES ===== */
+    27→        [data-theme="light"] {
+    28→            --dark: #f8fafc;
+    29→            --dark-lighter: #e2e8f0;
+    30→            --glass-bg: rgba(255,255,255,0.7);
+    31→            --glass-border: rgba(0,0,0,0.1);
+    32→            --text-primary: #0f172a;
+    33→            --text-secondary: #475569;
+    34→        }
+    35→        html { scroll-behavior: smooth; }
+    36→        body {
+    37→            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+    38→            background: var(--dark);
+    39→            color: var(--text-primary);
+    40→            line-height: 1.5;
+    41→            min-height: 100vh;
+    42→        }
+    43→        a { color: inherit; text-decoration: none; }
+    44→
+    45→        /* ===== NAVIGATION ===== */
+    46→        nav {
+    47→            position: fixed;
+    48→            top: 0; left: 0; right: 0;
+    49→            z-index: 1000;
+    50→            padding: 0.75rem 1.5rem;
+    51→            background: rgba(15,23,42,0.92);
+    52→            backdrop-filter: blur(20px);
+    53→            border-bottom: 1px solid var(--glass-border);
+    54→            display: flex;
+    55→            justify-content: space-between;
+    56→            align-items: center;
+    57→            flex-wrap: wrap;
+    58→            gap: 0.75rem;
+    59→        }
+    60→        .nav-brand {
+    61→            display: flex;
+    62→            align-items: center;
+    63→            gap: 0.6rem;
+    64→            font-size: 1.2rem;
+    65→            font-weight: 700;
+    66→            background: linear-gradient(135deg, #3b82f6, #7c3aed, #06b6d4);
+    67→            -webkit-background-clip: text;
+    68→            -webkit-text-fill-color: transparent;
+    69→            background-clip: text;
+    70→        }
+    71→        .nav-brand-icon {
+    72→            width: 36px; height: 36px;
+    73→            background: linear-gradient(135deg, #1e40af, #7c3aed);
+    74→            border-radius: 10px;
+    75→            display: flex;
+    76→            align-items: center;
+    77→            justify-content: center;
+    78→            font-size: 1.2rem;
+    79→            -webkit-text-fill-color: white;
+    80→        }
+    81→        .nav-links {
+    82→            display: flex;
+    83→            gap: 0.35rem;
+    84→            flex-wrap: wrap;
+    85→        }
+    86→        .nav-links a {
+    87→            padding: 0.45rem 0.85rem;
+    88→            border-radius: 8px;
+    89→            font-size: 0.82rem;
+    90→            font-weight: 500;
+    91→            transition: all 0.25s ease;
+    92→            color: var(--text-secondary);
+    93→            border: 1px solid transparent;
+    94→        }
+    95→        .nav-links a:hover, .nav-links a.active {
+    96→            background: rgba(59,130,246,0.12);
+    97→            color: var(--text-primary);
+    98→            border-color: rgba(59,130,246,0.25);
+    99→        }
+   100→        .nav-links a.active {
+   101→            background: linear-gradient(135deg, rgba(30,64,175,0.25), rgba(124,58,237,0.25));
+   102→            border-color: rgba(124,58,237,0.4);
+   103→        }
+   104→
+   105→        /* ===== MAIN LAYOUT ===== */
+   106→        .dashboard-container {
+   107→            padding-top: 70px;
+   108→            min-height: 100vh;
+   109→        }
+   110→
+   111→        /* ===== DASHBOARD HEADER ===== */
+   112→        .dash-header {
+   113→            padding: 1.5rem 2rem;
+   114→            background: linear-gradient(180deg, rgba(30,64,175,0.12) 0%, transparent 100%);
+   115→            border-bottom: 1px solid var(--glass-border);
+   116→            display: flex;
+   117→            justify-content: space-between;
+   118→            align-items: center;
+   119→            flex-wrap: wrap;
+   120→            gap: 1rem;
+   121→        }
+   122→        .dash-title-section h1 {
+   123→            font-size: 1.75rem;
+   124→            font-weight: 750;
+   125→            margin-bottom: 0.25rem;
+   126→            background: linear-gradient(135deg, #fff, #93c5fd);
+   127→            -webkit-background-clip: text;
+   128→            -webkit-text-fill-color: transparent;
+   129→            background-clip: text;
+   130→        }
+   131→        .dash-subtitle {
+   132→            font-size: 0.88rem;
+   133→            color: var(--text-secondary);
+   134→        }
+   135→        .dash-actions {
+   136→            display: flex;
+   137→            gap: 0.65rem;
+   138→            flex-wrap: wrap;
+   139→        }
+   140→        .dash-btn {
+   141→            padding: 0.55rem 1.15rem;
+   142→            border-radius: 10px;
+   143→            font-size: 0.82rem;
+   144→            font-weight: 600;
+   145→            cursor: pointer;
+   146→            transition: all 0.25s ease;
+   147→            display: inline-flex;
+   148→            align-items: center;
+   149→            gap: 0.4rem;
+   150→            border: none;
+   151→        }
+   152→        .btn-accent {
+   153→            background: linear-gradient(135deg, #1e40af, #7c3aed);
+   154→            color: white;
+   155→        }
+   156→        .btn-accent:hover {
+   157→            transform: translateY(-2px);
+   158→            box-shadow: 0 8px 25px rgba(30,64,175,0.4);
+   159→        }
+   160→        .btn-glass {
+   161→            background: var(--glass-bg);
+   162→            backdrop-filter: blur(10px);
+   163→            border: 1px solid var(--glass-border);
+   164→            color: var(--text-primary);
+   165→        }
+   166→        .btn-glass:hover {
+   167→            background: rgba(255,255,255,0.08);
+   168→            border-color: rgba(255,255,255,0.15);
+   169→        }
+   170→
+   171→        /* ===== STATUS BAR ===== */
+   172→        .status-bar {
+   173→            display: grid;
+   174→            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+   175→            gap: 0.75rem;
+   176→            padding: 1rem 2rem;
+   177→            background: rgba(15,23,42,0.6);
+   178→            border-bottom: 1px solid var(--glass-border);
+   179→        }
+   180→        .status-item {
+   181→            display: flex;
+   182→            align-items: center;
+   183→            gap: 0.75rem;
+   184→            padding: 0.75rem 1rem;
+   185→            background: var(--glass-bg);
+   186→            border-radius: 12px;
+   187→            border: 1px solid var(--glass-border);
+   188→        }
+   189→        .status-icon {
+   190→            width: 40px; height: 40px;
+   191→            border-radius: 10px;
+   192→            display: flex;
+   193→            align-items: center;
+   194→            justify-content: center;
+   195→            font-size: 1.15rem;
+   196→            flex-shrink: 0;
+   197→        }
+   198→        .status-item:nth-child(1) .status-icon { background: linear-gradient(135deg, #059669, #10b981); }
+   199→        .status-item:nth-child(2) .status-icon { background: linear-gradient(135deg, #f59e0b, #fbbf24); }
+   200→        .status-item:nth-child(3) .status-icon { background: linear-gradient(135deg, #06b6d4, #22d3ee); }
+   201→        .status-item:nth-child(4) .status-icon { background: linear-gradient(135deg, #7c3aed, #a78bfa); }
+   202→        .status-info { flex: 1; }
+   203→        .status-label { font-size: 0.72rem; color: var(--text-secondary); text-transform: uppercase; letter-spacing: 0.5px; }
+   204→        .status-value { font-size: 1.1rem; font-weight: 700; }
+   205→        .status-value.green { color: #34d399; }
+   206→        .status-value.amber { color: #fbbf24; }
+   207→        .status-value.cyan { color: #22d3ee; }
+   208→        .status-value.purple { color: #a78bfa; }
+   209→
+   210→        /* ===== GRID LAYOUTS ===== */
+   211→        .grid-main {
+   212→            display: grid;
+   213→            grid-template-columns: 1fr 380px;
+   214→            gap: 1.25rem;
+   215→            padding: 1.25rem 2rem;
+   216→        }
+   217→        @media (max-width: 1200px) {
+   218→            .grid-main { grid-template-columns: 1fr; }
+   219→        }
+   220→
+   221→        /* ===== CARDS ===== */
+   222→        .card {
+   223→            background: var(--glass-bg);
+   224→            backdrop-filter: blur(16px);
+   225→            border: 1px solid var(--glass-border);
+   226→            border-radius: 18px;
+   227→            overflow: hidden;
+   228→            transition: all 0.3s ease;
+   229→        }
+   230→        .card:hover {
+   231→            border-color: rgba(59,130,246,0.25);
+   232→            box-shadow: 0 8px 32px rgba(0,0,0,0.2);
+   233→        }
+   234→        .card-header {
+   235→            padding: 1rem 1.25rem;
+   236→            border-bottom: 1px solid var(--glass-border);
+   237→            display: flex;
+   238→            justify-content: space-between;
+   239→            align-items: center;
+   240→        }
+   241→        .card-title {
+   242→            font-size: 0.95rem;
+   243→            font-weight: 700;
+   244→            display: flex;
+   245→            align-items: center;
+   246→            gap: 0.5rem;
+   247→        }
+   248→        .card-badge {
+   249→            padding: 0.2rem 0.55rem;
+   250→            border-radius: 6px;
+   251→            font-size: 0.68rem;
+   252→            font-weight: 600;
+   253→        }
+   254→        .badge-live {
+   255→            background: rgba(225,29,72,0.15);
+   256→            color: #fb7185;
+   257→            animation: pulse-badge 2s ease-in-out infinite;
+   258→        }
+   259→        @keyframes pulse-badge {
+   260→            0%, 100% { opacity: 1; }
+   261→            50% { opacity: 0.6; }
+   262→        }
+   263→        .card-body { padding: 1.25rem; }
+   264→
+   265→        /* ===== GLOBAL THREAT MAP ===== */
+   266→        .threat-map-placeholder {
+   267→            width: 100%;
+   268→            aspect-ratio: 21/9;
+   269→            background: 
+   270→                radial-gradient(ellipse at 30% 50%, rgba(225,29,72,0.25) 0%, transparent 50%),
+   271→                radial-gradient(ellipse at 60% 35%, rgba(245,158,11,0.2) 0%, transparent 45%),
+   272→                radial-gradient(ellipse at 75% 60%, rgba(6,182,212,0.15) 0%, transparent 40%),
+   273→                radial-gradient(ellipse at 20% 70%, rgba(139,92,246,0.12) 0%, transparent 35%),
+   274→                linear-gradient(135deg, rgba(15,23,42,0.95), rgba(30,41,59,0.9));
+   275→            border-radius: 12px;
+   276→            position: relative;
+   277→            overflow: hidden;
+   278→            display: flex;
+   279→            align-items: center;
+   280→            justify-content: center;
+   281→        }
+   282→        .map-grid {
+   283→            position: absolute;
+   284→            top: 0; left: 0; right: 0; bottom: 0;
+   285→            background-image: 
+   286→                linear-gradient(rgba(59,130,246,0.04) 1px, transparent 1px),
+   287→                linear-gradient(90deg, rgba(59,130,246,0.04) 1px, transparent 1px);
+   288→            background-size: 40px 40px;
+   289→        }
+   290→        .map-hotspot {
+   291→            position: absolute;
+   292→            width: 20px; height: 20px;
+   293→            border-radius: 50%;
+   294→            animation: hotspotPulse 2s ease-in-out infinite;
+   295→        }
+   296→        .hotspot-critical {
+   297→            background: radial-gradient(circle, #ef4444, rgba(239,68,68,0.3));
+   298→            box-shadow: 0 0 20px rgba(239,68,68,0.5);
+   299→        }
+   300→        .hotspot-warning {
+   301→            background: radial-gradient(circle, #f59e0b, rgba(245,158,11,0.3));
+   302→            box-shadow: 0 0 15px rgba(245,158,11,0.4);
+   303→        }
+   304→        .hotspot-info {
+   305→            background: radial-gradient(circle, #06b6d4, rgba(6,182,212,0.3));
+   306→            box-shadow: 0 0 12px rgba(6,182,212,0.3);
+   307→        }
+   308→        @keyframes hotspotPulse {
+   309→            0%, 100% { transform: scale(1); opacity: 1; }
+   310→            50% { transform: scale(1.5); opacity: 0.6; }
+   311→        }
+   312→        .map-label {
+   313→            position: absolute;
+   314→            font-size: 0.65rem;
+   315→            color: var(--text-secondary);
+   316→            font-weight: 500;
+   317→            pointer-events: none;
+   318→        }
+   319→        .map-center-text {
+   320→            z-index: 2;
+   321→            text-align: center;
+   322→        }
+   323→        .map-center-text h3 {
+   324→            font-size: 1.3rem;
+   325→            font-weight: 700;
+   326→            margin-bottom: 0.35rem;
+   327→            color: #fff;
+   328→        }
+   329→        .map-center-text p {
+   330→            font-size: 0.82rem;
+   331→            color: var(--text-secondary);
+   332→        }
+   333→
+   334→        /* ===== INCIDENT FEED ===== */
+   335→        .incident-list {
+   336→            display: flex;
+   337→            flex-direction: column;
+   338→            gap: 0.65rem;
+   339→            max-height: 420px;
+   340→            overflow-y: auto;
+   341→        }
+   342→        .incident-list::-webkit-scrollbar { width: 4px; }
+   343→        .incident-list::-webkit-scrollbar-track { background: transparent; }
+   344→        .incident-list::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.1); border-radius: 4px; }
+   345→        .incident-item {
+   346→            display: flex;
+   347→            gap: 0.85rem;
+   348→            padding: 0.85rem;
+   349→            background: rgba(0,0,0,0.2);
+   350→            border-radius: 12px;
+   351→            border-left: 3px solid;
+   352→            transition: all 0.25s ease;
+   353→        }
+   354→        .incident-item:hover {
+   355→            background: rgba(0,0,0,0.3);
+   356→            transform: translateX(3px);
+   357→        }
+   358→        .incident-critical { border-left-color: #ef4444; }
+   359→        .incident-high { border-left-color: #f97316; }
+   360→        .incident-medium { border-left-color: #fbbf24; }
+   361→        .incident-low { border-left-color: #22d3ee; }
+   362→        .incident-severity {
+   363→            width: 36px; height: 36px;
+   364→            border-radius: 10px;
+   365→            display: flex;
+   366→            align-items: center;
+   367→            justify-content: center;
+   368→            font-size: 1rem;
+   369→            flex-shrink: 0;
+   370→        }
+   371→        .severity-critical { background: rgba(239,68,68,0.15); }
+   372→        .severity-high { background: rgba(249,115,22,0.15); }
+   373→        .severity-medium { background: rgba(251,191,36,0.15); }
+   374→        .severity-low { background: rgba(34,211,238,0.15); }
+   375→        .incident-details { flex: 1; min-width: 0; }
+   376→        .incident-title {
+   377→            font-size: 0.88rem;
+   378→            font-weight: 600;
+   379→            margin-bottom: 0.2rem;
+   380→            white-space: nowrap;
+   381→            overflow: hidden;
+   382→            text-overflow: ellipsis;
+   383→        }
+   384→        .incident-meta {
+   385→            display: flex;
+   386→            gap: 0.75rem;
+   387→            font-size: 0.72rem;
+   388→            color: var(--text-secondary);
+   389→        }
+   390→        .incident-time {
+   391→            font-size: 0.7rem;
+   392→            color: var(--text-secondary);
+   393→            white-space: nowrap;
+   394→        }
+   395→
+   396→        /* ===== AI RECOMMENDATIONS ===== */
+   397→        .recommendation-list {
+   398→            display: flex;
+   399→            flex-direction: column;
+   400→            gap: 0.75rem;
+   401→        }
+   402→        .rec-item {
+   403→            padding: 1rem;
+   404→            background: rgba(0,0,0,0.2);
+   405→            border-radius: 14px;
+   406→            border: 1px solid rgba(59,130,246,0.1);
+   407→        }
+   408→        .rec-header {
+   409→            display: flex;
+   410→            align-items: center;
+   411→            gap: 0.6rem;
+   412→            margin-bottom: 0.6rem;
+   413→        }
+   414→        .rec-priority {
+   415→            padding: 0.2rem 0.55rem;
+   416→            border-radius: 6px;
+   417→            font-size: 0.68rem;
+   418→            font-weight: 700;
+   419→            text-transform: uppercase;
+   420→        }
+   421→        .priority-high { background: rgba(239,68,68,0.2); color: #fca5a5; }
+   422→        .priority-med { background: rgba(245,158,11,0.2); color: #fcd34d; }
+   423→        .priority-low { background: rgba(34,211,238,0.15); color: #67e8f9; }
+   424→        .rec-source {
+   425→            font-size: 0.72rem;
+   426→            color: var(--text-secondary);
+   427→        }
+   428→        .rec-text {
+   429→            font-size: 0.88rem;
+   430→            line-height: 1.5;
+   431→            margin-bottom: 0.75rem;
+   432→            color: #e2e8f0;
+   433→        }
+   434→        .rec-actions {
+   435→            display: flex;
+   436→            gap: 0.5rem;
+   437→        }
+   438→        .rec-btn {
+   439→            padding: 0.4rem 0.85rem;
+   440→            border-radius: 8px;
+   441→            font-size: 0.78rem;
+   442→            font-weight: 600;
+   443→            cursor: pointer;
+   444→            transition: all 0.2s ease;
+   445→            border: none;
+   446→        }
+   447→        .rec-accept {
+   448→            background: rgba(5,150,105,0.2);
+   449→            color: #34d399;
+   450→            border: 1px solid rgba(5,150,105,0.3);
+   451→        }
+   452→        .rec-accept:hover { background: rgba(5,150,105,0.35); }
+   453→        .rec-dismiss {
+   454→            background: rgba(148,163,184,0.1);
+   455→            color: var(--text-secondary);
+   456→            border: 1px solid rgba(148,163,184,0.2);
+   457→        }
+   458→        .rec-dismiss:hover { background: rgba(148,163,184,0.2); }
+   459→        .rec-confidence {
+   460→            margin-left: auto;
+   461→            font-size: 0.72rem;
+   462→            color: #a78bfa;
+   463→            display: flex;
+   464→            align-items: center;
+   465→            gap: 0.3rem;
+   466→        }
+   467→
+   468→        /* ===== RESOURCE GAUGES ===== */
+   469→        .gauges-grid {
+   470→            display: grid;
+   471→            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+   472→            gap: 1rem;
+   473→        }
+   474→        .gauge-card {
+   475→            background: var(--glass-bg);
+   476→            backdrop-filter: blur(16px);
+   477→            border: 1px solid var(--glass-border);
+   478→            border-radius: 16px;
+   479→            padding: 1.25rem;
+   480→            text-align: center;
+   481→        }
+   482→        .gauge-label {
+   483→            font-size: 0.82rem;
+   484→            color: var(--text-secondary);
+   485→            margin-bottom: 0.75rem;
+   486→            font-weight: 600;
+   487→        }
+   488→        .gauge-bar {
+   489→            height: 10px;
+   490→            background: rgba(255,255,255,0.08);
+   491→            border-radius: 5px;
+   492→            overflow: hidden;
+   493→            margin-bottom: 0.5rem;
+   494→        }
+   495→        .gauge-fill {
+   496→            height: 100%;
+   497→            border-radius: 5px;
+   498→            transition: width 1s ease;
+   499→            position: relative;
+   500→        }
+   501→        .gauge-fill::after {
+   502→            content: '';
+   503→            position: absolute;
+   504→            top: 0; left: 0; right: 0; bottom: 0;
+   505→            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+   506→            animation: shimmer 2s infinite;
+   507→        }
+   508→        @keyframes shimmer {
+   509→            0% { transform: translateX(-100%); }
+   510→            100% { transform: translateX(100%); }
+   511→        }
+   512→        .fill-green { background: linear-gradient(90deg, #059669, #10b981); width: 87%; }
+   513→        .fill-yellow { background: linear-gradient(90deg, #d97706, #f59e0b); width: 62%; }
+   514→        .fill-cyan { background: linear-gradient(90deg, #0891b2, #06b6d4); width: 74%; }
+   515→        .fill-red { background: linear-gradient(90deg, #dc2626, #ef4444); width: 38%; }
+   516→        .gauge-value {
+   517→            font-size: 1.3rem;
+   518→            font-weight: 800;
+   519→        }
+   520→        .gauge-value.green { color: #34d399; }
+   521→        .gauge-value.yellow { color: #fbbf24; }
+   522→        .gauge-value.cyan { color: #22d3ee; }
+   523→        .gauge-value.red { color: #f87171; }
+   524→        .gauge-status {
+   525→            font-size: 0.72rem;
+   526→            color: var(--text-secondary);
+   527→        }
+   528→
+   529→        /* ===== SCENARIO SLIDERS ===== */
+   530→        .scenario-panel {
+   531→            background: var(--glass-bg);
+   532→            backdrop-filter: blur(16px);
+   533→            border: 1px solid var(--glass-border);
+   534→            border-radius: 18px;
+   535→            overflow: hidden;
+   536→        }
+   537→        .slider-group {
+   538→            padding: 1rem 1.25rem;
+   539→            border-bottom: 1px solid var(--glass-border);
+   540→        }
+   541→        .slider-group:last-child { border-bottom: none; }
+   542→        .slider-label {
+   543→            display: flex;
+   544→            justify-content: space-between;
+   545→            align-items: center;
+   546→            margin-bottom: 0.6rem;
+   547→        }
+   548→        .slider-name {
+   549→            font-size: 0.85rem;
+   550→            font-weight: 600;
+   551→            display: flex;
+   552→            align-items: center;
+   553→            gap: 0.4rem;
+   554→        }
+   555→        .slider-val {
+   556→            font-size: 0.85rem;
+   557→            font-weight: 700;
+   558→            color: #67e8f9;
+   559→        }
+   560→        .slider-track {
+   561→            height: 8px;
+   562→            background: rgba(255,255,255,0.08);
+   563→            border-radius: 4px;
+   564→            position: relative;
+   565→        }
+   566→        .slider-fill {
+   567→            height: 100%;
+   568→            border-radius: 4px;
+   569→            position: relative;
+   570→        }
+   571→        .slider-thumb {
+   572→            width: 18px; height: 18px;
+   573→            background: #fff;
+   574→            border-radius: 50%;
+   575→            position: absolute;
+   576→            top: 50%;
+   577→            transform: translateY(-50%);
+   578→            box-shadow: 0 2px 8px rgba(0,0,0,0.3);
+   579→        }
+   580→        .scenario-result {
+   581→            padding: 1rem 1.25rem;
+   582→            background: linear-gradient(135deg, rgba(30,64,175,0.15), rgba(124,58,237,0.1));
+   583→            border-top: 1px solid var(--glass-border);
+   584→        }
+   585→        .result-row {
+   586→            display: flex;
+   587→            justify-content: space-between;
+   588→            align-items: center;
+   589→            padding: 0.4rem 0;
+   590→        }
+   591→        .result-label { font-size: 0.82rem; color: var(--text-secondary); }
+   592→        .result-value { font-size: 0.9rem; font-weight: 700; }
+   593→        .result-positive { color: #34d399; }
+   594→        .result-negative { color: #f87171; }
+   595→
+   596→        /* ===== PREDICTIVE CHARTS ===== */
+   597→        .charts-grid {
+   598→            display: grid;
+   599→            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+   600→            gap: 1.25rem;
+   601→        }
+   602→        .chart-placeholder {
+   603→            width: 100%;
+   604→            height: 220px;
+   605→            background: rgba(0,0,0,0.2);
+   606→            border-radius: 12px;
+   607→            position: relative;
+   608→            overflow: hidden;
+   609→            display: flex;
+   610→            align-items: flex-end;
+   611→            padding: 1.25rem;
+   612→            gap: 0.5rem;
+   613→        }
+   614→        .chart-bars {
+   615→            display: flex;
+   616→            align-items: flex-end;
+   617→            gap: 6px;
+   618→            width: 100%;
+   619→            height: 80%;
+   620→        }
+   621→        .chart-bar {
+   622→            flex: 1;
+   623→            border-radius: 4px 4px 0 0;
+   624→            background: linear-gradient(180deg, #3b82f6, #1e40af);
+   625→            position: relative;
+   626→            transition: all 0.3s ease;
+   627→            min-height: 10px;
+   628→        }
+   629→        .chart-bar:hover {
+   630→            filter: brightness(1.2);
+   631→            transform: scaleY(1.02);
+   632→            transform-origin: bottom;
+   633→        }
+   634→        .bar-green { background: linear-gradient(180deg, #10b981, #059669); }
+   635→        .bar-red { background: linear-gradient(180deg, #ef4444, #dc2626); }
+   636→        .bar-purple { background: linear-gradient(180deg, #a78bfa, #7c3aed); }
+   637→        .bar-amber { background: linear-gradient(180deg, #fbbf24, #d97706); }
+   638→        .chart-line-overlay {
+   639→            position: absolute;
+   640→            top: 0; left: 0; right: 0; bottom: 0;
+   641→            pointer-events: none;
+   642→        }
+   643→        .line-chart-svg {
+   644→            width: 100%; height: 100%;
+   645→        }
+   646→        .chart-legend {
+   647→            display: flex;
+   648→            gap: 1rem;
+   649→            margin-top: 0.75rem;
+   650→            flex-wrap: wrap;
+   651→        }
+   652→        .legend-item {
+   653→            display: flex;
+   654→            align-items: center;
+   655→            gap: 0.35rem;
+   656→            font-size: 0.75rem;
+   657→            color: var(--text-secondary);
+   658→        }
+   659→        .legend-dot {
+   660→            width: 10px; height: 10px;
+   661→            border-radius: 3px;
+   662→        }
+   663→
+   664→        /* ===== METRICS ROW ===== */
+   665→        .metrics-row {
+   666→            display: grid;
+   667→            grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+   668→            gap: 0.85rem;
+   669→            margin-bottom: 1.25rem;
+   670→        }
+   671→        .metric-box {
+   672→            background: var(--glass-bg);
+   673→            backdrop-filter: blur(16px);
+   674→            border: 1px solid var(--glass-border);
+   675→            border-radius: 14px;
+   676→            padding: 1rem 1.15rem;
+   677→            text-align: center;
+   678→            transition: all 0.3s ease;
+   679→        }
+   680→        .metric-box:hover {
+   681→            transform: translateY(-3px);
+   682→            border-color: rgba(59,130,246,0.3);
+   683→        }
+   684→        .metric-icon {
+   685→            font-size: 1.4rem;
+   686→            margin-bottom: 0.4rem;
+   687→        }
+   688→        .metric-number {
+   689→            font-size: 1.6rem;
+   690→            font-weight: 800;
+   691→            background: linear-gradient(135deg, #3b82f6, #06b6d4);
+   692→            -webkit-background-clip: text;
+   693→            -webkit-text-fill-color: transparent;
+   694→            background-clip: text;
+   695→        }
+   696→        .metric-desc {
+   697→            font-size: 0.72rem;
+   698→            color: var(--text-secondary);
+   699→            margin-top: 0.2rem;
+   700→        }
+   701→        .metric-trend {
+   702→            font-size: 0.7rem;
+   703→            margin-top: 0.3rem;
+   704→        }
+   705→        .trend-up { color: #34d399; }
+   706→        .trend-down { color: #f87171; }
+   707→
+   708→        /* ===== AGENT STATUS SIDEBAR ===== */
+   709→        .agent-sidebar {
+   710→            display: flex;
+   711→            flex-direction: column;
+   712→            gap: 1rem;
+   713→        }
+   714→        .agent-mini-card {
+   715→            display: flex;
+   716→            align-items: center;
+   717→            gap: 0.75rem;
+   718→            padding: 0.85rem;
+   719→            background: var(--glass-bg);
+   720→            border: 1px solid var(--glass-border);
+   721→            border-radius: 14px;
+   722→            transition: all 0.25s ease;
+   723→        }
+   724→        .agent-mini-card:hover {
+   725→            border-color: rgba(6,182,212,0.3);
+   726→            background: rgba(6,182,212,0.05);
+   727→        }
+   728→        .agent-mini-avatar {
+   729→            width: 40px; height: 40px;
+   730→            border-radius: 10px;
+   731→            display: flex;
+   732→            align-items: center;
+   733→            justify-content: center;
+   734→            font-size: 1.1rem;
+   735→            flex-shrink: 0;
+   736→        }
+   737→        .agent-mini-info { flex: 1; }
+   738→        .agent-mini-name { font-size: 0.85rem; font-weight: 600; }
+   739→        .agent-mini-task { font-size: 0.72rem; color: var(--text-secondary); }
+   740→        .agent-mini-status {
+   741→            width: 10px; height: 10px;
+   742→            border-radius: 50%;
+   743→            flex-shrink: 0;
+   744→        }
+   745→        .status-active { background: #34d399; box-shadow: 0 0 8px rgba(52,211,153,0.5); }
+   746→        .status-busy { background: #fbbf24; box-shadow: 0 0 8px rgba(251,191,36,0.5); }
+   747→        .status-idle { background: #64748b; }
+   748→
+   749→        /* ===== RESPONSIVE ===== */
+   750→        @media (max-width: 768px) {
+   751→            nav { padding: 0.5rem 0.75rem; }
+   752→            .nav-links { justify-content: center; order: 3; width: 100%; }
+   753→            .dash-header { padding: 1rem; }
+   754→            .grid-main { padding: 1rem; }
+   755→            .status-bar { padding: 0.75rem 1rem; grid-template-columns: repeat(2, 1fr); }
+   756→            .charts-grid { grid-template-columns: 1fr; }
+   757→            .threat-map-placeholder { aspect-ratio: 16/9; }
+   758→        }
+   759→
+   760→        /* ===== ANIMATIONS ===== */
+   761→        @keyframes fadeInUp {
+   762→            from { opacity: 0; transform: translateY(15px); }
+   763→            to { opacity: 1; transform: translateY(0); }
+   764→        }
+   765→        .animate-in {
+   766→            animation: fadeInUp 0.5s ease forwards;
+   767→        }
+   768→        
+   769→        /* ===== THEME TOGGLE BUTTON ===== */
+   770→        .theme-toggle {
+   771→            width: 40px;
+   772→            height: 40px;
+   773→            border-radius: 10px;
+   774→            background: var(--glass-bg);
+   775→            border: 1px solid var(--glass-border);
+   776→            color: var(--text-secondary);
+   777→            cursor: pointer;
+   778→            display: flex;
+   779→            align-items: center;
+   780→            justify-content: center;
+   781→            font-size: 1.1rem;
+   782→            transition: all 0.3s ease;
+   783→            margin-left: 0.5rem;
+   784→        }
+   785→        .theme-toggle:hover {
+   786→            background: rgba(59,130,246,0.15);
+   787→            color: var(--text-primary);
+   788→            transform: rotate(15deg);
+   789→            border-color: rgba(59,130,246,0.3);
+   790→        }
+   791→        .theme-toggle .icon-sun { display: none; }
+   792→        .theme-toggle .icon-moon { display: inline-block; }
+   793→        [data-theme="light"] .theme-toggle .icon-sun { display: inline-block; }
+   794→        [data-theme="light"] .theme-toggle .icon-moon { display: none; }
+   795→    </style>
+   796→</head>
+   797→<body>
+   798→
+   799→<!-- ===== NAVIGATION ===== -->
+   800→<nav>
+   801→    <div class="nav-brand">
+   802→        <div class="nav-brand-icon">🧠</div>
+   803→        <span>AISupChain Pro</span>
+   804→    </div>
+   805→    <div class="nav-links">
+   806→        <a href="/Demo4AISupChn/">🏠 Home</a>
+   807→        <a href="/Demo4AISupChn/dashboard.html" class="active">📊 Dashboard</a>
+   808→        <a href="/Demo4AISupChn/intelligence.html">🔬 Intelligence</a>
+   809→        <a href="/Demo4AISupChn/agents.html">🤖 Agents</a>
+   810→        <a href="/Demo4AISupChn/platform.html">⚙️ Platform</a>
+   811→        <a href="/Demo4AISupChn/command-center.html">🎯 Command Center</a>
+   812→        <a href="/Demo4AISupChn/about.html">ℹ️ About</a>
+   813→        <a href="/Demo4AISupChn/customers.html">👥 Customers</a>
+   814→    </div>
+   815→                <!-- Theme Toggle -->
+   816→                <button class="theme-toggle" id="themeToggle" title="Toggle dark/light mode">
+   817→                    <span class="icon-moon">🌙</span>
+   818→                    <span class="icon-sun">☀️</span>
+   819→                </button>
+   820→</nav>
+   821→
+   822→<!-- ===== DASHBOARD CONTAINER ===== -->
+   823→<div class="dashboard-container">
+   824→
+   825→    <!-- ===== HEADER ===== -->
+   826→    <div class="dash-header">
+   827→        <div class="dash-title-section">
+   828→            <h1>🎯 Command Center Dashboard</h1>
+   829→            <p class="dash-subtitle">Real-time supply chain intelligence · Last updated: <span style="color:#67e8f9;">Just now</span></p>
+   830→        </div>
+   831→        <div class="dash-actions">
+   832→            <button class="dash-btn btn-glass">🔄 Refresh</button>
+   833→            <button class="dash-btn btn-glass">📤 Export</button>
+   834→            <button class="dash-btn btn-accent">⚡ Run AI Analysis</button>
+   835→        </div>
+   836→    </div>
+   837→
+   838→    <!-- ===== STATUS BAR ===== -->
+   839→    <div class="status-bar">
+   840→        <div class="status-item">
+   841→            <div class="status-icon">✅</div>
+   842→            <div class="status-info">
+   843→                <div class="status-label">System Health</div>
+   844→                <div class="status-value green">Operational</div>
+   845→            </div>
+   846→        </div>
+   847→        <div class="status-item">
+   848→            <div class="status-icon">⚠️</div>
+   849→            <div class="status-info">
+   850→                <div class="status-label">Active Alerts</div>
+   851→                <div class="status-value amber">17 Active</div>
+   852→            </div>
+   853→        </div>
+   854→        <div class="status-item">
+   855→            <div class="status-icon">🤖</div>
+   856→            <div class="status-info">
+   857→                <div class="status-label">AI Agents</div>
+   858→                <div class="status-value cyan">6/6 Online</div>
+   859→            </div>
+   860→        </div>
+   861→        <div class="status-item">
+   862→            <div class="status-icon">🌐</div>
+   863→            <div class="status-info">
+   864→                <div class="status-label">Data Latency</div>
+   865→                <div class="status-value purple">142ms avg</div>
+   866→            </div>
+   867→        </div>
+   868→    </div>
+   869→
+   870→    <!-- ===== KEY METRICS ===== -->
+   871→    <div style="padding: 0 2rem;">
+   872→        <div class="metrics-row">
+   873→            <div class="metric-box">
+   874→                <div class="metric-icon">🔴</div>
+   875→                <div class="metric-number">47</div>
+   876→                <div class="metric-desc">Critical Risks</div>
+   877→                <div class="metric-trend trend-down">↓ 12% from yesterday</div>
+   878→            </div>
+   879→            <div class="metric-box">
+   880→                <div class="metric-icon">🏭</div>
+   881→                <div class="metric-number">2,847</div>
+   882→                <div class="metric-desc">Suppliers Monitored</div>
+   883→                <div class="metric-trend trend-up">↑ 34 new this week</div>
+   884→            </div>
+   885→            <div class="metric-box">
+   886→                <div class="metric-icon">⚡</div>
+   887→                <div class="metric-number">3.2min</div>
+   888→                <div class="metric-desc">Avg Response Time</div>
+   889→                <div class="metric-trend trend-up">↑ 40% faster than SF</div>
+   890→            </div>
+   891→            <div class="metric-box">
+   892→                <div class="metric-icon">🎯</div>
+   893→                <div class="metric-number">94.2%</div>
+   894→                <div class="metric-desc">Prediction Accuracy</div>
+   895→                <div class="metric-trend trend-up">↑ +0.3% this month</div>
+   896→            </div>
+   897→            <div class="metric-box">
+   898→                <div class="metric-icon">💰</div>
+   899→                <div class="metric-number">$12.4M</div>
+   900→                <div class="metric-desc">Risk Value Avoided</div>
+   901→                <div class="metric-trend trend-up">↑ This quarter</div>
+   902→            </div>
+   903→            <div class="metric-box">
+   904→                <div class="metric-icon">🔗</div>
+   905→                <div class="metric-number">156K</div>
+   906→                <div class="metric-desc">Relationships Mapped</div>
+   907→                <div class="metric-trend trend-up">↑ Graph growing daily</div>
+   908→            </div>
+   909→        </div>
+   910→    </div>
+   911→
+   912→    <!-- ===== MAIN GRID ===== -->
+   913→    <div class="grid-main">
+   914→        
+   915→        <!-- LEFT COLUMN -->
+   916→        <div class="main-column" style="display:flex;flex-direction:column;gap:1.25rem;">
+   917→            
+   918→            <!-- GLOBAL THREAT MAP -->
+   919→            <div class="card">
+   920→                <div class="card-header">
+   921→                    <span class="card-title">🌍 Global Threat Monitor</span>
+   922→                    <span class="card-badge badge-live">● LIVE</span>
+   923→                </div>
+   924→                <div class="card-body">
+   925→                    <div class="threat-map-placeholder">
+   926→                        <div class="map-grid"></div>
+   927→                        <!-- Hotspots -->
+   928→                        <div class="map-hotspot hotspot-critical" style="top:28%;left:72%;">🔴</div>
+   929→                        <div class="map-hotspot hotspot-warning" style="top:42%;left:48%;">🟠</div>
+   930→                        <div class="map-hotspot hotspot-warning" style="top:55%;left:25%;">🟠</div>
+   931→                        <div class="map-hotspot hotspot-info" style="top:35%;left:15%;">🔵</div>
+   932→                        <div class="map-hotspot hotspot-critical" style="top:62%;left:82%;">🔴</div>
+   933→                        <div class="map-hotspot hotspot-info" style="top:22%;left:55%;">🔵</div>
+   934→                        <!-- Labels -->
+   935→                        <span class="map-label" style="top:26%;left:76%;">Taiwan Strait</span>
+   936→                        <span class="map-label" style="top:56%;left:19%;">EU Tariffs</span>
+   937→                        <span class="map-label" style="top:64%;left:86%;">Red Sea</span>
+   938→                        <!-- Center Text -->
+   939→                        <div class="map-center-text">
+   940→                            <h3>190+ Countries Monitored</h3>
+   941→                            <p>Real-time threat intelligence across global supply chains</p>
+   942→                        </div>
+   943→                    </div>
+   944→                    <div style="display:flex;gap:1rem;margin-top:1rem;flex-wrap:wrap;">
+   945→                        <div style="display:flex;align-items:center;gap:0.4rem;font-size:0.8rem;"><span style="width:12px;height:12px;border-radius:50%;background:#ef4444;"></span> Critical (5)</div>
+   946→                        <div style="display:flex;align-items:center;gap:0.4rem;font-size:0.8rem;"><span style="width:12px;height:12px;border-radius:50%;background:#f59e0b;"></span> Warning (12)</div>
+   947→                        <div style="display:flex;align-items:center;gap:0.4rem;font-size:0.8rem;"><span style="width:12px;height:12px;border-radius:50%;background:#06b6d4;"></span> Info (31)</div>
+   948→                    </div>
+   949→                </div>
+   950→            </div>
+   951→
+   952→            <!-- PREDICTIVE ANALYTICS CHARTS -->
+   953→            <div class="card">
+   954→                <div class="card-header">
+   955→                    <span class="card-title">📈 Predictive Analytics</span>
+   956→                    <span class="card-badge" style="background:rgba(6,182,212,0.15);color:#67e8f9;">AI Powered</span>
+   957→                </div>
+   958→                <div class="card-body">
+   959→                    <div class="charts-grid">
+   960→                        <!-- Risk Trend Chart -->
+   961→                        <div>
+   962→                            <div style="font-size:0.85rem;font-weight:600;margin-bottom:0.6rem;">📊 Risk Score Trend (30 Days)</div>
+   963→                            <div class="chart-placeholder" style="height:180px;padding:0.75rem;">
+   964→                                <div class="chart-bars">
+   965→                                    <div class="chart-bar bar-red" style="height:75%;"></div>
+   966→                                    <div class="chart-bar bar-red" style="height:68%;"></div>
+   967→                                    <div class="chart-bar bar-amber" style="height:62%;"></div>
+   968→                                    <div class="chart-bar bar-amber" style="height:58%;"></div>
+   969→                                    <div class="chart-bar bar-amber" style="height:54%;"></div>
+   970→                                    <div class="chart-bar bar-green" style="height:48%;"></div>
+   971→                                    <div class="chart-bar bar-green" style="height:44%;"></div>
+   972→                                    <div class="chart-bar bar-green" style="height:42%;"></div>
+   973→                                    <div class="chart-bar bar-green" style="height:38%;"></div>
+   974→                                    <div class="chart-bar bar-green" style="height:35%;"></div>
+   975→                                    <div class="chart-bar bar-green" style="height:33%;"></div>
+   976→                                    <div class="chart-bar bar-green" style="height:30%;"></div>
+   977→                                    <div class="chart-bar bar-amber" style="height:36%;"></div>
+   978→                                    <div class="chart-bar bar-amber" style="height:40%;"></div>
+   979→                                    <div class="chart-bar bar-red" style="height:52%;"></div>
+   980→                                </div>
+   981→                            </div>
+   982→                            <div class="chart-legend">
+   983→                                <div class="legend-item"><span class="legend-dot" style="background:#ef4444;"></span>Critical (>70)</div>
+   984→                                <div class="legend-item"><span class="legend-dot" style="background:#f59e0b;"></span>Warning (40-70)</div>
+   985→                                <div class="legend-item"><span class="legend-dot" style="background:#10b981;"></span>Normal (&lt;40)</div>
+   986→                            </div>
+   987→                        </div>
+   988→
+   989→                        <!-- Supplier Health Distribution -->
+   990→                        <div>
+   991→                            <div style="font-size:0.85rem;font-weight:600;margin-bottom:0.6rem;">🏭 Supplier Health Distribution</div>
+   992→                            <div class="chart-placeholder" style="height:180px;padding:0.75rem;">
+   993→                                <div class="chart-bars">
+   994→                                    <div class="chart-bar bar-green" style="height:85%;"></div>
+   995→                                    <div class="chart-bar bar-green" style="height:78%;"></div>
+   996→                                    <div class="chart-bar bar-green" style="height:72%;"></div>
+   997→                                    <div class="chart-bar bar-amber" style="height:55%;"></div>
+   998→                                    <div class="chart-bar bar-amber" style="height:48%;"></div>
+   999→                                    <div class="chart-bar bar-amber" style="height:42%;"></div>
+  1000→                                    <div class="chart-bar bar-red" style="height:32%;"></div>
+  1001→                                    <div class="chart-bar bar-red" style="height:25%;"></div>
+  1002→                                    <div class="chart-bar bar-purple" style="height:65%;"></div>
+  1003→                                    <div class="chart-bar bar-purple" style="height:58%;"></div>
+  1004→                                </div>
+  1005→                            </div>
+  1006→                            <div class="chart-legend">
+  1007→                                <div class="legend-item"><span class="legend-dot" style="background:#10b981;"></span>Excellent (1,892)</div>
+  1008→                                <div class="legend-item"><span class="legend-dot" style="background:#f59e0b;"></span>Moderate (624)</div>
+  1009→                                <div class="legend-item"><span class="legend-dot" style="background:#ef4444;"></span>At Risk (187)</div>
+  1010→                                <div class="legend-item"><span class="legend-dot" style="background:#a78bfa;"></span>Unknown (144)</div>
+  1011→                            </div>
+  1012→                        </div>
+  1013→                    </div>
+  1014→                </div>
+  1015→            </div>
+  1016→
+  1017→            <!-- RESOURCE GAUGES -->
+  1018→            <div class="card">
+  1019→                <div class="card-header">
+  1020→                    <span class="card-title">🏗️ Resource Status Overview</span>
+  1021→                </div>
+  1022→                <div class="card-body">
+  1023→                    <div class="gauges-grid">
+  1024→                        <div class="gauge-card">
+  1025→                            <div class="gauge-label">🏭 Factory Capacity</div>
+  1026→                            <div class="gauge-bar"><div class="gauge-fill fill-green"></div></div>
+  1027→                            <div class="gauge-value green">87%</div>
+  1028→                            <div class="gauge-status">Optimal utilization</div>
+  1029→                        </div>
+  1030→                        <div class="gauge-card">
+  1031→                            <div class="gauge-label">🚢 Shipping Availability</div>
+  1032→                            <div class="gauge-bar"><div class="gauge-fill fill-yellow"></div></div>
+  1033→                            <div class="gauge-value yellow">62%</div>
+  1034→                            <div class="gauge-status">Red Sea impact ongoing</div>
+  1035→                        </div>
+  1036→                        <div class="gauge-card">
+  1037→                            <div class="gauge-label">📦 Inventory Levels</div>
+  1038→                            <div class="gauge-bar"><div class="gauge-fill fill-cyan"></div></div>
+  1039→                            <div class="gauge-value cyan">74%</div>
+  1040→                            <div class="gauge-status">Healthy buffer stock</div>
+  1041→                        </div>
+  1042→                        <div class="gauge-card">
+  1043→                            <div class="gauge-label">💰 Cash Flow Buffer</div>
+  1044→                            <div class="gauge-bar"><div class="gauge-fill fill-red"></div></div>
+  1045→                            <div class="gauge-value red">38%</div>
+  1046→                            <div class="gauge-status">Below target - review needed</div>
+  1047→                        </div>
+  1048→                    </div>
+  1049→                </div>
+  1050→            </div>
+  1051→        </div>
+  1052→
+  1053→        <!-- RIGHT COLUMN -->
+  1054→        <div class="sidebar-column" style="display:flex;flex-direction:column;gap:1.25rem;">
+  1055→            
+  1056→            <!-- LIVE INCIDENT FEED -->
+  1057→            <div class="card">
+  1058→                <div class="card-header">
+  1059→                    <span class="card-title">🚨 Live Incident Feed</span>
+  1060→                    <span class="card-badge badge-live">● LIVE</span>
+  1061→                </div>
+  1062→                <div class="card-body">
+  1063→                    <div class="incident-list">
+  1064→                        <div class="incident-item incident-critical">
+  1065→                            <div class="incident-severity severity-critical">🔴</div>
+  1066→                            <div class="incident-details">
+  1067→                                <div class="incident-title">Taiwan Strait Tension Escalation - Shipping Route Impact</div>
+  1068→                                <div class="incident-meta">
+  1069→                                    <span>📍 East Asia</span>
+  1070→                                    <span>🏷️ Geopolitical</span>
+  1071→                                    <span>Risk: 92/100</span>
+  1072→                                </div>
+  1073→                            </div>
+  1074→                            <div class="incident-time">2m ago</div>
+  1075→                        </div>
+  1076→                        <div class="incident-item incident-high">
+  1077→                            <div class="incident-severity severity-high">🟠</div>
+  1078→                            <div class="incident-details">
+  1079→                                <div class="incident-title">Foxconn Factory Partial Shutdown - Component Shortage</div>
+  1080→                                <div class="incident-meta">
+  1081→                                    <span>📍 Taiwan</span>
+  1082→                                    <span>🏷️ Operational</span>
+  1083→                                    <span>Risk: 78/100</span>
+  1084→                                </div>
+  1085→                            </div>
+  1086→                            <div class="incident-time">8m ago</div>
+  1087→                        </div>
+  1088→                        <div class="incident-item incident-high">
+  1089→                            <div class="incident-severity severity-high">🟠</div>
+  1090→                            <div class="incident-details">
+  1091→                                <div class="incident-title">Red Sea Attacks Continue - Freight Cost +340%</div>
+  1092→                                <div class="incident-meta">
+  1093→                                    <span>📍 Middle East</span>
+  1094→                                    <span>🏷️ Logistics</span>
+  1095→                                    <span>Risk: 85/100</span>
+  1096→                                </div>
+  1097→                            </div>
+  1098→                            <div class="incident-time">15m ago</div>
+  1099→                        </div>
+  1100→                        <div class="incident-item incident-medium">
+  1101→                            <div class="incident-severity severity-medium">🟡</div>
+  1102→                            <div class="incident-details">
+  1103→                                <div class="incident-title">EU Tariff Announcement - Electronics Import Impact</div>
+  1104→                                <div class="incident-meta">
+  1105→                                    <span>📍 Europe</span>
+  1106→                                    <span>🏷️ Regulatory</span>
+  1107→                                    <span>Risk: 61/100</span>
+  1108→                                </div>
+  1109→                            </div>
+  1110→                            <div class="incident-time">27m ago</div>
+  1111→                        </div>
+  1112→                        <div class="incident-item incident-medium">
+  1113→                            <div class="incident-severity severity-medium">🟡</div>
+  1114→                            <div class="incident-details">
+  1115→                                <div class="incident-title">Rare Earth Export Restriction - China Policy Change</div>
+  1116→                                <div class="incident-meta">
+  1117→                                    <span>📍 China</span>
+  1118→                                    <span>🏷️ Regulatory</span>
+  1119→                                    <span>Risk: 67/100</span>
+  1120→                                </div>
+  1121→                            </div>
+  1122→                            <div class="incident-time">43m ago</div>
+  1123→                        </div>
+  1124→                        <div class="incident-item incident-low">
+  1125→                            <div class="incident-severity severity-low">🔵</div>
+  1126→                            <div class="incident-details">
+  1127→                                <div class="incident-title">Supplier Financial Review - Tier-2 Vendor Q4 Report</div>
+  1128→                                <div class="incident-meta">
+  1129→                                    <span>📍 Vietnam</span>
+  1130→                                    <span>🏷️ Financial</span>
+  1131→                                    <span>Risk: 34/100</span>
+  1132→                                </div>
+  1133→                            </div>
+  1134→                            <div class="incident-time">1h ago</div>
+  1135→                        </div>
+  1136→                    </div>
+  1137→                </div>
+  1138→            </div>
+  1139→
+  1140→            <!-- AI RECOMMENDATIONS -->
+  1141→            <div class="card">
+  1142→                <div class="card-header">
+  1143→                    <span class="card-title">🤖 AI Recommendations</span>
+  1144→                    <span class="card-badge" style="background:rgba(124,58,237,0.15);color:#c4b5fd;">3 New</span>
+  1145→                </div>
+  1146→                <div class="card-body">
+  1147→                    <div class="recommendation-list">
+  1148→                        <div class="rec-item">
+  1149→                            <div class="rec-header">
+  1150→                                <span class="rec-priority priority-high">High Priority</span>
+  1151→                                <span class="rec-source">🤖 Analyst Agent</span>
+  1152→                                <span class="rec-confidence">🎯 94% confidence</span>
+  1153→                            </div>
+  1154→                            <div class="rec-text">
+  1155→                                Activate backup supplier <strong>Samsung SDI</strong> for battery components. 
+  1156→                                Current supplier risk score increased by 23 points due to Taiwan tensions. 
+  1157→                                Estimated lead time for switch: 5 business days.
+  1158→                            </div>
+  1159→                            <div class="rec-actions">
+  1160→                                <button class="rec-btn rec-accept">✅ Accept</button>
+  1161→                                <button class="rec-btn rec-dismiss">❌ Dismiss</button>
+  1162→                            </div>
+  1163→                        </div>
+  1164→                        <div class="rec-item">
+  1165→                            <div class="rec-header">
+  1166→                                <span class="rec-priority priority-med">Medium Priority</span>
+  1167→                                <span class="rec-source">🤖 Forecast Agent</span>
+  1168→                                <span class="rec-confidence">🎯 87% confidence</span>
+  1169→                            </div>
+  1170→                            <div class="rec-text">
+  1171→                                Increase safety stock for semiconductor wafers by 25%. 
+  1172→                                Our models predict 68% probability of supply disruption in Q2 2025 
+  1173→                                due to concentrated sourcing from Taiwan.
+  1174→                            </div>
+  1175→                            <div class="rec-actions">
+  1176→                                <button class="rec-btn rec-accept">✅ Accept</button>
+  1177→                                <button class="rec-btn rec-dismiss">❌ Dismiss</button>
+  1178→                            </div>
+  1179→                        </div>
+  1180→                        <div class="rec-item">
+  1181→                            <div class="rec-header">
+  1182→                                <span class="rec-priority priority-low">Low Priority</span>
+  1183→                                <span class="rec-source">🤖 Compliance Agent</span>
+  1184→                                <span class="rec-confidence">🎯 91% confidence</span>
+  1185→                            </div>
+  1186→                            <div class="rec-text">
+  1187→                                Review supplier contracts with EU-based vendors for new CBAM compliance requirements. 
+  1188→                                12 suppliers affected. Deadline: March 2025.
+  1189→                            </div>
+  1190→                            <div class="rec-actions">
+  1191→                                <button class="rec-btn rec-accept">✅ Accept</button>
+  1192→                                <button class="rec-btn rec-dismiss">❌ Dismiss</button>
+  1193→                            </div>
+  1194→                        </div>
+  1195→                    </div>
+  1196→                </div>
+  1197→            </div>
+  1198→
+  1199→            <!-- SCENARIO SLIDERS -->
+  1200→            <div class="scenario-panel">
+  1201→                <div class="card-header">
+  1202→                    <span class="card-title">🎮 What-If Scenario Simulator</span>
+  1203→                </div>
+  1204→                
+  1205→                <div class="slider-group">
+  1206→                    <div class="slider-label">
+  1207→                        <span class="slider-name">🌊 Red Sea Closure Duration</span>
+  1208→                        <span class="slider-val">6 months</span>
+  1209→                    </div>
+  1210→                    <div class="slider-track">
+  1211→                        <div class="slider-fill" style="width:60%;background:linear-gradient(90deg,#dc2626,#ef4444);"></div>
+  1212→                        <div class="slider-thumb" style="left:calc(60% - 9px);"></div>
+  1213→                    </div>
+  1214→                </div>
+  1215→                
+  1216→                <div class="slider-group">
+  1217→                    <div class="slider-label">
+  1218→                        <span class="slider-name">🇹🇼 Taiwan Conflict Probability</span>
+  1219→                        <span class="slider-val">15%</span>
+  1220→                    </div>
+  1221→                    <div class="slider-track">
+  1222→                        <div class="slider-fill" style="width:15%;background:linear-gradient(90deg,#7c3aed,#a78bfa);"></div>
+  1223→                        <div class="slider-thumb" style="left:calc(15% - 9px);"></div>
+  1224→                    </div>
+  1225→                </div>
+  1226→                
+  1227→                <div class="slider-group">
+  1228→                    <div class="slider-label">
+  1229→                        <span class="slider-name">📈 Demand Surge Factor</span>
+  1230→                        <span class="slider-val">+30%</span>
+  1231→                    </div>
+  1232→                    <div class="slider-track">
+  1233→                        <div class="slider-fill" style="width:45%;background:linear-gradient(90deg,#059669,#10b981);"></div>
+  1234→                        <div class="slider-thumb" style="left:calc(45% - 9px);"></div>
+  1235→                    </div>
+  1236→                </div>
+  1237→                
+  1238→                <div class="slider-group">
+  1239→                    <div class="slider-label">
+  1240→                        <span class="slider-name">💵 Currency Volatility (CNY)</span>
+  1241→                        <span class="slider-val">±8%</span>
+  1242→                    </div>
+  1243→                    <div class="slider-track">
+  1244→                        <div class="slider-fill" style="width:35%;background:linear-gradient(90deg,#d97706,#f59e0b);"></div>
+  1245→                        <div class="slider-thumb" style="left:calc(35% - 9px);"></div>
+  1246→                    </div>
+  1247→                </div>
+  1248→
+  1249→                <div class="scenario-result">
+  1250→                    <div style="font-size:0.85rem;font-weight:700;margin-bottom:0.6rem;color:#67e8f9;">📊 Simulated Outcome</div>
+  1251→                    <div class="result-row">
+  1252→                        <span class="result-label">Overall Risk Score</span>
+  1253→                        <span class="result-value result-negative">+34 pts → 71 (HIGH)</span>
+  1254→                    </div>
+  1255→                    <div class="result-row">
+  1256→                        <span class="result-label">Cost Impact Est.</span>
+  1257→                        <span class="result-value result-negative">+$4.2M / quarter</span>
+  1258→                    </div>
+  1259→                    <div class="result-row">
+  1260→                        <span class="result-label">Delivery Delay Avg</span>
+  1261→                        <span class="result-value result-negative">+18 days</span>
+  1262→                    </div>
+  1263→                    <div class="result-row">
+  1264→                        <span class="result-label">Mitigation Available?</span>
+  1265→                        <span class="result-value result-positive">Yes — 3 strategies</span>
+  1266→                    </div>
+  1267→                </div>
+  1268→            </div>
+  1269→
+  1270→            <!-- AGENT STATUS MINI -->
+  1271→            <div class="card">
+  1272→                <div class="card-header">
+  1273→                    <span class="card-title">🤖 Agent Fleet Status</span>
+  1274→                    <span class="card-badge" style="background:rgba(52,211,153,0.15);color:#34d399;">All Online</span>
+  1275→                </div>
+  1276→                <div class="card-body">
+  1277→                    <div class="agent-sidebar">
+  1278→                        <div class="agent-mini-card">
+  1279→                            <div class="agent-mini-avatar" style="background:linear-gradient(135deg,#ef4444,#f97316);">🛡️</div>
+  1280→                            <div class="agent-mini-info">
+  1281→                                <div class="agent-mini-name">Sentinel Agent</div>
+  1282→                                <div class="agent-mini-task">Monitoring 847K events/day</div>
+  1283→                            </div>
+  1284→                            <div class="agent-mini-status status-active"></div>
+  1285→                        </div>
+  1286→                        <div class="agent-mini-card">
+  1287→                            <div class="agent-mini-avatar" style="background:linear-gradient(135deg,#3b82f6,#8b5cf6);">🔬</div>
+  1288→                            <div class="agent-mini-info">
+  1289→                                <div class="agent-mini-name">Analyst Agent</div>
+  1290→                                <div class="agent-mini-task">Investigating Foxconn incident</div>
+  1291→                            </div>
+  1292→                            <div class="agent-mini-status status-busy"></div>
+  1293→                        </div>
+  1294→                        <div class="agent-mini-card">
+  1295→                            <div class="agent-mini-avatar" style="background:linear-gradient(135deg,#10b981,#06b6d4);">⚖️</div>
+  1296→                            <div class="agent-mini-info">
+  1297→                                <div class="agent-mini-name">Compliance Agent</div>
+  1298→                                <div class="agent-mini-task">Tracking 156 regulations</div>
+  1299→                            </div>
+  1300→                            <div class="agent-mini-status status-active"></div>
+  1301→                        </div>
+  1302→                        <div class="agent-mini-card">
+  1303→                            <div class="agent-mini-avatar" style="background:linear-gradient(135deg,#f59e0b,#eab308);">📈</div>
+  1304→                            <div class="agent-mini-info">
+  1305→                                <div class="agent-mini-name">Forecast Agent</div>
+  1306→                                <div class="agent-mini-task">Running Q2 predictions</div>
+  1307→                            </div>
+  1308→                            <div class="agent-mini-status status-busy"></div>
+  1309→                        </div>
+  1310→                        <div class="agent-mini-card">
+  1311→                            <div class="agent-mini-avatar" style="background:linear-gradient(135deg,#ec4899,#8b5cf6);">🎯</div>
+  1312→                            <div class="agent-mini-info">
+  1313→                                <div class="agent-mini-name">Orchestrator Agent</div>
+  1314→                                <div class="agent-mini-task">Coordinating 2.4K tasks/day</div>
+  1315→                            </div>
+  1316→                            <div class="agent-mini-status status-active"></div>
+  1317→                        </div>
+  1318→                        <div class="agent-mini-card">
+  1319→                            <div class="agent-mini-avatar" style="background:linear-gradient(135deg,#06b6d4,#3b82f6);">💬</div>
+  1320→                            <div class="agent-mini-info">
+  1321→                                <div class="agent-mini-name">Negotiation Agent</div>
+  1322→                                <div class="agent-mini-task">Idle - awaiting tasks</div>
+  1323→                            </div>
+  1324→                            <div class="agent-mini-status status-idle"></div>
+  1325→                        </div>
+  1326→                    </div>
+  1327→                </div>
+  1328→            </div>
+  1329→        </div>
+  1330→    </div>
+  1331→</div>
+  1332→
+  1333→<!-- ===== FOOTER ===== -->
+  1334→<footer style="border-top:1px solid var(--glass-border);padding:1.5rem 2rem;text-align:center;color:var(--text-secondary);font-size:0.82rem;margin-top:2rem;">
+  1335→    <p>© 2025 AISupChain Pro | Enterprise Supply Chain Intelligence Platform | SOC 2 Type II Certified | ISO 27001 | GDPR Compliant</p>
+  1336→</footer>
+  1337→
+  1338→    <script>
+  1339→        // ===== THEME TOGGLE FUNCTIONALITY =====
+  1340→        document.addEventListener("DOMContentLoaded", function() {
+  1341→            const themeToggle = document.getElementById("themeToggle");
+  1342→            const htmlElement = document.documentElement;
+  1343→            
+  1344→            // Check for saved theme preference or default to dark
+  1345→            const savedTheme = localStorage.getItem("theme") || "dark";
+  1346→            htmlElement.setAttribute("data-theme", savedTheme);
+  1347→            
+  1348→            if (themeToggle) {
+  1349→                themeToggle.addEventListener("click", function() {
+  1350→                    const currentTheme = htmlElement.getAttribute("data-theme");
+  1351→                    const newTheme = currentTheme === "dark" ? "light" : "dark";
+  1352→                    
+  1353→                    htmlElement.setAttribute("data-theme", newTheme);
+  1354→                    localStorage.setItem("theme", newTheme);
+  1355→                    
+  1356→                    // Smooth transition
+  1357→                    document.body.style.transition = "background 0.3s ease, color 0.3s ease";
+  1358→                });
+  1359→            }
+  1360→        });
+  1361→    </script>
+  1362→</body>
+  1363→</html>

@@ -1,0 +1,1761 @@
+     1→<!DOCTYPE html>
+     2→<html data-theme="dark" lang="en">
+     3→<head>
+     4→    <meta charset="UTF-8">
+     5→    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+     6→    <title>AI Agents Platform | Autonomous Multi-Agent Intelligence System</title>
+     7→    <style>
+     8→        /* ===== CSS RESET & BASE ===== */
+     9→        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    10→        :root {
+    11→            --primary: #1e40af;
+    12→            --primary-light: #3b82f6;
+    13→            --cyan: #06b6d4;
+    14→            --emerald: #059669;
+    15→            --purple: #7c3aed;
+    16→            --rose: #e11d48;
+    17→            --amber: #f59e0b;
+    18→            --dark: #0f172a;
+    19→            --dark-lighter: #1e293b;
+    20→            --glass-bg: rgba(255,255,255,0.04);
+    21→            --glass-border: rgba(255,255,255,0.08);
+    22→            --text-primary: #f8fafc;
+    23→            --text-secondary: #94a3b8;
+    24→        }
+    25→        
+    26→        /* ===== LIGHT THEME VARIABLES ===== */
+    27→        [data-theme="light"] {
+    28→            --dark: #f8fafc;
+    29→            --dark-lighter: #e2e8f0;
+    30→            --glass-bg: rgba(255,255,255,0.7);
+    31→            --glass-border: rgba(0,0,0,0.1);
+    32→            --text-primary: #0f172a;
+    33→            --text-secondary: #475569;
+    34→        }
+    35→        html { scroll-behavior: smooth; }
+    36→        body {
+    37→            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+    38→            background: var(--dark);
+    39→            color: var(--text-primary);
+    40→            line-height: 1.5;
+    41→            min-height: 100vh;
+    42→        }
+    43→        a { color: inherit; text-decoration: none; }
+    44→
+    45→        /* ===== NAVIGATION ===== */
+    46→        nav {
+    47→            position: fixed;
+    48→            top: 0; left: 0; right: 0;
+    49→            z-index: 1000;
+    50→            padding: 0.75rem 1.5rem;
+    51→            background: rgba(15,23,42,0.92);
+    52→            backdrop-filter: blur(20px);
+    53→            border-bottom: 1px solid var(--glass-border);
+    54→            display: flex;
+    55→            justify-content: space-between;
+    56→            align-items: center;
+    57→            flex-wrap: wrap;
+    58→            gap: 0.75rem;
+    59→        }
+    60→        .nav-brand {
+    61→            display: flex;
+    62→            align-items: center;
+    63→            gap: 0.6rem;
+    64→            font-size: 1.2rem;
+    65→            font-weight: 700;
+    66→            background: linear-gradient(135deg, #3b82f6, #7c3aed, #06b6d4);
+    67→            -webkit-background-clip: text;
+    68→            -webkit-text-fill-color: transparent;
+    69→            background-clip: text;
+    70→        }
+    71→        .nav-brand-icon {
+    72→            width: 36px; height: 36px;
+    73→            background: linear-gradient(135deg, #1e40af, #7c3aed);
+    74→            border-radius: 10px;
+    75→            display: flex;
+    76→            align-items: center;
+    77→            justify-content: center;
+    78→            font-size: 1.2rem;
+    79→            -webkit-text-fill-color: white;
+    80→        }
+    81→        .nav-links {
+    82→            display: flex;
+    83→            gap: 0.35rem;
+    84→            flex-wrap: wrap;
+    85→        }
+    86→        .nav-links a {
+    87→            padding: 0.45rem 0.85rem;
+    88→            border-radius: 8px;
+    89→            font-size: 0.82rem;
+    90→            font-weight: 500;
+    91→            transition: all 0.25s ease;
+    92→            color: var(--text-secondary);
+    93→            border: 1px solid transparent;
+    94→        }
+    95→        .nav-links a:hover, .nav-links a.active {
+    96→            background: rgba(59,130,246,0.12);
+    97→            color: var(--text-primary);
+    98→            border-color: rgba(59,130,246,0.25);
+    99→        }
+   100→        .nav-links a.active {
+   101→            background: linear-gradient(135deg, rgba(30,64,175,0.25), rgba(124,58,237,0.25));
+   102→            border-color: rgba(124,58,237,0.4);
+   103→        }
+   104→
+   105→        /* ===== MAIN CONTAINER ===== */
+   106→        .agents-container {
+   107→            padding-top: 70px;
+   108→            min-height: 100vh;
+   109→        }
+   110→
+   111→        /* ===== HERO SECTION ===== */
+   112→        .agents-hero {
+   113→            background: linear-gradient(180deg, 
+   114→                rgba(124,58,237,0.15) 0%, 
+   115→                rgba(30,64,175,0.1) 30%,
+   116→                rgba(6,182,212,0.08) 60%, 
+   117→                transparent 100%);
+   118→            padding: 3.5rem 2rem;
+   119→            text-align: center;
+   120→            position: relative;
+   121→            overflow: hidden;
+   122→            border-bottom: 1px solid var(--glass-border);
+   123→        }
+   124→        .agents-hero::before {
+   125→            content: '';
+   126→            position: absolute;
+   127→            top: -100px; right: -100px;
+   128→            width: 400px; height: 400px;
+   129→            background: radial-gradient(circle, rgba(124,58,237,0.12) 0%, transparent 70%);
+   130→            animation: heroFloat 15s ease-in-out infinite;
+   131→        }
+   132→        .agents-hero::after {
+   133→            content: '';
+   134→            position: absolute;
+   135→            bottom: -150px; left: -100px;
+   136→            width: 500px; height: 500px;
+   137→            background: radial-gradient(circle, rgba(6,182,212,0.08) 0%, transparent 70%);
+   138→            animation: heroFloat 20s ease-in-out infinite reverse;
+   139→        }
+   140→        @keyframes heroFloat {
+   141→            0%, 100% { transform: translate(0, 0); }
+   142→            50% { transform: translate(30px, -20px); }
+   143→        }
+   144→        .hero-badge {
+   145→            display: inline-flex;
+   146→            align-items: center;
+   147→            gap: 0.5rem;
+   148→            padding: 0.5rem 1.25rem;
+   149→            background: rgba(124,58,237,0.15);
+   150→            border: 1px solid rgba(124,58,237,0.3);
+   151→            border-radius: 50px;
+   152→            font-size: 0.85rem;
+   153→            color: #c4b5fd;
+   154→            margin-bottom: 1.5rem;
+   155→            position: relative;
+   156→            z-index: 1;
+   157→        }
+   158→        .badge-pulse {
+   159→            width: 8px; height: 8px;
+   160→            background: #34d399;
+   161→            border-radius: 50%;
+   162→            animation: pulse 2s ease-in-out infinite;
+   163→        }
+   164→        @keyframes pulse {
+   165→            0%, 100% { opacity: 1; box-shadow: 0 0 0 0 rgba(52,211,153,0.5); }
+   166→            50% { opacity: 0.7; box-shadow: 0 0 0 8px rgba(52,211,153,0); }
+   167→        }
+   168→        .agents-hero h1 {
+   169→            font-size: clamp(1.8rem, 4vw, 2.8rem);
+   170→            font-weight: 800;
+   171→            margin-bottom: 0.85rem;
+   172→            background: linear-gradient(135deg, #fff, #93c5fd, #a78bfa, #67e8f9);
+   173→            -webkit-background-clip: text;
+   174→            -webkit-text-fill-color: transparent;
+   175→            background-clip: text;
+   176→            position: relative;
+   177→            z-index: 1;
+   178→        }
+   179→        .agents-hero p {
+   180→            font-size: 1.1rem;
+   181→            color: var(--text-secondary);
+   182→            max-width: 750px;
+   183→            margin: 0 auto 2rem;
+   184→            position: relative;
+   185→            z-index: 1;
+   186→            line-height: 1.7;
+   187→        }
+   188→
+   189→        /* ===== FLEET STATUS BAR ===== */
+   190→        .fleet-status-bar {
+   191→            display: flex;
+   192→            justify-content: center;
+   193→            gap: 2rem;
+   194→            flex-wrap: wrap;
+   195→            position: relative;
+   196→            z-index: 1;
+   197→        }
+   198→        .fleet-stat {
+   199→            text-align: center;
+   200→            padding: 1rem 1.5rem;
+   201→            background: var(--glass-bg);
+   202→            backdrop-filter: blur(16px);
+   203→            border: 1px solid var(--glass-border);
+   204→            border-radius: 14px;
+   205→            min-width: 140px;
+   206→        }
+   207→        .fleet-stat-value {
+   208→            font-size: 1.8rem;
+   209→            font-weight: 800;
+   210→            background: linear-gradient(135deg, #3b82f6, #06b6d4);
+   211→            -webkit-background-clip: text;
+   212→            -webkit-text-fill-color: transparent;
+   213→            background-clip: text;
+   214→        }
+   215→        .fleet-stat-label {
+   216→            font-size: 0.8rem;
+   217→            color: var(--text-secondary);
+   218→            margin-top: 0.2rem;
+   219→        }
+   220→
+   221→        /* ===== SECTION STYLES ===== */
+   222→        section { padding: 3.5rem 2rem; max-width: 1400px; margin: 0 auto; }
+   223→        .section-header {
+   224→            text-align: center;
+   225→            margin-bottom: 3rem;
+   226→        }
+   227→        .section-tag {
+   228→            display: inline-block;
+   229→            padding: 0.35rem 0.9rem;
+   230→            background: rgba(6,182,212,0.12);
+   231→            border: 1px solid rgba(6,182,212,0.25);
+   232→            border-radius: 50px;
+   233→            font-size: 0.78rem;
+   234→            color: #67e8f9;
+   235→            margin-bottom: 0.75rem;
+   236→            text-transform: uppercase;
+   237→            letter-spacing: 1px;
+   238→        }
+   239→        .section-title {
+   240→            font-size: clamp(1.5rem, 3.5vw, 2.25rem);
+   241→            font-weight: 750;
+   242→            background: linear-gradient(135deg, #fff, #94a3b8);
+   243→            -webkit-background-clip: text;
+   244→            -webkit-text-fill-color: transparent;
+   245→            background-clip: text;
+   246→        }
+   247→        .section-desc {
+   248→            font-size: 1rem;
+   249→            color: var(--text-secondary);
+   250→            max-width: 650px;
+   251→            margin: 0.5rem auto 0;
+   252→        }
+   253→
+   254→        /* ===== AGENT CARDS GRID ===== */
+   255→        .agent-cards-grid {
+   256→            display: grid;
+   257→            grid-template-columns: repeat(auto-fit, minmax(380px, 1fr));
+   258→            gap: 1.5rem;
+   259→        }
+   260→        @media (max-width: 450px) { .agent-cards-grid { grid-template-columns: 1fr; } }
+   261→
+   262→        .agent-card {
+   263→            background: var(--glass-bg);
+   264→            backdrop-filter: blur(20px);
+   265→            border: 1px solid var(--glass-border);
+   266→            border-radius: 22px;
+   267→            overflow: hidden;
+   268→            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+   269→            position: relative;
+   270→        }
+   271→        .agent-card::before {
+   272→            content: '';
+   273→            position: absolute;
+   274→            top: 0; left: 0; right: 0;
+   275→            height: 4px;
+   276→        }
+   277→        .agent-card:nth-child(1)::before { background: linear-gradient(90deg, #ef4444, #f97316); }
+   278→        .agent-card:nth-child(2)::before { background: linear-gradient(90deg, #3b82f6, #8b5cf6); }
+   279→        .agent-card:nth-child(3)::before { background: linear-gradient(90deg, #10b981, #06b6d4); }
+   280→        .agent-card:nth-child(4)::before { background: linear-gradient(90deg, #f59e0b, #eab308); }
+   281→        .agent-card:nth-child(5)::before { background: linear-gradient(90deg, #ec4899, #8b5cf6); }
+   282→        .agent-card:nth-child(6)::before { background: linear-gradient(90deg, #06b6d4, #3b82f6); }
+   283→        
+   284→        .agent-card:hover {
+   285→            transform: translateY(-8px);
+   286→            border-color: rgba(59,130,246,0.35);
+   287→            box-shadow: 0 20px 50px rgba(0,0,0,0.35), 0 0 40px rgba(59,130,246,0.08);
+   288→        }
+   289→
+   290→        .agent-card-header {
+   291→            padding: 1.5rem;
+   292→            display: flex;
+   293→            align-items: center;
+   294→            gap: 1.15rem;
+   295→            border-bottom: 1px solid var(--glass-border);
+   296→        }
+   297→        .agent-avatar-large {
+   298→            width: 68px; height: 68px;
+   299→            border-radius: 18px;
+   300→            display: flex;
+   301→            align-items: center;
+   302→            justify-content: center;
+   303→            font-size: 2rem;
+   304→            flex-shrink: 0;
+   305→            position: relative;
+   306→        }
+   307→        .agent-avatar-large::after {
+   308→            content: '';
+   309→            position: absolute;
+   310→            bottom: -4px; right: -4px;
+   311→            width: 16px; height: 16px;
+   312→            border-radius: 50%;
+   313→            border: 3px solid var(--dark);
+   314→        }
+   315→        .status-online::after { background: #34d399; box-shadow: 0 0 8px rgba(52,211,153,0.6); }
+   316→        .status-busy::after { background: #fbbf24; box-shadow: 0 0 8px rgba(251,191,36,0.6); }
+   317→        .status-idle::after { background: #64748b; }
+   318→        
+   319→        .agent-card:nth-child(1) .agent-avatar-large { background: linear-gradient(135deg, #ef4444, #f97316); }
+   320→        .agent-card:nth-child(2) .agent-avatar-large { background: linear-gradient(135deg, #3b82f6, #8b5cf6); }
+   321→        .agent-card:nth-child(3) .agent-avatar-large { background: linear-gradient(135deg, #10b981, #06b6d4); }
+   322→        .agent-card:nth-child(4) .agent-avatar-large { background: linear-gradient(135deg, #f59e0b, #eab308); }
+   323→        .agent-card:nth-child(5) .agent-avatar-large { background: linear-gradient(135deg, #ec4899, #8b5cf6); }
+   324→        .agent-card:nth-child(6) .agent-avatar-large { background: linear-gradient(135deg, #06b6d4, #3b82f6); }
+   325→
+   326→        .agent-info-main { flex: 1; }
+   327→        .agent-name {
+   328→            font-size: 1.25rem;
+   329→            font-weight: 750;
+   330→            margin-bottom: 0.2rem;
+   331→        }
+   332→        .agent-role {
+   333→            font-size: 0.85rem;
+   334→            color: var(--text-secondary);
+   335→            margin-bottom: 0.4rem;
+   336→        }
+   337→        .agent-status-badge {
+   338→            display: inline-flex;
+   339→            align-items: center;
+   340→            gap: 0.35rem;
+   341→            padding: 0.25rem 0.7rem;
+   342→            border-radius: 8px;
+   343→            font-size: 0.72rem;
+   344→            font-weight: 600;
+   345→        }
+   346→        .status-active-badge {
+   347→            background: rgba(52,211,153,0.12);
+   348→            color: #34d399;
+   349→            border: 1px solid rgba(52,211,153,0.25);
+   350→        }
+   351→        .status-busy-badge {
+   352→            background: rgba(251,191,36,0.12);
+   353→            color: #fbbf24;
+   354→            border: 1px solid rgba(251,191,36,0.25);
+   355→        }
+   356→        .status-idle-badge {
+   357→            background: rgba(148,163,184,0.1);
+   358→            color: #94a3b8;
+   359→            border: 1px solid rgba(148,163,184,0.2);
+   360→        }
+   361→
+   362→        .agent-card-body {
+   363→            padding: 1.5rem;
+   364→        }
+   365→        .agent-description {
+   366→            font-size: 0.92rem;
+   367→            color: #cbd5e1;
+   368→            line-height: 1.65;
+   369→            margin-bottom: 1.25rem;
+   370→        }
+   371→
+   372→        /* Capabilities Tags */
+   373→        .capabilities-section { margin-bottom: 1.25rem; }
+   374→        .capabilities-label {
+   375→            font-size: 0.78rem;
+   376→            font-weight: 700;
+   377→            color: var(--text-secondary);
+   378→            text-transform: uppercase;
+   379→            letter-spacing: 0.5px;
+   380→            margin-bottom: 0.6rem;
+   381→        }
+   382→        .capability-tags {
+   383→            display: flex;
+   384→            flex-wrap: wrap;
+   385→            gap: 0.4rem;
+   386→        }
+   387→        .cap-tag {
+   388→            padding: 0.3rem 0.7rem;
+   389→            background: rgba(59,130,246,0.1);
+   390→            border: 1px solid rgba(59,130,246,0.2);
+   391→            border-radius: 8px;
+   392→            font-size: 0.76rem;
+   393→            color: #93c5fd;
+   394→            transition: all 0.2s ease;
+   395→        }
+   396→        .cap-tag:hover {
+   397→            background: rgba(59,130,246,0.2);
+   398→            border-color: rgba(59,130,246,0.35);
+   399→        }
+   400→
+   401→        /* Performance Metrics */
+   402→        .perf-metrics {
+   403→            display: grid;
+   404→            grid-template-columns: repeat(3, 1fr);
+   405→            gap: 0.6rem;
+   406→            margin-bottom: 1.25rem;
+   407→        }
+   408→        .perf-metric {
+   409→            text-align: center;
+   410→            padding: 0.65rem 0.5rem;
+   411→            background: rgba(0,0,0,0.25);
+   412→            border-radius: 10px;
+   413→        }
+   414→        .perf-value {
+   415→            font-size: 1.1rem;
+   416→            font-weight: 800;
+   417→            color: #67e8f9;
+   418→        }
+   419→        .perf-label {
+   420→            font-size: 0.68rem;
+   421→            color: var(--text-secondary);
+   422→            margin-top: 0.15rem;
+   423→        }
+   424→
+   425→        /* Autonomy Level */
+   426→        .autonomy-section {
+   427→            display: flex;
+   428→            align-items: center;
+   429→            gap: 0.85rem;
+   430→            padding: 0.85rem 1rem;
+   431→            background: rgba(124,58,237,0.08);
+   432→            border: 1px solid rgba(124,58,237,0.15);
+   433→            border-radius: 12px;
+   434→        }
+   435→        .autonomy-icon {
+   436→            font-size: 1.3rem;
+   437→        }
+   438→        .autonomy-info { flex: 1; }
+   439→        .autonomy-label {
+   440→            font-size: 0.78rem;
+   441→            font-weight: 700;
+   442→            color: #c4b5fd;
+   443→        }
+   444→        .autonomy-level {
+   445→            font-size: 0.88rem;
+   446→            font-weight: 600;
+   447→            margin-top: 0.1rem;
+   448→        }
+   449→        .autonomy-bar {
+   450→            width: 120px;
+   451→            height: 8px;
+   452→            background: rgba(255,255,255,0.08);
+   453→            border-radius: 4px;
+   454→            overflow: hidden;
+   455→        }
+   456→        .autonomy-fill {
+   457→            height: 100%;
+   458→            border-radius: 4px;
+   459→            background: linear-gradient(90deg, #7c3aed, #a78bfa);
+   460→        }
+   461→
+   462→        /* ===== LIVE STATUS DASHBOARD ===== */
+   463→        .live-status-section {
+   464→            background: var(--glass-bg);
+   465→            backdrop-filter: blur(20px);
+   466→            border: 1px solid var(--glass-border);
+   467→            border-radius: 22px;
+   468→            overflow: hidden;
+   469→        }
+   470→        .status-header {
+   471→            padding: 1.25rem 1.5rem;
+   472→            border-bottom: 1px solid var(--glass-border);
+   473→            display: flex;
+   474→            justify-content: space-between;
+   475→            align-items: center;
+   476→            flex-wrap: wrap;
+   477→            gap: 1rem;
+   478→        }
+   479→        .status-header h3 {
+   480→            font-size: 1.1rem;
+   481→            font-weight: 700;
+   482→            display: flex;
+   483→            align-items: center;
+   484→            gap: 0.5rem;
+   485→        }
+   486→        .live-indicator {
+   487→            display: inline-flex;
+   488→            align-items: center;
+   489→            gap: 0.35rem;
+   490→            padding: 0.3rem 0.75rem;
+   491→            background: rgba(225,29,72,0.12);
+   492→            border: 1px solid rgba(225,29,72,0.25);
+   493→            border-radius: 8px;
+   494→            font-size: 0.78rem;
+   495→            color: #fb7185;
+   496→            animation: livePulse 2s ease-in-out infinite;
+   497→        }
+   498→        @keyframes livePulse {
+   499→            0%, 100% { opacity: 1; }
+   500→            50% { opacity: 0.6; }
+   501→        }
+   502→
+   503→        .status-grid {
+   504→            display: grid;
+   505→            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+   506→        }
+   507→        .status-agent-row {
+   508→            display: flex;
+   509→            align-items: center;
+   510→            gap: 0.85rem;
+   511→            padding: 1rem 1.5rem;
+   512→            border-bottom: 1px solid rgba(255,255,255,0.03);
+   513→            transition: background 0.2s ease;
+   514→        }
+   515→        .status-agent-row:hover {
+   516→            background: rgba(255,255,255,0.02);
+   517→        }
+   518→        .status-agent-row:last-child { border-bottom: none; }
+   519→        .status-avatar-sm {
+   520→            width: 42px; height: 42px;
+   521→            border-radius: 11px;
+   522→            display: flex;
+   523→            align-items: center;
+   524→            justify-content: center;
+   525→            font-size: 1.1rem;
+   526→            flex-shrink: 0;
+   527→        }
+   528→        .status-agent-info { flex: 1; min-width: 0; }
+   529→        .status-agent-name { font-size: 0.9rem; font-weight: 600; }
+   530→        .status-agent-task {
+   531→            font-size: 0.75rem;
+   532→            color: var(--text-secondary);
+   533→            white-space: nowrap;
+   534→            overflow: hidden;
+   535→            text-overflow: ellipsis;
+   536→        }
+   537→        .status-light {
+   538→            width: 12px; height: 12px;
+   539→            border-radius: 50%;
+   540→            flex-shrink: 0;
+   541→        }
+   542→        .light-green { background: #34d399; box-shadow: 0 0 10px rgba(52,211,153,0.6); animation: lightGlow 2s ease-in-out infinite; }
+   543→        .light-yellow { background: #fbbf24; box-shadow: 0 0 10px rgba(251,191,36,0.6); animation: lightGlow 2s ease-in-out infinite; }
+   544→        .light-gray { background: #64748b; }
+   545→        @keyframes lightGlow {
+   546→            0%, 100% { box-shadow: 0 0 10px currentColor; }
+   547→            50% { box-shadow: 0 0 18px currentColor; }
+   548→        }
+   549→
+   550→        /* ===== COLLABORATION DIAGRAM ===== */
+   551→        .collab-diagram {
+   552→            background: var(--glass-bg);
+   553→            backdrop-filter: blur(20px);
+   554→            border: 1px solid var(--glass-border);
+   555→            border-radius: 22px;
+   556→            padding: 2.5rem;
+   557→            position: relative;
+   558→            overflow: hidden;
+   559→        }
+   560→        .collab-diagram::before {
+   561→            content: '';
+   562→            position: absolute;
+   563→            top: 50%; left: 50%;
+   564→            width: 300px; height: 300px;
+   565→            transform: translate(-50%, -50%);
+   566→            background: radial-gradient(circle, rgba(124,58,237,0.06) 0%, transparent 70%);
+   567→            pointer-events: none;
+   568→        }
+   569→        .collab-center {
+   570→            text-align: center;
+   571→            margin-bottom: 2.5rem;
+   572→            position: relative;
+   573→            z-index: 1;
+   574→        }
+   575→        .collab-center-node {
+   576→            display: inline-flex;
+   577→            align-items: center;
+   578→            gap: 0.6rem;
+   579→            padding: 0.85rem 1.75rem;
+   580→            background: linear-gradient(135deg, rgba(124,58,237,0.2), rgba(6,182,212,0.15));
+   581→            border: 2px solid rgba(124,58,237,0.35);
+   582→            border-radius: 16px;
+   583→            font-size: 1rem;
+   584→            font-weight: 700;
+   585→        }
+   586→        .collab-ring {
+   587→            display: flex;
+   588→            justify-content: center;
+   589→            gap: 1rem;
+   590→            flex-wrap: wrap;
+   591→            position: relative;
+   592→            z-index: 1;
+   593→        }
+   594→        .ring-agent {
+   595→            display: flex;
+   596→            flex-direction: column;
+   597→            align-items: center;
+   598→            gap: 0.5rem;
+   599→            padding: 1rem;
+   600→            background: var(--dark);
+   601→            border: 1px solid var(--glass-border);
+   602→            border-radius: 16px;
+   603→            transition: all 0.3s ease;
+   604→            cursor: default;
+   605→            min-width: 110px;
+   606→        }
+   607→        .ring-agent:hover {
+   608→            transform: translateY(-5px) scale(1.05);
+   609→            border-color: rgba(59,130,246,0.4);
+   610→            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+   611→        }
+   612→        .ring-avatar {
+   613→            width: 44px; height: 44px;
+   614→            border-radius: 12px;
+   615→            display: flex;
+   616→            align-items: center;
+   617→            justify-content: center;
+   618→            font-size: 1.3rem;
+   619→        }
+   620→        .ring-name { font-size: 0.8rem; font-weight: 700; text-align: center; }
+   621→        .ring-role { font-size: 0.68rem; color: var(--text-secondary); text-align: center; }
+   622→
+   623→        /* Connection Lines Description */
+   624→        .conn-flows {
+   625→            display: grid;
+   626→            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+   627→            gap: 0.85rem;
+   628→            margin-top: 2rem;
+   629→        }
+   630→        .conn-flow-item {
+   631→            display: flex;
+   632→            align-items: center;
+   633→            gap: 0.75rem;
+   634→            padding: 0.85rem 1rem;
+   635→            background: rgba(0,0,0,0.2);
+   636→            border-radius: 12px;
+   637→            font-size: 0.85rem;
+   638→        }
+   639→        .conn-from, .conn-to {
+   640→            font-weight: 600;
+   641→            padding: 0.2rem 0.55rem;
+   642→            border-radius: 6px;
+   643→            font-size: 0.78rem;
+   644→        }
+   645→        .conn-from { background: rgba(59,130,246,0.15); color: #93c5fd; }
+   646→        .conn-to { background: rgba(16,185,129,0.15); color: #34d399; }
+   647→        .conn-arrow { color: var(--text-secondary); }
+   648→
+   649→        /* ===== TASK QUEUE ===== */
+   650→        .task-queue-section {
+   651→            background: var(--glass-bg);
+   652→            backdrop-filter: blur(20px);
+   653→            border: 1px solid var(--glass-border);
+   654→            border-radius: 22px;
+   655→            overflow: hidden;
+   656→        }
+   657→        .task-list {
+   658→            max-height: 500px;
+   659→            overflow-y: auto;
+   660→        }
+   661→        .task-list::-webkit-scrollbar { width: 5px; }
+   662→        .task-list::-webkit-scrollbar-track { background: transparent; }
+   663→        .task-list::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.1); border-radius: 4px; }
+   664→        .task-item {
+   665→            display: flex;
+   666→            align-items: center;
+   667→            gap: 1rem;
+   668→            padding: 1rem 1.5rem;
+   669→            border-bottom: 1px solid rgba(255,255,255,0.03);
+   670→            transition: all 0.2s ease;
+   671→        }
+   672→        .task-item:hover { background: rgba(255,255,255,0.02); }
+   673→        .task-item:last-child { border-bottom: none; }
+   674→        .task-priority {
+   675→            width: 8px;
+   676→            height: 40px;
+   677→            border-radius: 4px;
+   678→            flex-shrink: 0;
+   679→        }
+   680→        .priority-critical { background: #ef4444; }
+   681→        .priority-high { background: #f97316; }
+   682→        .priority-medium { background: #fbbf24; }
+   683→        .priority-low { background: #06b6d4; }
+   684→        .task-content { flex: 1; min-width: 0; }
+   685→        .task-title {
+   686→            font-size: 0.9rem;
+   687→            font-weight: 600;
+   688→            margin-bottom: 0.2rem;
+   689→        }
+   690→        .task-meta {
+   691→            display: flex;
+   692→            gap: 1rem;
+   693→            font-size: 0.75rem;
+   694→            color: var(--text-secondary);
+   695→            flex-wrap: wrap;
+   696→        }
+   697→        .task-agent-tag {
+   698→            padding: 0.15rem 0.45rem;
+   699→            background: rgba(124,58,237,0.12);
+   700→            border-radius: 4px;
+   701→            color: #c4b5fd;
+   702→            font-size: 0.7rem;
+   703→        }
+   704→        .task-time {
+   705→            font-size: 0.75rem;
+   706→            color: var(--text-secondary);
+   707→            white-space: nowrap;
+   708→        }
+   709→        .task-status-pill {
+   710→            padding: 0.2rem 0.6rem;
+   711→            border-radius: 6px;
+   712→            font-size: 0.72rem;
+   713→            font-weight: 600;
+   714→            white-space: nowrap;
+   715→        }
+   716→        .pill-running {
+   717→            background: rgba(6,182,212,0.12);
+   718→            color: #67e8f9;
+   719→        }
+   720→        pill-queued {
+   721→            background: rgba(148,163,184,0.1);
+   722→            color: #94a3b8;
+   723→        }
+   724→        .pill-completed {
+   725→            background: rgba(52,211,153,0.12);
+   726→            color: #34d399;
+   727→        }
+   728→        .pill-waiting {
+   729→            background: rgba(251,191,36,0.12);
+   730→            color: #fbbf24;
+   731→        }
+   732→
+   733→        /* ===== HUMAN-IN-THE-LOOP ===== */
+   734→        .hitl-section {
+   735→            background: linear-gradient(135deg, rgba(245,158,11,0.08), rgba(245,158,11,0.03));
+   736→            border: 1px solid rgba(245,158,11,0.2);
+   737→            border-radius: 22px;
+   738→            overflow: hidden;
+   739→        }
+   740→        .hitl-header {
+   741→            padding: 1.25rem 1.5rem;
+   742→            border-bottom: 1px solid rgba(245,158,11,0.15);
+   743→            display: flex;
+   744→            justify-content: space-between;
+   745→            align-items: center;
+   746→            flex-wrap: wrap;
+   747→            gap: 1rem;
+   748→        }
+   749→        .hitl-header h3 {
+   750→            font-size: 1.1rem;
+   751→            font-weight: 700;
+   752→            display: flex;
+   753→            align-items: center;
+   754→            gap: 0.5rem;
+   755→            color: #fbbf24;
+   756→        }
+   757→        .pending-count {
+   758→            padding: 0.3rem 0.85rem;
+   759→            background: rgba(225,29,72,0.15);
+   760→            border: 1px solid rgba(225,29,72,0.3);
+   761→            border-radius: 8px;
+   762→            font-size: 0.82rem;
+   763→            font-weight: 700;
+   764→            color: #fb7185;
+   765→        }
+   766→        .approval-list {
+   767→            padding: 1rem;
+   768→        }
+   769→        .approval-item {
+   770→            display: flex;
+   771→            gap: 1rem;
+   772→            padding: 1.25rem;
+   773→            background: rgba(0,0,0,0.2);
+   774→            border-radius: 14px;
+   775→            border-left: 4px solid #f59e0b;
+   776→            margin-bottom: 0.85rem;
+   777→            transition: all 0.25s ease;
+   778→        }
+   779→        .approval-item:last-child { margin-bottom: 0; }
+   780→        .approval-item:hover {
+   781→            background: rgba(0,0,0,0.3);
+   782→            transform: translateX(3px);
+   783→        }
+   784→        .approval-icon {
+   785→            width: 46px; height: 46px;
+   786→            background: rgba(245,158,11,0.15);
+   787→            border-radius: 12px;
+   788→            display: flex;
+   789→            align-items: center;
+   790→            justify-content: center;
+   791→            font-size: 1.3rem;
+   792→            flex-shrink: 0;
+   793→        }
+   794→        .approval-content { flex: 1; }
+   795→        .approval-title {
+   796→            font-size: 0.95rem;
+   797→            font-weight: 700;
+   798→            margin-bottom: 0.3rem;
+   799→        }
+   800→        .approval-detail {
+   801→            font-size: 0.83rem;
+   802→            color: var(--text-secondary);
+   803→            line-height: 1.5;
+   804→            margin-bottom: 0.6rem;
+   805→        }
+   806→        .approval-meta {
+   807→            display: flex;
+   808→            gap: 1rem;
+   809→            align-items: center;
+   810→            flex-wrap: wrap;
+   811→        }
+   812→        .approval-source {
+   813→            font-size: 0.75rem;
+   814→            color: #c4b5fd;
+   815→        }
+   816→        .approval-confidence {
+   817→            font-size: 0.75rem;
+   818→            color: #67e8f9;
+   819→        }
+   820→        .approval-actions {
+   821→            display: flex;
+   822→            flex-direction: column;
+   823→            gap: 0.5rem;
+   824→            justify-content: center;
+   825→        }
+   826→        .approve-btn {
+   827→            padding: 0.55rem 1.25rem;
+   828→            background: rgba(16,185,129,0.15);
+   829→            border: 1px solid rgba(16,185,129,0.3);
+   830→            border-radius: 10px;
+   831→            color: #34d399;
+   832→            font-size: 0.82rem;
+   833→            font-weight: 700;
+   834→            cursor: pointer;
+   835→            transition: all 0.2s ease;
+   836→            text-align: center;
+   837→        }
+   838→        .approve-btn:hover {
+   839→            background: rgba(16,185,129,0.28);
+   840→            transform: scale(1.02);
+   841→        }
+   842→        .reject-btn {
+   843→            padding: 0.55rem 1.25rem;
+   844→            background: rgba(225,29,72,0.1);
+   845→            border: 1px solid rgba(225,29,72,0.25);
+   846→            border-radius: 10px;
+   847→            color: #fb7185;
+   848→            font-size: 0.82rem;
+   849→            font-weight: 600;
+   850→            cursor: pointer;
+   851→            transition: all 0.2s ease;
+   852→            text-align: center;
+   853→        }
+   854→        .reject-btn:hover {
+   855→            background: rgba(225,29,72,0.2);
+   856→            transform: scale(1.02);
+   857→        }
+   858→
+   859→        /* ===== ARCHITECTURE OVERVIEW ===== */
+   860→        .arch-overview {
+   861→            display: grid;
+   862→            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+   863→            gap: 1.25rem;
+   864→        }
+   865→        .arch-card {
+   866→            background: var(--glass-bg);
+   867→            backdrop-filter: blur(16px);
+   868→            border: 1px solid var(--glass-border);
+   869→            border-radius: 16px;
+   870→            padding: 1.5rem;
+   871→            text-align: center;
+   872→            transition: all 0.3s ease;
+   873→        }
+   874→        .arch-card:hover {
+   875→            transform: translateY(-4px);
+   876→            border-color: rgba(139,92,246,0.3);
+   877→        }
+   878→        .arch-icon {
+   879→            font-size: 2.2rem;
+   880→            margin-bottom: 0.75rem;
+   881→        }
+   882→        .arch-title {
+   883→            font-size: 1rem;
+   884→            font-weight: 700;
+   885→            margin-bottom: 0.35rem;
+   886→        }
+   887→        .arch-desc {
+   888→            font-size: 0.82rem;
+   889→            color: var(--text-secondary);
+   890→            line-height: 1.5;
+   891→        }
+   892→
+   893→        /* ===== RESPONSIVE ===== */
+   894→        @media (max-width: 768px) {
+   895→            nav { padding: 0.5rem 0.75rem; }
+   896→            .nav-links { justify-content: center; order: 3; width: 100%; }
+   897→            section { padding: 2rem 1rem; }
+   898→            .agent-cards-grid { grid-template-columns: 1fr; }
+   899→            .fleet-status-bar { gap: 0.75rem; }
+   900→            .fleet-stat { min-width: 100px; padding: 0.75rem 1rem; }
+   901→            .perf-metrics { grid-template-columns: repeat(3, 1fr); }
+   902→            .collab-diagram { padding: 1.5rem; }
+   903→            .approval-item { flex-direction: column; }
+   904→            .approval-actions { flex-direction: row; }
+   905→        }
+   906→
+   907→        /* ===== FOOTER ===== */
+   908→        footer {
+   909→            border-top: 1px solid var(--glass-border);
+   910→            padding: 2rem 2rem;
+   911→            text-align: center;
+   912→            color: var(--text-secondary);
+   913→            font-size: 0.85rem;
+   914→            margin-top: 2rem;
+   915→        }
+   916→        
+   917→        /* ===== THEME TOGGLE BUTTON ===== */
+   918→        .theme-toggle {
+   919→            width: 40px;
+   920→            height: 40px;
+   921→            border-radius: 10px;
+   922→            background: var(--glass-bg);
+   923→            border: 1px solid var(--glass-border);
+   924→            color: var(--text-secondary);
+   925→            cursor: pointer;
+   926→            display: flex;
+   927→            align-items: center;
+   928→            justify-content: center;
+   929→            font-size: 1.1rem;
+   930→            transition: all 0.3s ease;
+   931→            margin-left: 0.5rem;
+   932→        }
+   933→        .theme-toggle:hover {
+   934→            background: rgba(59,130,246,0.15);
+   935→            color: var(--text-primary);
+   936→            transform: rotate(15deg);
+   937→            border-color: rgba(59,130,246,0.3);
+   938→        }
+   939→        .theme-toggle .icon-sun { display: none; }
+   940→        .theme-toggle .icon-moon { display: inline-block; }
+   941→        [data-theme="light"] .theme-toggle .icon-sun { display: inline-block; }
+   942→        [data-theme="light"] .theme-toggle .icon-moon { display: none; }
+   943→    </style>
+   944→</head>
+   945→<body>
+   946→
+   947→<!-- ===== NAVIGATION ===== -->
+   948→<nav>
+   949→    <div class="nav-brand">
+   950→        <div class="nav-brand-icon">🧠</div>
+   951→        <span>AISupChain Pro</span>
+   952→    </div>
+   953→    <div class="nav-links">
+   954→        <a href="/Demo4AISupChn/">🏠 Home</a>
+   955→        <a href="/Demo4AISupChn/dashboard.html">📊 Dashboard</a>
+   956→        <a href="/Demo4AISupChn/intelligence.html">🔬 Intelligence</a>
+   957→        <a href="/Demo4AISupChn/agents.html" class="active">🤖 Agents</a>
+   958→        <a href="/Demo4AISupChn/platform.html">⚙️ Platform</a>
+   959→        <a href="/Demo4AISupChn/command-center.html">🎯 Command Center</a>
+   960→        <a href="/Demo4AISupChn/about.html">ℹ️ About</a>
+   961→        <a href="/Demo4AISupChn/customers.html">👥 Customers</a>
+   962→    </div>
+   963→                <!-- Theme Toggle -->
+   964→                <button class="theme-toggle" id="themeToggle" title="Toggle dark/light mode">
+   965→                    <span class="icon-moon">🌙</span>
+   966→                    <span class="icon-sun">☀️</span>
+   967→                </button>
+   968→</nav>
+   969→
+   970→<!-- ===== AGENTS CONTAINER ===== -->
+   971→<div class="agents-container">
+   972→
+   973→    <!-- ===== HERO ===== -->
+   974→    <div class="agents-hero">
+   975→        <div class="hero-badge">
+   976→            <span class="badge-pulse"></span>
+   977→            <span>Autonomous AI Fleet — All Systems Operational</span>
+   978→        </div>
+   979→        <h1>🤖 Autonomous AI Agent Platform</h1>
+   980→        <p>
+   981→            Meet our fleet of six specialized AI agents working collaboratively 24/7 to monitor, analyze, predict, 
+   982→            and protect your global supply chain. Each agent operates with varying levels of autonomy, 
+   983→            from fully automated monitoring to human-in-the-loop decision support.
+   984→        </p>
+   985→        
+   986→        <div class="fleet-status-bar">
+   987→            <div class="fleet-stat">
+   988→                <div class="fleet-stat-value">6</div>
+   989→                <div class="fleet-stat-label">Active Agents</div>
+   990→            </div>
+   991→            <div class="fleet-stat">
+   992→                <div class="fleet-stat-value">5</div>
+   993→                <div class="fleet-stat-label">Online Now</div>
+   994→            </div>
+   995→            <div class="fleet-stat">
+   996→                <div class="fleet-stat-value">2.4K</div>
+   997→                <div class="fleet-stat-label">Tasks Today</div>
+   998→            </div>
+   999→            <div class="fleet-stat">
+  1000→                <div class="fleet-stat-value">99.7%</div>
+  1001→                <div class="fleet-stat-label">Uptime</div>
+  1002→            </div>
+  1003→            <div class="fleet-stat">
+  1004→                <div class="fleet-stat-value">&lt;1s</div>
+  1005→                <div class="fleet-stat-label">Avg Response</div>
+  1006→            </div>
+  1007→        </div>
+  1008→    </div>
+  1009→
+  1010→    <!-- ===== AGENT CARDS ===== -->
+  1011→    <section id="agent-fleet">
+  1012→        <div class="section-header">
+  1013→            <div class="section-tag">🤖 Agent Fleet</div>
+  1014→            <h2 class="section-title">Meet Your AI Agent Team</h2>
+  1015→            <p class="section-desc">Six specialized autonomous agents, each purpose-built for supply chain intelligence tasks</p>
+  1016→        </div>
+  1017→
+  1018→        <div class="agent-cards-grid">
+  1019→            
+  1020→            <!-- AGENT 1: SENTINEL -->
+  1021→            <div class="agent-card">
+  1022→                <div class="agent-card-header">
+  1023→                    <div class="agent-avatar-large status-online">🛡️</div>
+  1024→                    <div class="agent-info-main">
+  1025→                        <div class="agent-name">Sentinel Agent</div>
+  1026→                        <div class="agent-role">24/7 Global Threat Monitor & Detection System</div>
+  1027→                        <div class="agent-status-badge status-active-badge">
+  1028→                            <span style="width:7px;height:7px;background:#34d399;border-radius:50%;"></span>
+  1029→                            Active · Monitoring
+  1030→                        </div>
+  1031→                    </div>
+  1032→                </div>
+  1033→                <div class="agent-card-body">
+  1034→                    <p class="agent-description">
+  1035→                        The first line of defense in your supply chain security. Sentinel continuously monitors 
+  1036→                        500+ data sources across 190+ countries, detecting anomalies, threats, and emerging risks 
+  1037→                        in real-time with sub-second latency.
+  1038→                    </p>
+  1039→                    <div class="capabilities-section">
+  1040→                        <div class="capabilities-label">Core Capabilities</div>
+  1041→                        <div class="capability-tags">
+  1042→                            <span class="cap-tag">🌐 Global Surveillance</span>
+  1043→                            <span class="cap-tag">⚡ Real-Time Detection</span>
+  1044→                            <span class="cap-tag">🚨 Alert Generation</span>
+  1045→                            <span class="cap-tag">📊 Pattern Recognition</span>
+  1046→                            <span class="cap-tag">🔄 Continuous Learning</span>
+  1047→                        </div>
+  1048→                    </div>
+  1049→                    <div class="perf-metrics">
+  1050→                        <div class="perf-metric">
+  1051→                            <div class="perf-value">847K</div>
+  1052→                            <div class="perf-label">Events/Day</div>
+  1053→                        </div>
+  1054→                        <div class="perf-metric">
+  1055→                            <div class="perf-value">&lt;50ms</div>
+  1056→                            <div class="perf-label">Detection Time</div>
+  1057→                        </div>
+  1058→                        <div class="perf-metric">
+  1059→                            <div class="perf-value">99.7%</div>
+  1060→                            <div class="perf-label">Uptime</div>
+  1061→                        </div>
+  1062→                    </div>
+  1063→                    <div class="autonomy-section">
+  1064→                        <span class="autonomy-icon">🎛️</span>
+  1065→                        <div class="autonomy-info">
+  1066→                            <div class="autonomy-label">Autonomy Level</div>
+  1067→                            <div class="autonomy-level">Fully Autonomous (Level 5)</div>
+  1068→                        </div>
+  1069→                        <div class="autonomy-bar"><div class="autonomy-fill" style="width:100%;"></div></div>
+  1070→                    </div>
+  1071→                </div>
+  1072→            </div>
+  1073→
+  1074→            <!-- AGENT 2: ANALYST -->
+  1075→            <div class="agent-card">
+  1076→                <div class="agent-card-header">
+  1077→                    <div class="agent-avatar-large status-busy">🔬</div>
+  1078→                    <div class="agent-info-main">
+  1079→                        <div class="agent-name">Analyst Agent</div>
+  1080→                        <div class="agent-role">Deep Investigation & Root Cause Analysis Engine</div>
+  1081→                        <div class="agent-status-badge status-busy-badge">
+  1082→                            <span style="width:7px;height:7px;background:#fbbf24;border-radius:50%;"></span>
+  1083→                            Busy · Investigating
+  1084→                        </div>
+  1085→                    </div>
+  1086→                </div>
+  1087→                <div class="agent-card-body">
+  1088→                    <p class="agent-description">
+  1089→                        When Sentinel flags a potential threat, Analyst takes over for deep investigation. 
+  1090→                        It cross-references knowledge graphs, runs SHAP explainability analysis, generates 
+  1091→                        counterfactual scenarios, and produces comprehensive risk assessments.
+  1092→                    </p>
+  1093→                    <div class="capabilities-section">
+  1094→                        <div class="capabilities-label">Core Capabilities</div>
+  1095→                        <div class="capability-tags">
+  1096→                            <span class="cap-tag">🔍 Deep Research</span>
+  1097→                            <span class="cap-tag">📈 SHAP Analysis</span>
+  1098→                            <span class="cap-tag">🔄 Counterfactuals</span>
+  1099→                            <span class="cap-tag">🕸️ Graph Traversal</span>
+  1100→                            <span class="cap-tag">📝 Report Generation</span>
+  1101→                        </div>
+  1102→                    </div>
+  1103→                    <div class="perf-metrics">
+  1104→                        <div class="perf-metric">
+  1105→                            <div class="perf-value">12.3s</div>
+  1106→                            <div class="perf-label">Avg Analysis</div>
+  1107→                        </div>
+  1108→                        <div class="perf-metric">
+  1109→                            <div class="perf-value">98%</div>
+  1110→                            <div class="perf-label">Accuracy</div>
+  1111→                        </div>
+  1112→                        <div class="perf-metric">
+  1113→                            <div class="perf-value">156</div>
+  1114→                            <div class="perf-label">Cases/Day</div>
+  1115→                        </div>
+  1116→                    </div>
+  1117→                    <div class="autonomy-section">
+  1118→                        <span class="autonomy-icon">🎛️</span>
+  1119→                        <div class="autonomy-info">
+  1120→                            <div class="autonomy-label">Autonomy Level</div>
+  1121→                            <div class="autonomy-level">Semi-Autonomous (Level 4)</div>
+  1122→                        </div>
+  1123→                        <div class="autonomy-bar"><div class="autonomy-fill" style="width:80%;"></div></div>
+  1124→                    </div>
+  1125→                </div>
+  1126→            </div>
+  1127→
+  1128→            <!-- AGENT 3: COMPLIANCE -->
+  1129→            <div class="agent-card">
+  1130→                <div class="agent-card-header">
+  1131→                    <div class="agent-avatar-large status-online">⚖️</div>
+  1132→                    <div class="agent-info-main">
+  1133→                        <div class="agent-name">Compliance Agent</div>
+  1134→                        <div class="agent-role">Regulatory Tracking & Sanctions Screening System</div>
+  1135→                        <div class="agent-status-badge status-active-badge">
+  1136→                            <span style="width:7px;height:7px;background:#34d399;border-radius:50%;"></span>
+  1137→                            Active · Tracking
+  1138→                        </div>
+  1139→                    </div>
+  1140→                </div>
+  1141→                <div class="agent-card-body">
+  1142→                    <p class="agent-description">
+  1143→                        Your regulatory watchdog. Compliance Agent tracks 156+ regulations across 47 jurisdictions, 
+  1144→                        monitors sanctions lists in real-time, screens suppliers against denied party lists, 
+  1145→                        and ensures your supply chain remains audit-ready at all times.
+  1146→                    </p>
+  1147→                    <div class="capabilities-section">
+  1148→                        <div class="capabilities-label">Core Capabilities</div>
+  1149→                        <div class="capability-tags">
+  1150→                            <span class="cap-tag">📋 Regulation Monitor</span>
+  1151→                            <span class="cap-tag">🚫 Sanctions Screen</span>
+  1152→                            <span class="cap-tag">✅ Audit Ready</span>
+  1153→                            <span class="cap-tag">🇪🇺 EU AI Act</span>
+  1154→                            <span class="cap-tag">🔒 GDPR Compliant</span>
+  1155→                        </div>
+  1156→                    </div>
+  1157→                    <div class="perf-metrics">
+  1158→                        <div class="perf-metric">
+  1159→                            <div class="perf-value">156</div>
+  1160→                            <div class="perf-label">Regulations</div>
+  1161→                        </div>
+  1162→                        <div class="perf-metric">
+  1163→                            <div class="perf-value">47</div>
+  1164→                            <div class="perf-label">Jurisdictions</div>
+  1165→                        </div>
+  1166→                        <div class="perf-metric">
+  1167→                            <div class="perf-value">100%</div>
+  1168→                            <div class="perf-label">Coverage</div>
+  1169→                        </div>
+  1170→                    </div>
+  1171→                    <div class="autonomy-section">
+  1172→                        <span class="autonomy-icon">🎛️</span>
+  1173→                        <div class="autonomy-info">
+  1174→                            <div class="autonomy-label">Autonomy Level</div>
+  1175→                            <div class="autonomy-level">Semi-Autonomous (Level 4)</div>
+  1176→                        </div>
+  1177→                        <div class="autonomy-bar"><div class="autonomy-fill" style="width:80%;"></div></div>
+  1178→                    </div>
+  1179→                </div>
+  1180→            </div>
+  1181→
+  1182→            <!-- AGENT 4: FORECAST -->
+  1183→            <div class="agent-card">
+  1184→                <div class="agent-card-header">
+  1185→                    <div class="agent-avatar-large status-busy">📈</div>
+  1186→                    <div class="agent-info-main">
+  1187→                        <div class="agent-name">Forecast Agent</div>
+  1188→                        <div class="agent-role">Demand Prediction & Market Intelligence Engine</div>
+  1189→                        <div class="agent-status-badge status-busy-badge">
+  1190→                            <span style="width:7px;height:7px;background:#fbbf24;border-radius:50%;"></span>
+  1191→                            Busy · Predicting
+  1192→                        </div>
+  1193→                    </div>
+  1194→                </div>
+  1195→                <div class="agent-card-body">
+  1196→                    <p class="agent-description">
+  1197→                        The predictive powerhouse of our agent fleet. Forecast uses advanced time-series models, 
+  1198→                        ensemble methods, and external signal integration to predict demand shifts, price movements, 
+  1199→                        capacity constraints, and market trends up to 90 days ahead.
+  1200→                    </p>
+  1201→                    <div class="capabilities-section">
+  1202→                        <div class="capabilities-label">Core Capabilities</div>
+  1203→                        <div class="capability-tags">
+  1204→                            <span class="cap-tag">📊 Demand Forecast</span>
+  1205→                            <span class="cap-tag">💰 Price Prediction</span>
+  1206→                            <span class="cap-tag">📉 Trend Analysis</span>
+  1207→                            <span class="cap-tag">🎯 Scenario Modeling</span>
+  1208→                            <span class="cap-tag">📅 90-Day Horizon</span>
+  1209→                        </div>
+  1210→                    </div>
+  1211→                    <div class="perf-metrics">
+  1212→                        <div class="perf-metric">
+  1213→                            <div class="perf-value">91%</div>
+  1214→                            <div class="perf-label">Forecast Acc.</div>
+  1215→                        </div>
+  1216→                        <div class="perf-metric">
+  1217→                            <div class="perf-value">90-day</div>
+  1218→                            <div class="perf-label">Prediction Window</div>
+  1219→                        </div>
+  1220→                        <div class="perf-metric">
+  1221→                            <div class="perf-value">340</div>
+  1222→                            <div class="perf-label">Models Running</div>
+  1223→                        </div>
+  1224→                    </div>
+  1225→                    <div class="autonomy-section">
+  1226→                        <span class="autonomy-icon">🎛️</span>
+  1227→                        <div class="autonomy-info">
+  1228→                            <div class="autonomy-label">Autonomy Level</div>
+  1229→                            <div class="autonomy-level">Semi-Autonomous (Level 3)</div>
+  1230→                        </div>
+  1231→                        <div class="autonomy-bar"><div class="autonomy-fill" style="width:65%;"></div></div>
+  1232→                    </div>
+  1233→                </div>
+  1234→            </div>
+  1235→
+  1236→            <!-- AGENT 5: ORCHESTRATOR -->
+  1237→            <div class="agent-card">
+  1238→                <div class="agent-card-header">
+  1239→                    <div class="agent-avatar-large status-online">🎯</div>
+  1240→                    <div class="agent-info-main">
+  1241→                        <div class="agent-name">Orchestrator Agent</div>
+  1242→                        <div class="agent-role">Multi-Agent Coordination & Workflow Management</div>
+  1243→                        <div class="agent-status-badge status-active-badge">
+  1244→                            <span style="width:7px;height:7px;background:#34d399;border-radius:50%;"></span>
+  1245→                            Active · Coordinating
+  1246→                        </div>
+  1247→                    </div>
+  1248→                </div>
+  1249→                <div class="agent-card-body">
+  1250→                    <p class="agent-description">
+  1251→                        The conductor of our agent symphony. Orchestrator manages task routing, priority queuing, 
+  1252→                        inter-agent communication, escalation workflows, and ensures seamless collaboration 
+  1253→                        across the entire agent fleet for optimal outcomes.
+  1254→                    </p>
+  1255→                    <div class="capabilities-section">
+  1256→                        <div class="capabilities-label">Core Capabilities</div>
+  1257→                        <div class="capability-tags">
+  1258→                            <span class="cap-tag">🔄 Workflow Mgmt</span>
+  1259→                            <span class="cap-tag">📋 Task Routing</span>
+  1260→                            <span class="cap-tag">🎯 Priority Queue</span>
+  1261→                            <span class="cap-tag">📡 Inter-Agent Comm</span>
+  1262→                            <span class="cap-tag">⬆️ Escalation Mgmt</span>
+  1263→                        </div>
+  1264→                    </div>
+  1265→                    <div class="perf-metrics">
+  1266→                        <div class="perf-metric">
+  1267→                            <div class="perf-value">2.4K</div>
+  1268→                            <div class="perf-label">Tasks/Day</div>
+  1269→                        </div>
+  1270→                        <div class="perf-metric">
+  1271→                            <div class="perf-value">&lt;1s</div>
+  1272→                            <div class="perf-label">Routing Speed</div>
+  1273→                        </div>
+  1274→                        <div class="perf-metric">
+  1275→                            <div class="perf-value">6</div>
+  1276→                            <div class="perf-label">Agents Managed</div>
+  1277→                        </div>
+  1278→                    </div>
+  1279→                    <div class="autonomy-section">
+  1280→                        <span class="autonomy-icon">🎛️</span>
+  1281→                        <div class="autonomy-info">
+  1282→                            <div class="autonomy-label">Autonomy Level</div>
+  1283→                            <div class="autonomy-level">Highly Autonomous (Level 5)</div>
+  1284→                        </div>
+  1285→                        <div class="autonomy-bar"><div class="autonomy-fill" style="width:95%;"></div></div>
+  1286→                    </div>
+  1287→                </div>
+  1288→            </div>
+  1289→
+  1290→            <!-- AGENT 6: NEGOTIATION -->
+  1291→            <div class="agent-card">
+  1292→                <div class="agent-card-header">
+  1293→                    <div class="agent-avatar-large status-idle">💬</div>
+  1294→                    <div class="agent-info-main">
+  1295→                        <div class="agent-name">Negotiation Agent</div>
+  1296→                        <div class="agent-role">Supplier Communication & Contract Intelligence</div>
+  1297→                        <div class="agent-status-badge status-idle-badge">
+  1298→                            <span style="width:7px;height:7px;background:#64748b;border-radius:50%;"></span>
+  1299→                            Idle · Awaiting Tasks
+  1300→                        </div>
+  1301→                    </div>
+  1302→                </div>
+  1303→                <div class="agent-card-body">
+  1304→                    <p class="agent-description">
+  1305→                        Your automated procurement diplomat. Negotiation Agent handles supplier communications, 
+  1306→                        contract reviews, SLA monitoring, performance scorecards, and can even initiate 
+  1307→                        preliminary negotiations within pre-defined parameters.
+  1308→                    </p>
+  1309→                    <div class="capabilities-section">
+  1310→                        <div class="capabilities-label">Core Capabilities</div>
+  1311→                        <div class="capability-tags">
+  1312→                            <span class="cap-tag">💬 Auto Communications</span>
+  1313→                            <span class="cap-tag">📄 Contract Review</span>
+  1314→                            <span class="cap-tag">📊 SLA Monitor</span>
+  1315→                            <span class="cap-tag">🏆 Scorecard Mgmt</span>
+  1316→                            <span class="cap-tag">🤝 Prelim Negotiation</span>
+  1317→                        </div>
+  1318→                    </div>
+  1319→                    <div class="perf-metrics">
+  1320→                        <div class="perf-metric">
+  1321→                            <div class="perf-value">18%</div>
+  1322→                            <div class="perf-label">Cost Savings</div>
+  1323→                        </div>
+  1324→                        <div class="perf-metric">
+  1325→                            <div class="perf-value">5.2K</div>
+  1326→                            <div class="perf-label">Comms/Month</div>
+  1327→                        </div>
+  1328→                        <div class="perf-metric">
+  1329→                            <div class="perf-value">847</div>
+  1330→                            <div class="perf-label">Suppliers</div>
+  1331→                        </div>
+  1332→                    </div>
+  1333→                    <div class="autonomy-section">
+  1334→                        <span class="autonomy-icon">🎛️</span>
+  1335→                        <div class="autonomy-info">
+  1336→                            <div class="autonomy-label">Autonomy Level</div>
+  1337→                            <div class="autonomy-level">Human-in-the-Loop (Level 2)</div>
+  1338→                        </div>
+  1339→                        <div class="autonomy-bar"><div class="autonomy-fill" style="width:40%;"></div></div>
+  1340→                    </div>
+  1341→                </div>
+  1342→            </div>
+  1343→
+  1344→        </div>
+  1345→    </section>
+  1346→
+  1347→    <!-- ===== LIVE AGENT STATUS ===== -->
+  1348→    <section id="live-status">
+  1349→        <div class="section-header">
+  1350→            <div class="section-tag">📡 Live Dashboard</div>
+  1351→            <h2 class="section-title">Real-Time Agent Status</h2>
+  1352→            <p class="section-desc">Live view of all agent activities and system health</p>
+  1353→        </div>
+  1354→
+  1355→        <div class="live-status-section">
+  1356→            <div class="status-header">
+  1357→                <h3>🖥️ Agent Fleet Command Center</h3>
+  1358→                <span class="live-indicator">● LIVE · Updating every 500ms</span>
+  1359→            </div>
+  1360→            <div class="status-grid">
+  1361→                <div class="status-agent-row">
+  1362→                    <div class="status-avatar-sm" style="background:linear-gradient(135deg,#ef4444,#f97316);">🛡️</div>
+  1363→                    <div class="status-agent-info">
+  1364→                        <div class="status-agent-name">Sentinel Agent</div>
+  1365→                        <div class="status-agent-task">Monitoring 847K events/day across 500+ feeds</div>
+  1366→                    </div>
+  1367→                    <div class="status-light light-green"></div>
+  1368→                </div>
+  1369→                <div class="status-agent-row">
+  1370→                    <div class="status-avatar-sm" style="background:linear-gradient(135deg,#3b82f6,#8b5cf6);">🔬</div>
+  1371→                    <div class="status-agent-info">
+  1372→                        <div class="status-agent-name">Analyst Agent</div>
+  1373→                        <div class="status-agent-task">Deep investigation: Foxconn Taiwan exposure case #4892</div>
+  1374→                    </div>
+  1375→                    <div class="status-light light-yellow"></div>
+  1376→                </div>
+  1377→                <div class="status-agent-row">
+  1378→                    <div class="status-avatar-sm" style="background:linear-gradient(135deg,#10b981,#06b6d4);">⚖️</div>
+  1379→                    <div class="status-agent-info">
+  1380→                        <div class="status-agent-name">Compliance Agent</div>
+  1381→                        <div class="status-agent-task">Tracking EU CBAM regulation changes — 3 updates pending</div>
+  1382→                    </div>
+  1383→                    <div class="status-light light-green"></div>
+  1384→                </div>
+  1385→                <div class="status-agent-row">
+  1386→                    <div class="status-avatar-sm" style="background:linear-gradient(135deg,#f59e0b,#eab308);">📈</div>
+  1387→                    <div class="status-agent-info">
+  1388→                        <div class="status-agent-name">Forecast Agent</div>
+  1389→                        <div class="status-agent-task">Running Q2 2025 demand prediction models (67% complete)</div>
+  1390→                    </div>
+  1391→                    <div class="status-light light-yellow"></div>
+  1392→                </div>
+  1393→                <div class="status-agent-row">
+  1394→                    <div class="status-avatar-sm" style="background:linear-gradient(135deg,#ec4899,#8b5cf6);">🎯</div>
+  1395→                    <div class="status-agent-info">
+  1396→                        <div class="status-agent-name">Orchestrator Agent</div>
+  1397→                        <div class="status-agent-task">Coordinating 847 active tasks, 23 queued, 2 escalated</div>
+  1398→                    </div>
+  1399→                    <div class="status-light light-green"></div>
+  1400→                </div>
+  1401→                <div class="status-agent-row">
+  1402→                    <div class="status-avatar-sm" style="background:linear-gradient(135deg,#06b6d4,#3b82f6);">💬</div>
+  1403→                    <div class="status-agent-info">
+  1404→                        <div class="status-agent-name">Negotiation Agent</div>
+  1405→                        <div class="status-agent-task">Idle — awaiting assigned tasks or human trigger</div>
+  1406→                    </div>
+  1407→                    <div class="status-light light-gray"></div>
+  1408→                </div>
+  1409→            </div>
+  1410→        </div>
+  1411→    </section>
+  1412→
+  1413→    <!-- ===== COLLABORATION DIAGRAM ===== -->
+  1414→    <section id="collaboration">
+  1415→        <div class="section-header">
+  1416→            <div class="section-tag">🔗 Agent Collaboration</div>
+  1417→            <h2 class="section-title">How Agents Work Together</h2>
+  1418→            <p class="section-desc">Visual representation of inter-agent communication and workflow orchestration</p>
+  1419→        </div>
+  1420→
+  1421→        <div class="collab-diagram">
+  1422→            <div class="collab-center">
+  1423→                <div class="collab-center-node">🎯 Orchestrator Agent — Central Coordination Hub</div>
+  1424→            </div>
+  1425→            
+  1426→            <div class="collab-ring">
+  1427→                <div class="ring-agent">
+  1428→                    <div class="ring-avatar" style="background:linear-gradient(135deg,#ef4444,#f97316);">🛡️</div>
+  1429→                    <div class="ring-name">Sentinel</div>
+  1430→                    <div class="ring-role">Detection</div>
+  1431→                </div>
+  1432→                <div class="ring-agent">
+  1433→                    <div class="ring-avatar" style="background:linear-gradient(135deg,#3b82f6,#8b5cf6);">🔬</div>
+  1434→                    <div class="ring-name">Analyst</div>
+  1435→                    <div class="ring-role">Investigation</div>
+  1436→                </div>
+  1437→                <div class="ring-agent">
+  1438→                    <div class="ring-avatar" style="background:linear-gradient(135deg,#10b981,#06b6d4);">⚖️</div>
+  1439→                    <div class="ring-name">Compliance</div>
+  1440→                    <div class="ring-role">Regulation</div>
+  1441→                </div>
+  1442→                <div class="ring-agent">
+  1443→                    <div class="ring-avatar" style="background:linear-gradient(135deg,#f59e0b,#eab308);">📈</div>
+  1444→                    <div class="ring-name">Forecast</div>
+  1445→                    <div class="ring-role">Prediction</div>
+  1446→                </div>
+  1447→                <div class="ring-agent">
+  1448→                    <div class="ring-avatar" style="background:linear-gradient(135deg,#ec4899,#8b5cf6);">💬</div>
+  1449→                    <div class="ring-name">Negotiation</div>
+  1450→                    <div class="ring-role">Communication</div>
+  1451→                </div>
+  1452→                <div class="ring-agent">
+  1453→                    <div class="ring-avatar" style="background:linear-gradient(135deg,#a78bfa,#7c3aed);">👤</div>
+  1454→                    <div class="ring-name">Human</div>
+  1455→                    <div class="ring-role">Approval</div>
+  1456→                </div>
+  1457→            </div>
+  1458→
+  1459→            <div class="conn-flows">
+  1460→                <div class="conn-flow-item">
+  1461→                    <span class="conn-from">🛡️ Sentinel</span>
+  1462→                    <span class="conn-arrow">→ detects threat →</span>
+  1463→                    <span class="conn-to">🔬 Analyst</span>
+  1464→                </div>
+  1465→                <div class="conn-flow-item">
+  1466→                    <span class="conn-from">🔬 Analyst</span>
+  1467→                    <span class="conn-arrow">→ completes analysis →</span>
+  1468→                    <span class="conn-to">🎯 Orchestrator</span>
+  1469→                </div>
+  1470→                <div class="conn-flow-item">
+  1471→                    <span class="conn-from">🎯 Orchestrator</span>
+  1472→                    <span class="conn-arrow">→ routes to →</span>
+  1473→                    <span class="conn-to">👤 Human Approval</span>
+  1474→                </div>
+  1475→                <div class="conn-flow-item">
+  1476→                    <span class="conn-from">⚖️ Compliance</span>
+  1477→                    <span class="conn-arrow">→ flags violation →</span>
+  1478→                    <span class="conn-to">💬 Negotiation</span>
+  1479→                </div>
+  1480→                <div class="conn-flow-item">
+  1481→                    <span class="conn-from">📈 Forecast</span>
+  1482→                    <span class="conn-arrow">→ predicts shortage →</span>
+  1483→                    <span class="conn-to">🎯 Orchestrator</span>
+  1484→                </div>
+  1485→                <div class="conn-flow-item">
+  1486→                    <span class="conn-from">👤 Human</span>
+  1487→                    <span class="conn-arrow">→ approves action →</span>
+  1488→                    <span class="conn-to">💬 Negotiation</span>
+  1489→                </div>
+  1490→            </div>
+  1491→        </div>
+  1492→    </section>
+  1493→
+  1494→    <!-- ===== TASK QUEUE ===== -->
+  1495→    <section id="tasks">
+  1496→        <div class="section-header">
+  1497→            <div class="section-tag">📋 Task Management</div>
+  1498→            <h2 class="section-title">Agent Task Queue</h2>
+  1499→            <p class="section-desc">Current and recent tasks being processed by the agent fleet</p>
+  1500→        </div>
+  1501→
+  1502→        <div class="task-queue-section">
+  1503→            <div class="status-header">
+  1504→                <h3>📋 Active Task Queue</h3>
+  1505→                <span style="font-size:0.82rem;color:var(--text-secondary);">847 active · 23 queued · 2,341 completed today</span>
+  1506→            </div>
+  1507→            <div class="task-list">
+  1508→                <div class="task-item">
+  1509→                    <div class="task-priority priority-critical"></div>
+  1510→                    <div class="task-content">
+  1511→                        <div class="task-title">🚨 CRITICAL: Taiwan Strait Escalation Impact Assessment</div>
+  1512→                        <div class="task-meta">
+  1513→                            <span class="task-agent-tag">🔬 Analyst Agent</span>
+  1514→                            <span>📍 East Asia Region</span>
+  1515→                            <span>Risk Score: 92/100</span>
+  1516→                        </div>
+  1517→                    </div>
+  1518→                    <span class="task-status-pill pill-running">▶ Running</span>
+  1519→                    <span class="task-time">Started 2m ago</span>
+  1520→                </div>
+  1521→                <div class="task-item">
+  1522→                    <div class="task-priority priority-high"></div>
+  1523→                    <div class="task-content">
+  1524→                        <div class="task-title">Foxconn Supplier Deep-Dive Investigation</div>
+  1525→                        <div class="task-meta">
+  1526→                            <span class="task-agent-tag">🔬 Analyst Agent</span>
+  1527→                            <span>🏷️ Tier-1 Supplier</span>
+  1528→                            <span>Graph nodes: 2,847</span>
+  1529→                        </div>
+  1530→                    </div>
+  1531→                    <span class="task-status-pill pill-running">▶ Running</span>
+  1532→                    <span class="task-time">Started 8m ago</span>
+  1533→                </div>
+  1534→                <div class="task-item">
+  1535→                    <div class="task-priority priority-high"></div>
+  1536→                    <div class="task-content">
+  1537→                        <div class="task-title">Red Sea Shipping Route Alternative Analysis</div>
+  1538→                        <div class="task-meta">
+  1539→                            <span class="task-agent-tag">📈 Forecast Agent</span>
+  1540→                            <span>📍 Logistics</span>
+  1541→                            <span>Scenarios: 10K</span>
+  1542→                        </div>
+  1543→                    </div>
+  1544→                    <span class="task-status-pill pill-running">▶ Running</span>
+  1545→                    <span class="task-time">Started 15m ago</span>
+  1546→                </div>
+  1547→                <div class="task-item">
+  1548→                    <div class="task-priority priority-medium"></div>
+  1549→                    <div class="task-content">
+  1550→                        <div class="task-title">EU CBAM Regulation Update Processing</div>
+  1551→                        <div class="task-meta">
+  1552→                            <span class="task-agent-tag">⚖️ Compliance Agent</span>
+  1553→                            <span>📍 Europe</span>
+  1554→                            <span>3 new amendments</span>
+  1555→                        </div>
+  1556→                    </div>
+  1557→                    <span class="task-status-pill pill-completed">✅ Done</span>
+  1558→                    <span class="task-time">Completed 5m ago</span>
+  1559→                </div>
+  1560→                <div class="task-item">
+  1561→                    <div class="task-priority priority-medium"></div>
+  1562→                    <div class="task-content">
+  1563→                        <div class="task-title">Q2 Semiconductor Demand Forecast Refresh</div>
+  1564→                        <div class="task-meta">
+  1565→                            <span class="task-agent-tag">📈 Forecast Agent</span>
+  1566→                            <span>📊 Prediction Model</span>
+  1567→                            <span>Progress: 67%</span>
+  1568→                        </div>
+  1569→                    </div>
+  1570→                    <span class="task-status-pill pill-running">▶ Running</span>
+  1571→                    <span class="task-time">ETA: 12m</span>
+  1572→                </div>
+  1573→                <div class="task-item">
+  1574→                    <div class="task-priority priority-low"></div>
+  1575→                    <div class="task-content">
+  1576→                        <div class="task-title">Monthly Supplier Scorecard Generation</div>
+  1577→                        <div class="task-meta">
+  1578→                            <span class="task-agent-tag">🎯 Orchestrator Agent</span>
+  1579→                            <span>📊 847 suppliers</span>
+  1580→                            <span>Auto-generated</span>
+  1581→                        </div>
+  1582→                    </div>
+  1583→                    <span class="task-status-pill pill-waiting">⏳ Queued</span>
+  1584→                    <span class="task-time">Position #3</span>
+  1585→                </div>
+  1586→                <div class="task-item">
+  1587→                    <div class="task-priority priority-low"></div>
+  1588→                    <div class="task-content">
+  1589→                        <div class="task-title">Vietnam Supplier Onboarding Package Review</div>
+  1590→                        <div class="task-meta">
+  1591→                            <span class="task-agent-tag">⚖️ Compliance Agent</span>
+  1592→                            <span>🆕 New Supplier</span>
+  1593→                            <span>Docs: 47 files</span>
+  1594→                        </div>
+  1595→                    </div>
+  1596→                    <span class="task-status-pill pill-waiting">⏳ Queued</span>
+  1597→                    <span class="task-time">Position #12</span>
+  1598→                </div>
+  1599→            </div>
+  1600→        </div>
+  1601→    </section>
+  1602→
+  1603→    <!-- ===== HUMAN-IN-THE-LOOP APPROVALS ===== -->
+  1604→    <section id="approvals">
+  1605→        <div class="section-header">
+  1606→            <div class="section-tag">👤 Human Oversight</div>
+  1607→            <h2 class="section-title">Pending Human Approvals</h2>
+  1608→            <p class="section-desc">Decisions requiring human authorization before execution</p>
+  1609→        </div>
+  1610→
+  1611→        <div class="hitl-section">
+  1612→            <div class="hitl-header">
+  1613→                <h3>⚠️ Pending Approvals Requiring Human Input</h3>
+  1614→                <span class="pending-count">3 Actions Waiting</span>
+  1615→            </div>
+  1616→            <div class="approval-list">
+  1617→                
+  1618→                <div class="approval-item">
+  1619→                    <div class="approval-icon">🔴</div>
+  1620→                    <div class="approval-content">
+  1621→                        <div class="approval-title">Activate Backup Supplier: Samsung SDI</div>
+  1622→                        <div class="approval-detail">
+  1623→                            <strong>Recommendation:</strong> Switch primary battery component sourcing from Foxconn to Samsung SDI 
+  1624→                            due to elevated Taiwan geopolitical risk (+23 pts). Estimated lead time: 5 business days. 
+  1625→                            Cost impact: +$180K/month.
+  1626→                        </div>
+  1627→                        <div class="approval-meta">
+  1628→                            <span class="approval-source">🤖 Recommended by: Analyst Agent</span>
+  1629→                            <span class="approval-confidence">🎯 Confidence: 94%</span>
+  1630→                            <span>⏱️ Urgency: High</span>
+  1631→                        </div>
+  1632→                    </div>
+  1633→                    <div class="approval-actions">
+  1634→                        <button class="approve-btn">✅ Approve</button>
+  1635→                        <button class="reject-btn">❌ Reject</button>
+  1636→                    </div>
+  1637→                </div>
+  1638→
+  1639→                <div class="approval-item">
+  1640→                    <div class="approval-icon">🟠</div>
+  1641→                    <div class="approval-content">
+  1642→                        <div class="approval-title">Increase Safety Stock: Semiconductor Wafers</div>
+  1643→                        <div class="approval-detail">
+  1644→                            <strong>Recommendation:</strong> Increase wafer safety stock by 25% (from 6 weeks to 8 weeks coverage). 
+  1645→                            Our models predict 68% probability of Q2 supply disruption. Investment required: $2.4M additional inventory.
+  1646→                        </div>
+  1647→                        <div class="approval-meta">
+  1648→                            <span class="approval-source">🤖 Recommended by: Forecast Agent</span>
+  1649→                            <span class="approval-confidence">🎯 Confidence: 87%</span>
+  1650→                            <span>⏱️ Urgency: Medium</span>
+  1651→                        </div>
+  1652→                    </div>
+  1653→                    <div class="approval-actions">
+  1654→                        <button class="approve-btn">✅ Approve</button>
+  1655→                        <button class="reject-btn">❌ Reject</button>
+  1656→                    </div>
+  1657→                </div>
+  1658→
+  1659→                <div class="approval-item">
+  1660→                    <div class="approval-icon">🟡</div>
+  1661→                    <div class="approval-content">
+  1662→                        <div class="approval-title">Initiate Contract Review: 12 EU Suppliers</div>
+  1663→                        <div class="approval-detail">
+  1664→                            <strong>Recommendation:</strong> Trigger contract review process for 12 EU-based suppliers to ensure 
+  1665→                            CBAM (Carbon Border Adjustment Mechanism) compliance before March 2025 deadline. 
+  1666→                            Non-compliance risk: €4.2M potential penalties.
+  1667→                        </div>
+  1668→                        <div class="approval-meta">
+  1669→                            <span class="approval-source">🤖 Recommended by: Compliance Agent</span>
+  1670→                            <span class="approval-confidence">🎯 Confidence: 91%</span>
+  1671→                            <span>⏱️ Urgency: Medium</span>
+  1672→                        </div>
+  1673→                    </div>
+  1674→                    <div class="approval-actions">
+  1675→                        <button class="approve-btn">✅ Approve</button>
+  1676→                        <button class="reject-btn">❌ Reject</button>
+  1677→                    </div>
+  1678→                </div>
+  1679→
+  1680→            </div>
+  1681→        </div>
+  1682→    </section>
+  1683→
+  1684→    <!-- ===== ARCHITECTURE OVERVIEW ===== -->
+  1685→    <section id="architecture">
+  1686→        <div class="section-header">
+  1687→            <div class="section-tag">🏗️ Technical Architecture</div>
+  1688→            <h2 class="section-title">Agent Infrastructure</h2>
+  1689→            <p class="section-desc">Enterprise-grade technology powering our multi-agent platform</p>
+  1690→        </div>
+  1691→
+  1692→        <div class="arch-overview">
+  1693→            <div class="arch-card">
+  1694→                <div class="arch-icon">🧠</div>
+  1695→                <div class="arch-title">LLM Backbone</div>
+  1696→                <div class="arch-desc">SupplyChain-GPT v4.0 with 175B parameters, fine-tuned on domain-specific data</div>
+  1697→            </div>
+  1698→            <div class="arch-card">
+  1699→                <div class="arch-icon">🕸️</div>
+  1700→                <div class="arch-title">Knowledge Graph</div>
+  1701→                <div class="arch-desc">Neo4j powered graph with 10M+ supplier relationships across 6 tiers</div>
+  1702→            </div>
+  1703→            <div class="arch-card">
+  1704→                <div class="arch-icon">📡</div>
+  1705→                <div class="arch-title">Event Streaming</div>
+  1706→                <div class="arch-desc">Apache Kafka processing 2M+ events/sec with sub-ms latency</div>
+  1707→            </div>
+  1708→            <div class="arch-card">
+  1709→                <div class="arch-icon">☁️</div>
+  1710→                <div class="arch-title">Multi-Agent Runtime</div>
+  1711→                <div class="arch-desc">Custom LangChain-based orchestration with state management</div>
+  1712→            </div>
+  1713→            <div class="arch-card">
+  1714→                <div class="arch-icon">🔒</div>
+  1715→                <div class="arch-title">Security Layer</div>
+  1716→                <div class="arch-desc">Zero-trust architecture with RBAC, encryption, and audit logging</div>
+  1717→            </div>
+  1718→            <div class="arch-card">
+  1719→                <div class="arch-icon">📊</div>
+  1720→                <div class="arch-title">Observability</div>
+  1721→                <div class="arch-desc">Full telemetry, tracing, and monitoring via Prometheus/Grafana stack</div>
+  1722→            </div>
+  1723→        </div>
+  1724→    </section>
+  1725→
+  1726→</div>
+  1727→
+  1728→<!-- ===== FOOTER ===== -->
+  1729→<footer>
+  1730→    <p>© 2025 AISupChain Pro | Autonomous AI Agent Platform | SOC 2 Type II Certified | ISO 27001 | GDPR Compliant | EU AI Act Ready</p>
+  1731→    <p style="margin-top:0.5rem;font-size:0.8rem;">
+  1732→        6 Specialized Agents · 99.7% Uptime · Sub-Second Response · Enterprise Grade Security
+  1733→    </p>
+  1734→</footer>
+  1735→
+  1736→    <script>
+  1737→        // ===== THEME TOGGLE FUNCTIONALITY =====
+  1738→        document.addEventListener("DOMContentLoaded", function() {
+  1739→            const themeToggle = document.getElementById("themeToggle");
+  1740→            const htmlElement = document.documentElement;
+  1741→            
+  1742→            // Check for saved theme preference or default to dark
+  1743→            const savedTheme = localStorage.getItem("theme") || "dark";
+  1744→            htmlElement.setAttribute("data-theme", savedTheme);
+  1745→            
+  1746→            if (themeToggle) {
+  1747→                themeToggle.addEventListener("click", function() {
+  1748→                    const currentTheme = htmlElement.getAttribute("data-theme");
+  1749→                    const newTheme = currentTheme === "dark" ? "light" : "dark";
+  1750→                    
+  1751→                    htmlElement.setAttribute("data-theme", newTheme);
+  1752→                    localStorage.setItem("theme", newTheme);
+  1753→                    
+  1754→                    // Smooth transition
+  1755→                    document.body.style.transition = "background 0.3s ease, color 0.3s ease";
+  1756→                });
+  1757→            }
+  1758→        });
+  1759→    </script>
+  1760→</body>
+  1761→</html>

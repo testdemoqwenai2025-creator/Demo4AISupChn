@@ -1,0 +1,1591 @@
+     1→<!DOCTYPE html>
+     2→<html data-theme="dark" lang="en">
+     3→<head>
+     4→    <meta charset="UTF-8">
+     5→    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+     6→    <title>AI Intelligence Engine | Advanced ML & XAI Platform</title>
+     7→    <style>
+     8→        /* ===== CSS RESET & BASE ===== */
+     9→        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    10→        :root {
+    11→            --primary: #1e40af;
+    12→            --primary-light: #3b82f6;
+    13→            --cyan: #06b6d4;
+    14→            --emerald: #059669;
+    15→            --purple: #7c3aed;
+    16→            --rose: #e11d48;
+    17→            --amber: #f59e0b;
+    18→            --dark: #0f172a;
+    19→            --dark-lighter: #1e293b;
+    20→            --glass-bg: rgba(255,255,255,0.04);
+    21→            --glass-border: rgba(255,255,255,0.08);
+    22→            --text-primary: #f8fafc;
+    23→            --text-secondary: #94a3b8;
+    24→        }
+    25→        
+    26→        /* ===== LIGHT THEME VARIABLES ===== */
+    27→        [data-theme="light"] {
+    28→            --dark: #f8fafc;
+    29→            --dark-lighter: #e2e8f0;
+    30→            --glass-bg: rgba(255,255,255,0.7);
+    31→            --glass-border: rgba(0,0,0,0.1);
+    32→            --text-primary: #0f172a;
+    33→            --text-secondary: #475569;
+    34→        }
+    35→        html { scroll-behavior: smooth; }
+    36→        body {
+    37→            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+    38→            background: var(--dark);
+    39→            color: var(--text-primary);
+    40→            line-height: 1.5;
+    41→            min-height: 100vh;
+    42→        }
+    43→        a { color: inherit; text-decoration: none; }
+    44→
+    45→        /* ===== NAVIGATION ===== */
+    46→        nav {
+    47→            position: fixed;
+    48→            top: 0; left: 0; right: 0;
+    49→            z-index: 1000;
+    50→            padding: 0.75rem 1.5rem;
+    51→            background: rgba(15,23,42,0.92);
+    52→            backdrop-filter: blur(20px);
+    53→            border-bottom: 1px solid var(--glass-border);
+    54→            display: flex;
+    55→            justify-content: space-between;
+    56→            align-items: center;
+    57→            flex-wrap: wrap;
+    58→            gap: 0.75rem;
+    59→        }
+    60→        .nav-brand {
+    61→            display: flex;
+    62→            align-items: center;
+    63→            gap: 0.6rem;
+    64→            font-size: 1.2rem;
+    65→            font-weight: 700;
+    66→            background: linear-gradient(135deg, #3b82f6, #7c3aed, #06b6d4);
+    67→            -webkit-background-clip: text;
+    68→            -webkit-text-fill-color: transparent;
+    69→            background-clip: text;
+    70→        }
+    71→        .nav-brand-icon {
+    72→            width: 36px; height: 36px;
+    73→            background: linear-gradient(135deg, #1e40af, #7c3aed);
+    74→            border-radius: 10px;
+    75→            display: flex;
+    76→            align-items: center;
+    77→            justify-content: center;
+    78→            font-size: 1.2rem;
+    79→            -webkit-text-fill-color: white;
+    80→        }
+    81→        .nav-links {
+    82→            display: flex;
+    83→            gap: 0.35rem;
+    84→            flex-wrap: wrap;
+    85→        }
+    86→        .nav-links a {
+    87→            padding: 0.45rem 0.85rem;
+    88→            border-radius: 8px;
+    89→            font-size: 0.82rem;
+    90→            font-weight: 500;
+    91→            transition: all 0.25s ease;
+    92→            color: var(--text-secondary);
+    93→            border: 1px solid transparent;
+    94→        }
+    95→        .nav-links a:hover, .nav-links a.active {
+    96→            background: rgba(59,130,246,0.12);
+    97→            color: var(--text-primary);
+    98→            border-color: rgba(59,130,246,0.25);
+    99→        }
+   100→        .nav-links a.active {
+   101→            background: linear-gradient(135deg, rgba(30,64,175,0.25), rgba(124,58,237,0.25));
+   102→            border-color: rgba(124,58,237,0.4);
+   103→        }
+   104→
+   105→        /* ===== MAIN CONTAINER ===== */
+   106→        .intel-container {
+   107→            padding-top: 70px;
+   108→            min-height: 100vh;
+   109→        }
+   110→
+   111→        /* ===== HERO HEADER ===== */
+   112→        .intel-hero {
+   113→            background: linear-gradient(180deg, rgba(30,64,175,0.15) 0%, rgba(124,58,237,0.08) 50%, transparent 100%);
+   114→            padding: 3rem 2rem;
+   115→            text-align: center;
+   116→            border-bottom: 1px solid var(--glass-border);
+   117→            position: relative;
+   118→            overflow: hidden;
+   119→        }
+   120→        .intel-hero::before {
+   121→            content: '';
+   122→            position: absolute;
+   123→            top: 50%; left: 50%;
+   124→            width: 600px; height: 600px;
+   125→            transform: translate(-50%, -50%);
+   126→            background: radial-gradient(circle, rgba(124,58,237,0.08) 0%, transparent 70%);
+   127→            pointer-events: none;
+   128→        }
+   129→        .intel-hero h1 {
+   130→            font-size: clamp(1.8rem, 4vw, 2.75rem);
+   131→            font-weight: 800;
+   132→            margin-bottom: 0.75rem;
+   133→            background: linear-gradient(135deg, #fff, #93c5fd, #a78bfa);
+   134→            -webkit-background-clip: text;
+   135→            -webkit-text-fill-color: transparent;
+   136→            background-clip: text;
+   137→            position: relative;
+   138→        }
+   139→        .intel-hero p {
+   140→            font-size: 1.1rem;
+   141→            color: var(--text-secondary);
+   142→            max-width: 750px;
+   143→            margin: 0 auto;
+   144→            position: relative;
+   145→        }
+   146→        .hero-badges {
+   147→            display: flex;
+   148→            justify-content: center;
+   149→            gap: 0.75rem;
+   150→            margin-top: 1.5rem;
+   151→            flex-wrap: wrap;
+   152→            position: relative;
+   153→        }
+   154→        .hero-badge-item {
+   155→            padding: 0.45rem 1rem;
+   156→            background: var(--glass-bg);
+   157→            backdrop-filter: blur(10px);
+   158→            border: 1px solid var(--glass-border);
+   159→            border-radius: 50px;
+   160→            font-size: 0.82rem;
+   161→            display: flex;
+   162→            align-items: center;
+   163→            gap: 0.35rem;
+   164→        }
+   165→        .badge-dot {
+   166→            width: 8px; height: 8px;
+   167→            border-radius: 50%;
+   168→            animation: badgePulse 2s ease-in-out infinite;
+   169→        }
+   170→        @keyframes badgePulse {
+   171→            0%, 100% { opacity: 1; transform: scale(1); }
+   172→            50% { opacity: 0.6; transform: scale(1.2); }
+   173→        }
+   174→
+   175→        /* ===== SECTION LAYOUTS ===== */
+   176→        section { padding: 3rem 2rem; max-width: 1400px; margin: 0 auto; }
+   177→        .section-header {
+   178→            margin-bottom: 2rem;
+   179→        }
+   180→        .section-tag {
+   181→            display: inline-block;
+   182→            padding: 0.35rem 0.9rem;
+   183→            background: rgba(6,182,212,0.12);
+   184→            border: 1px solid rgba(6,182,212,0.25);
+   185→            border-radius: 50px;
+   186→            font-size: 0.78rem;
+   187→            color: #67e8f9;
+   188→            margin-bottom: 0.75rem;
+   189→            text-transform: uppercase;
+   190→            letter-spacing: 1px;
+   191→        }
+   192→        .section-title {
+   193→            font-size: clamp(1.4rem, 3vw, 2rem);
+   194→            font-weight: 750;
+   195→            background: linear-gradient(135deg, #fff, #94a3b8);
+   196→            -webkit-background-clip: text;
+   197→            -webkit-text-fill-color: transparent;
+   198→            background-clip: text;
+   199→        }
+   200→        .section-desc {
+   201→            font-size: 0.95rem;
+   202→            color: var(--text-secondary);
+   203→            margin-top: 0.5rem;
+   204→            max-width: 650px;
+   205→        }
+   206→
+   207→        /* ===== CARDS ===== */
+   208→        .card {
+   209→            background: var(--glass-bg);
+   210→            backdrop-filter: blur(16px);
+   211→            border: 1px solid var(--glass-border);
+   212→            border-radius: 18px;
+   213→            overflow: hidden;
+   214→            transition: all 0.3s ease;
+   215→        }
+   216→        .card:hover {
+   217→            border-color: rgba(59,130,246,0.25);
+   218→            box-shadow: 0 8px 32px rgba(0,0,0,0.2);
+   219→        }
+   220→        .card-header {
+   221→            padding: 1rem 1.25rem;
+   222→            border-bottom: 1px solid var(--glass-border);
+   223→            display: flex;
+   224→            justify-content: space-between;
+   225→            align-items: center;
+   226→        }
+   227→        .card-title {
+   228→            font-size: 0.95rem;
+   229→            font-weight: 700;
+   230→            display: flex;
+   231→            align-items: center;
+   232→            gap: 0.5rem;
+   233→        }
+   234→        .card-body { padding: 1.25rem; }
+   235→
+   236→        /* ===== MODEL COMPARISON GRID ===== */
+   237→        .model-grid {
+   238→            display: grid;
+   239→            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+   240→            gap: 1.25rem;
+   241→        }
+   242→        .model-card {
+   243→            background: var(--glass-bg);
+   244→            backdrop-filter: blur(16px);
+   245→            border: 1px solid var(--glass-border);
+   246→            border-radius: 18px;
+   247→            padding: 1.5rem;
+   248→            transition: all 0.35s ease;
+   249→            position: relative;
+   250→            overflow: hidden;
+   251→        }
+   252→        .model-card::before {
+   253→            content: '';
+   254→            position: absolute;
+   255→            top: 0; left: 0; right: 0;
+   256→            height: 4px;
+   257→        }
+   258→        .model-card.ours::before { background: linear-gradient(90deg, #059669, #06b6d4); }
+   259→        .model-card.competitor::before { background: linear-gradient(90deg, #64748b, #94a3b8); }
+   260→        .model-card:hover {
+   261→            transform: translateY(-5px);
+   262→            box-shadow: 0 15px 40px rgba(0,0,0,0.3);
+   263→        }
+   264→        .model-card.ours:hover { border-color: rgba(5,150,105,0.4); }
+   265→        .model-badge {
+   266→            display: inline-block;
+   267→            padding: 0.2rem 0.65rem;
+   268→            border-radius: 6px;
+   269→            font-size: 0.72rem;
+   270→            font-weight: 700;
+   271→            margin-bottom: 0.85rem;
+   272→        }
+   273→        .badge-ours { background: rgba(5,150,105,0.15); color: #34d399; }
+   274→        .badge-them { background: rgba(148,163,184,0.12); color: #94a3b8; }
+   275→        .model-name {
+   276→            font-size: 1.15rem;
+   277→            font-weight: 700;
+   278→            margin-bottom: 0.5rem;
+   279→        }
+   280→        .model-type {
+   281→            font-size: 0.8rem;
+   282→            color: var(--text-secondary);
+   283→            margin-bottom: 1rem;
+   284→        }
+   285→        .model-metrics {
+   286→            display: grid;
+   287→            grid-template-columns: 1fr 1fr;
+   288→            gap: 0.6rem;
+   289→        }
+   290→        .metric-row {
+   291→            display: flex;
+   292→            justify-content: space-between;
+   293→            align-items: center;
+   294→            padding: 0.55rem 0.65rem;
+   295→            background: rgba(0,0,0,0.2);
+   296→            border-radius: 8px;
+   297→        }
+   298→        .metric-label { font-size: 0.78rem; color: var(--text-secondary); }
+   299→        .metric-value { font-size: 0.88rem; font-weight: 700; }
+   300→        .metric-value.excellent { color: #34d399; }
+   301→        .metric-value.good { color: #67e8f9; }
+   302→        .metric-value.poor { color: #f87171; }
+   303→        .metric-value.meh { color: #94a3b8; }
+   304→
+   305→        /* ===== SHAP VISUALIZATION ===== */
+   306→        .shap-container {
+   307→            display: grid;
+   308→            grid-template-columns: 1fr 1fr;
+   309→            gap: 1.5rem;
+   310→        }
+   311→        @media (max-width: 900px) { .shap-container { grid-template-columns: 1fr; } }
+   312→        .shap-chart {
+   313→            background: var(--glass-bg);
+   314→            backdrop-filter: blur(16px);
+   315→            border: 1px solid var(--glass-border);
+   316→            border-radius: 18px;
+   317→            padding: 1.5rem;
+   318→        }
+   319→        .chart-title {
+   320→            font-size: 0.95rem;
+   321→            font-weight: 700;
+   322→            margin-bottom: 1.25rem;
+   323→            display: flex;
+   324→            align-items: center;
+   325→            gap: 0.5rem;
+   326→        }
+   327→        .feature-bar-container {
+   328→            display: flex;
+   329→            flex-direction: column;
+   330→            gap: 0.7rem;
+   331→        }
+   332→        .feature-bar-row {
+   333→            display: flex;
+   334→            align-items: center;
+   335→            gap: 0.75rem;
+   336→        }
+   337→        .feature-name {
+   338→            width: 140px;
+   339→            font-size: 0.78rem;
+   340→            text-align: right;
+   341→            flex-shrink: 0;
+   342→            color: #cbd5e1;
+   343→        }
+   344→        .bar-track {
+   345→            flex: 1;
+   346→            height: 26px;
+   347→            background: rgba(255,255,255,0.05);
+   348→            border-radius: 13px;
+   349→            overflow: hidden;
+   350→            position: relative;
+   351→        }
+   352→        .bar-fill {
+   353→            height: 100%;
+   354→            border-radius: 13px;
+   355→            display: flex;
+   356→            align-items: center;
+   357→            justify-content: flex-end;
+   358→            padding-right: 0.6rem;
+   359→            font-size: 0.72rem;
+   360→            font-weight: 700;
+   361→            transition: width 1s ease;
+   362→        }
+   363→        .bar-positive { background: linear-gradient(90deg, #059669, #10b981); color: white; }
+   364→        .bar-negative { background: linear-gradient(90deg, #dc2626, #ef4444); color: white; direction: rtl; padding-left: 0.6rem; padding-right: 0; }
+   365→        .bar-value {
+   366→            font-size: 0.75rem;
+   367→            font-weight: 700;
+   368→            width: 50px;
+   369→            text-align: left;
+   370→            flex-shrink: 0;
+   371→        }
+   372→        .value-pos { color: #34d399; }
+   373→        .value-neg { color: #f87171; }
+   374→
+   375→        /* RADAR CHART PLACEHOLDER */
+   376→        .radar-placeholder {
+   377→            width: 100%;
+   378→            aspect-ratio: 1;
+   379→            max-width: 320px;
+   380→            margin: 0 auto;
+   381→            position: relative;
+   382→            background: 
+   383→                conic-gradient(from 0deg, rgba(59,130,246,0.1) 0deg, rgba(59,130,246,0.1) 60deg, transparent 60deg),
+   384→                conic-gradient(from 60deg, rgba(6,182,212,0.1) 0deg, rgba(6,182,212,0.1) 60deg, transparent 60deg),
+   385→                conic-gradient(from 120deg, rgba(139,92,246,0.1) 0deg, rgba(139,92,246,0.1) 60deg, transparent 60deg),
+   386→                conic-gradient(from 180deg, rgba(16,185,129,0.1) 0deg, rgba(16,185,129,0.1) 60deg, transparent 60deg),
+   387→                conic-gradient(from 240deg, rgba(245,158,11,0.1) 0deg, rgba(245,158,11,0.1) 60deg, transparent 60deg),
+   388→                conic-gradient(from 300deg, rgba(225,29,72,0.1) 0deg, rgba(225,29,72,0.1) 60deg, transparent 60deg);
+   389→            border-radius: 50%;
+   390→            border: 2px solid rgba(59,130,246,0.15);
+   391→        }
+   392→        .radar-center {
+   393→            position: absolute;
+   394→            top: 50%; left: 50%;
+   395→            transform: translate(-50%, -50%);
+   396→            text-align: center;
+   397→        }
+   398→        .radar-score {
+   399→            font-size: 2.5rem;
+   400→            font-weight: 800;
+   401→            background: linear-gradient(135deg, #3b82f6, #06b6d4);
+   402→            -webkit-background-clip: text;
+   403→            -webkit-text-fill-color: transparent;
+   404→            background-clip: text;
+   405→        }
+   406→        .radar-label {
+   407→            font-size: 0.8rem;
+   408→            color: var(--text-secondary);
+   409→        }
+   410→        .radar-axis-labels {
+   411→            position: absolute;
+   412→            top: 0; left: 0; right: 0; bottom: 0;
+   413→        }
+   414→        .axis-label {
+   415→            position: absolute;
+   416→            font-size: 0.72rem;
+   417→            font-weight: 600;
+   418→            color: #93c5fd;
+   419→            padding: 0.25rem 0.5rem;
+   420→            background: rgba(15,23,42,0.8);
+   421→            border-radius: 6px;
+   422→        }
+   423→        .axis-label:nth-child(1) { top: 5%; left: 50%; transform: translateX(-50%); }
+   424→        .axis-label:nth-child(2) { top: 25%; right: 2%; }
+   425→        .axis-label:nth-child(3) { bottom: 20%; right: 5%; }
+   426→        .axis-label:nth-child(4) { bottom: 5%; left: 50%; transform: translateX(-50%); }
+   427→        .axis-label:nth-child(5) { bottom: 20%; left: 5%; }
+   428→        .axis-label:nth-child(6) { top: 25%; left: 2%; }
+   429→
+   430→        /* ===== XAI OUTPUT STRUCTURE ===== */
+   431→        .xai-output {
+   432→            background: var(--glass-bg);
+   433→            backdrop-filter: blur(16px);
+   434→            border: 1px solid var(--glass-border);
+   435→            border-radius: 18px;
+   436→            overflow: hidden;
+   437→        }
+   438→        .xai-header {
+   439→            padding: 1rem 1.25rem;
+   440→            background: linear-gradient(90deg, rgba(124,58,237,0.1), rgba(6,182,212,0.08));
+   441→            border-bottom: 1px solid var(--glass-border);
+   442→            display: flex;
+   443→            justify-content: space-between;
+   444→            align-items: center;
+   445→        }
+   446→        .xai-prediction-box {
+   447→            padding: 1.25rem;
+   448→            border-bottom: 1px solid var(--glass-border);
+   449→            display: flex;
+   450→            align-items: center;
+   451→            gap: 1.5rem;
+   452→            flex-wrap: wrap;
+   453→        }
+   454→        .pred-main {
+   455→            text-align: center;
+   456→            padding: 1rem 1.5rem;
+   457→            background: rgba(225,29,72,0.1);
+   458→            border: 1px solid rgba(225,29,72,0.2);
+   459→            border-radius: 14px;
+   460→        }
+   461→        .pred-label { font-size: 0.78rem; color: var(--text-secondary); margin-bottom: 0.3rem; }
+   462→        .pred-score { font-size: 2rem; font-weight: 800; color: #f87171; }
+   463→        .pred-level { font-size: 0.82rem; color: #fca5a5; font-weight: 600; }
+   464→        .pred-details {
+   465→            display: flex;
+   466→            gap: 1.5rem;
+   467→            flex-wrap: wrap;
+   468→        }
+   469→        .pred-detail-item {
+   470→            text-align: center;
+   471→        }
+   472→        .pred-detail-val { font-size: 1.1rem; font-weight: 700; color: #67e8f9; }
+   473→        .pred-detail-lbl { font-size: 0.72rem; color: var(--text-secondary); }
+   474→
+   475→        /* COUNTERFACTUAL SECTION */
+   476→        .counterfactual-section {
+   477→            padding: 1.25rem;
+   478→        }
+   479→        .cf-title {
+   480→            font-size: 0.95rem;
+   481→            font-weight: 700;
+   482→            margin-bottom: 1rem;
+   483→            display: flex;
+   484→            align-items: center;
+   485→            gap: 0.5rem;
+   486→        }
+   487→        .cf-list {
+   488→            display: flex;
+   489→            flex-direction: column;
+   490→            gap: 0.75rem;
+   491→        }
+   492→        .cf-item {
+   493→            display: flex;
+   494→            align-items: flex-start;
+   495→            gap: 0.85rem;
+   496→            padding: 1rem;
+   497→            background: rgba(0,0,0,0.2);
+   498→            border-radius: 12px;
+   499→            border-left: 3px solid #10b981;
+   500→        }
+   501→        .cf-icon {
+   502→            width: 32px; height: 32px;
+   503→            background: rgba(16,185,129,0.15);
+   504→            border-radius: 8px;
+   505→            display: flex;
+   506→            align-items: center;
+   507→            justify-content: center;
+   508→            font-size: 0.9rem;
+   509→            flex-shrink: 0;
+   510→        }
+   511→        .cf-content { flex: 1; }
+   512→        .cf-action { font-size: 0.88rem; font-weight: 600; margin-bottom: 0.25rem; }
+   513→        .cf-result { font-size: 0.82rem; color: var(--text-secondary); }
+   514→        .cf-impact {
+   515→            padding: 0.25rem 0.6rem;
+   516→            background: rgba(16,185,129,0.15);
+   517→            border-radius: 6px;
+   518→            font-size: 0.75rem;
+   519→            font-weight: 700;
+   520→            color: #34d399;
+   521→            white-space: nowrap;
+   522→        }
+   523→
+   524→        /* SIMILAR CASES */
+   525→        .similar-cases {
+   526→            padding: 1.25rem;
+   527→            border-top: 1px solid var(--glass-border);
+   528→        }
+   529→        .case-grid {
+   530→            display: grid;
+   531→            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+   532→            gap: 0.85rem;
+   533→            margin-top: 1rem;
+   534→        }
+   535→        .case-card {
+   536→            padding: 1rem;
+   537→            background: rgba(0,0,0,0.2);
+   538→            border-radius: 12px;
+   539→            border: 1px solid rgba(255,255,255,0.04);
+   540→            transition: all 0.25s ease;
+   541→        }
+   542→        .case-card:hover {
+   543→            border-color: rgba(59,130,246,0.2);
+   544→            background: rgba(0,0,0,0.3);
+   545→        }
+   546→        .case-header {
+   547→            display: flex;
+   548→            justify-content: space-between;
+   549→            align-items: center;
+   550→            margin-bottom: 0.5rem;
+   551→        }
+   552→        .case-name { font-size: 0.85rem; font-weight: 600; }
+   553→        .case-similarity {
+   554→            font-size: 0.72rem;
+   555→            padding: 0.15rem 0.5rem;
+   556→            background: rgba(6,182,212,0.15);
+   557→            border-radius: 6px;
+   558→            color: #67e8f9;
+   559→        }
+   560→        .case-outcome {
+   561→            font-size: 0.8rem;
+   562→            color: var(--text-secondary);
+   563→        }
+   564→        .case-outcome.positive { color: #34d399; }
+   565→        .case-outcome.negative { color: #f87171; }
+   566→
+   567→        /* ===== AGENT COLLABORATION FLOW ===== */
+   568→        .agent-flow {
+   569→            background: var(--glass-bg);
+   570→            backdrop-filter: blur(16px);
+   571→            border: 1px solid var(--glass-border);
+   572→            border-radius: 18px;
+   573→            padding: 2rem;
+   574→        }
+   575→        .flow-diagram {
+   576→            display: flex;
+   577→            align-items: center;
+   578→            justify-content: center;
+   579→            gap: 0.5rem;
+   580→            flex-wrap: wrap;
+   581→            margin-top: 1.5rem;
+   582→        }
+   583→        .flow-node {
+   584→            padding: 0.85rem 1.25rem;
+   585→            border-radius: 14px;
+   586→            text-align: center;
+   587→            font-size: 0.82rem;
+   588→            font-weight: 600;
+   589→            position: relative;
+   590→            transition: all 0.3s ease;
+   591→            cursor: default;
+   592→        }
+   593→        .flow-node:hover {
+   594→            transform: scale(1.08);
+   595→            z-index: 10;
+   596→        }
+   597→        .node-input { background: linear-gradient(135deg, rgba(6,182,212,0.2), rgba(6,182,212,0.1)); border: 1px solid rgba(6,182,212,0.3); color: #67e8f9; }
+   598→        .node-agent { background: linear-gradient(135deg, rgba(124,58,237,0.2), rgba(124,58,237,0.1)); border: 1px solid rgba(124,58,237,0.3); color: #c4b5fd; }
+   599→        .node-output { background: linear-gradient(135deg, rgba(16,185,129,0.2), rgba(16,185,129,0.1)); border: 1px solid rgba(16,185,129,0.3); color: #34d399; }
+   600→        .node-human { background: linear-gradient(135deg, rgba(245,158,11,0.2), rgba(245,158,11,0.1)); border: 1px solid rgba(245,158,11,0.3); color: #fbbf24; }
+   601→        .flow-arrow {
+   602→            font-size: 1.2rem;
+   603→            color: var(--text-secondary);
+   604→            animation: arrowPulse 1.5s ease-in-out infinite;
+   605→        }
+   606→        @keyframes arrowPulse {
+   607→            0%, 100% { opacity: 0.4; transform: translateX(0); }
+   608→            50% { opacity: 1; transform: translateX(3px); }
+   609→        }
+   610→        .flow-stages {
+   611→            display: grid;
+   612→            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+   613→            gap: 1rem;
+   614→            margin-top: 2rem;
+   615→        }
+   616→        .stage-card {
+   617→            padding: 1.15rem;
+   618→            background: rgba(0,0,0,0.2);
+   619→            border-radius: 14px;
+   620→            border-left: 3px solid;
+   621→        }
+   622→        .stage-card:nth-child(1) { border-left-color: #06b6d4; }
+   623→        .stage-card:nth-child(2) { border-left-color: #7c3aed; }
+   624→        .stage-card:nth-child(3) { border-left-color: #f59e0b; }
+   625→        .stage-card:nth-child(4) { border-left-color: #059669; }
+   626→        .stage-num {
+   627→            font-size: 0.72rem;
+   628→            font-weight: 700;
+   629→            color: var(--text-secondary);
+   630→            text-transform: uppercase;
+   631→            letter-spacing: 1px;
+   632→            margin-bottom: 0.4rem;
+   633→        }
+   634→        .stage-title { font-size: 0.95rem; font-weight: 700; margin-bottom: 0.35rem; }
+   635→        .stage-desc { font-size: 0.8rem; color: var(--text-secondary); line-height: 1.5; }
+   636→
+   637→        /* ===== NEURAL NETWORK ARCHITECTURE ===== */
+   638→        .nn-architecture {
+   639→            background: var(--glass-bg);
+   640→            backdrop-filter: blur(16px);
+   641→            border: 1px solid var(--glass-border);
+   642→            border-radius: 18px;
+   643→            padding: 2rem;
+   644→        }
+   645→        .nn-diagram {
+   646→            display: flex;
+   647→            align-items: center;
+   648→            justify-content: center;
+   649→            gap: 0.75rem;
+   650→            flex-wrap: wrap;
+   651→            margin-top: 1.5rem;
+   652→            padding: 2rem;
+   653→            background: rgba(0,0,0,0.2);
+   654→            border-radius: 14px;
+   655→        }
+   656→        .nn-layer {
+   657→            display: flex;
+   658→            flex-direction: column;
+   659→            gap: 6px;
+   660→            align-items: center;
+   661→        }
+   662→        .nn-neuron {
+   663→            width: 28px; height: 28px;
+   664→            border-radius: 50%;
+   665→            display: flex;
+   666→            align-items: center;
+   667→            justify-content: center;
+   668→            font-size: 0.6rem;
+   669→            font-weight: 700;
+   670→            transition: all 0.3s ease;
+   671→        }
+   672→        .nn-neuron:hover {
+   673→            transform: scale(1.3);
+   674→            box-shadow: 0 0 15px currentColor;
+   675→        }
+   676→        .layer-input .nn-neuron { background: rgba(6,182,212,0.3); border: 2px solid #06b6d4; color: #67e8f9; }
+   677→        .layer-embed .nn-neuron { background: rgba(59,130,246,0.3); border: 2px solid #3b82f6; color: #93c5fd; }
+   678→        .layer-attn .nn-neuron { background: rgba(124,58,237,0.3); border: 2px solid #7c3aed; color: #c4b5fd; }
+   679→        .layer-ffn .nn-neuron { background: rgba(245,158,11,0.3); border: 2px solid #f59e0b; color: #fbbf24; }
+   680→        .layer-output .nn-neuron { background: rgba(16,185,129,0.3); border: 2px solid #10b981; color: #34d399; }
+   681→        .layer-label {
+   682→            font-size: 0.72rem;
+   683→            font-weight: 600;
+   684→            color: var(--text-secondary);
+   685→            margin-top: 0.5rem;
+   686→            text-align: center;
+   687→        }
+   688→        .nn-connector {
+   689→            font-size: 1.5rem;
+   690→            color: rgba(148,163,184,0.4);
+   691→        }
+   692→        .nn-specs {
+   693→            display: grid;
+   694→            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+   695→            gap: 0.85rem;
+   696→            margin-top: 1.5rem;
+   697→        }
+   698→        .spec-item {
+   699→            padding: 0.85rem;
+   700→            background: rgba(0,0,0,0.2);
+   701→            border-radius: 10px;
+   702→            text-align: center;
+   703→        }
+   704→        .spec-value { font-size: 1.15rem; font-weight: 700; color: #67e8f9; }
+   705→        .spec-label { font-size: 0.72rem; color: var(--text-secondary); margin-top: 0.2rem; }
+   706→
+   707→        /* ===== INFERENCE STATS ===== */
+   708→        .inference-stats {
+   709→            display: grid;
+   710→            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+   711→            gap: 1.25rem;
+   712→        }
+   713→        .stat-card {
+   714→            background: var(--glass-bg);
+   715→            backdrop-filter: blur(16px);
+   716→            border: 1px solid var(--glass-border);
+   717→            border-radius: 18px;
+   718→            padding: 1.5rem;
+   719→            text-align: center;
+   720→            transition: all 0.3s ease;
+   721→            position: relative;
+   722→            overflow: hidden;
+   723→        }
+   724→        .stat-card::before {
+   725→            content: '';
+   726→            position: absolute;
+   727→            top: 0; left: 0; right: 0;
+   728→            height: 3px;
+   729→        }
+   730→        .stat-card:nth-child(1)::before { background: linear-gradient(90deg, #3b82f6, #06b6d4); }
+   731→        .stat-card:nth-child(2)::before { background: linear-gradient(90deg, #10b981, #059669); }
+   732→        .stat-card:nth-child(3)::before { background: linear-gradient(90deg, #a78bfa, #7c3aed); }
+   733→        .stat-card:nth-child(4)::before { background: linear-gradient(90deg, #fbbf24, #f59e0b); }
+   734→        .stat-card:hover {
+   735→            transform: translateY(-4px);
+   736→            box-shadow: 0 12px 32px rgba(0,0,0,0.25);
+   737→        }
+   738→        .stat-icon {
+   739→            font-size: 2rem;
+   740→            margin-bottom: 0.75rem;
+   741→        }
+   742→        .stat-big {
+   743→            font-size: 2.2rem;
+   744→            font-weight: 800;
+   745→            background: linear-gradient(135deg, #fff, #93c5fd);
+   746→            -webkit-background-clip: text;
+   747→            -webkit-text-fill-color: transparent;
+   748→            background-clip: text;
+   749→        }
+   750→        .stat-label {
+   751→            font-size: 0.88rem;
+   752→            color: var(--text-secondary);
+   753→            margin-top: 0.3rem;
+   754→        }
+   755→        .stat-sub {
+   756→            font-size: 0.75rem;
+   757→            color: #34d399;
+   758→            margin-top: 0.35rem;
+   759→        }
+   760→        .stat-chart-mini {
+   761→            margin-top: 1rem;
+   762→            height: 40px;
+   763→            display: flex;
+   764→            align-items: flex-end;
+   765→            gap: 3px;
+   766→        }
+   767→        .mini-bar {
+   768→            flex: 1;
+   769→            background: linear-gradient(180deg, rgba(59,130,246,0.6), rgba(59,130,246,0.2));
+   770→            border-radius: 2px 2px 0 0;
+   771→            min-height: 5px;
+   772→        }
+   773→
+   774→        /* ===== AUDIT TRAIL ===== */
+   775→        .audit-trail {
+   776→            background: var(--glass-bg);
+   777→            backdrop-filter: blur(16px);
+   778→            border: 1px solid var(--glass-border);
+   779→            border-radius: 18px;
+   780→            overflow: hidden;
+   781→        }
+   782→        .audit-timeline {
+   783→            padding: 1.25rem;
+   784→        }
+   785→        .timeline-item {
+   786→            display: flex;
+   787→            gap: 1rem;
+   788→            padding: 0.85rem 0;
+   789→            border-bottom: 1px solid rgba(255,255,255,0.03);
+   790→            position: relative;
+   791→        }
+   792→        .timeline-item:last-child { border-bottom: none; }
+   793→        .timeline-marker {
+   794→            width: 36px; height: 36px;
+   795→            border-radius: 10px;
+   796→            display: flex;
+   797→            align-items: center;
+   798→            justify-content: center;
+   799→            font-size: 0.85rem;
+   800→            flex-shrink: 0;
+   801→        }
+   802→        .marker-model { background: rgba(124,58,237,0.15); }
+   803→        .marker-data { background: rgba(6,182,212,0.15); }
+   804→        .marker-feature { background: rgba(245,158,11,0.15); }
+   805→        .marker-output { background: rgba(16,185,129,0.15); }
+   806→        .timeline-content { flex: 1; }
+   807→        .timeline-title { font-size: 0.88rem; font-weight: 600; margin-bottom: 0.2rem; }
+   808→        .timeline-detail { font-size: 0.78rem; color: var(--text-secondary); }
+   809→        .timeline-time {
+   810→            font-size: 0.72rem;
+   811→            color: var(--text-secondary);
+   812→            white-space: nowrap;
+   813→        }
+   814→
+   815→        /* ===== RESPONSIVE ===== */
+   816→        @media (max-width: 768px) {
+   817→            nav { padding: 0.5rem 0.75rem; }
+   818→            .nav-links { justify-content: center; order: 3; width: 100%; }
+   819→            section { padding: 2rem 1rem; }
+   820→            .model-grid { grid-template-columns: 1fr; }
+   821→            .feature-bar-row { flex-wrap: wrap; }
+   822→            .feature-name { width: 100%; text-align: left; margin-bottom: 0.25rem; }
+   823→            .flow-diagram { flex-direction: column; }
+   824→            .flow-arrow { transform: rotate(90deg); }
+   825→        }
+   826→
+   827→        /* ===== ANIMATIONS ===== */
+   828→        @keyframes fadeInUp {
+   829→            from { opacity: 0; transform: translateY(15px); }
+   830→            to { opacity: 1; transform: translateY(0); }
+   831→        }
+   832→        
+   833→        /* ===== THEME TOGGLE BUTTON ===== */
+   834→        .theme-toggle {
+   835→            width: 40px;
+   836→            height: 40px;
+   837→            border-radius: 10px;
+   838→            background: var(--glass-bg);
+   839→            border: 1px solid var(--glass-border);
+   840→            color: var(--text-secondary);
+   841→            cursor: pointer;
+   842→            display: flex;
+   843→            align-items: center;
+   844→            justify-content: center;
+   845→            font-size: 1.1rem;
+   846→            transition: all 0.3s ease;
+   847→            margin-left: 0.5rem;
+   848→        }
+   849→        .theme-toggle:hover {
+   850→            background: rgba(59,130,246,0.15);
+   851→            color: var(--text-primary);
+   852→            transform: rotate(15deg);
+   853→            border-color: rgba(59,130,246,0.3);
+   854→        }
+   855→        .theme-toggle .icon-sun { display: none; }
+   856→        .theme-toggle .icon-moon { display: inline-block; }
+   857→        [data-theme="light"] .theme-toggle .icon-sun { display: inline-block; }
+   858→        [data-theme="light"] .theme-toggle .icon-moon { display: none; }
+   859→    </style>
+   860→</head>
+   861→<body>
+   862→
+   863→<!-- ===== NAVIGATION ===== -->
+   864→<nav>
+   865→    <div class="nav-brand">
+   866→        <div class="nav-brand-icon">🧠</div>
+   867→        <span>AISupChain Pro</span>
+   868→    </div>
+   869→    <div class="nav-links">
+   870→        <a href="/Demo4AISupChn/">🏠 Home</a>
+   871→        <a href="/Demo4AISupChn/dashboard.html">📊 Dashboard</a>
+   872→        <a href="/Demo4AISupChn/intelligence.html" class="active">🔬 Intelligence</a>
+   873→        <a href="/Demo4AISupChn/agents.html">🤖 Agents</a>
+   874→        <a href="/Demo4AISupChn/platform.html">⚙️ Platform</a>
+   875→        <a href="/Demo4AISupChn/command-center.html">🎯 Command Center</a>
+   876→        <a href="/Demo4AISupChn/about.html">ℹ️ About</a>
+   877→        <a href="/Demo4AISupChn/customers.html">👥 Customers</a>
+   878→    </div>
+   879→                <!-- Theme Toggle -->
+   880→                <button class="theme-toggle" id="themeToggle" title="Toggle dark/light mode">
+   881→                    <span class="icon-moon">🌙</span>
+   882→                    <span class="icon-sun">☀️</span>
+   883→                </button>
+   884→</nav>
+   885→
+   886→<!-- ===== INTELLIGENCE CONTAINER ===== -->
+   887→<div class="intel-container">
+   888→
+   889→    <!-- ===== HERO ===== -->
+   890→    <div class="intel-hero">
+   891→        <h1>🔬 AI Intelligence Engine</h1>
+   892→        <p>Deep dive into our cutting-edge machine learning architecture, explainable AI (XAI) capabilities, and real-time inference systems that power enterprise supply chain intelligence.</p>
+   893→        <div class="hero-badges">
+   894→            <span class="hero-badge-item"><span class="badge-dot" style="background:#34d399;"></span> SHAP Explainability</span>
+   895→            <span class="hero-badge-item"><span class="badge-dot" style="background:#67e8f9;"></span> Counterfactual Analysis</span>
+   896→            <span class="hero-badge-item"><span class="badge-dot" style="background:#a78bfa;"></span> Neural Architecture Search</span>
+   897→            <span class="hero-badge-item"><span class="badge-dot" style="background:#fbbf24;"></span> Real-time Inference &lt;200ms</span>
+   898→            <span class="hero-badge-item"><span class="badge-dot" style="background:#fb7185;"></span> EU AI Act Compliant</span>
+   899→        </div>
+   900→    </div>
+   901→
+   902→    <!-- ===== MODEL PERFORMANCE COMPARISON ===== -->
+   903→    <section id="models">
+   904→        <div class="section-header">
+   905→            <div class="section-tag">📊 Model Performance</div>
+   906→            <h2 class="section-title">Our Models vs Industry Benchmarks</h2>
+   907→            <p class="section-desc">Head-to-head comparison with Salesforce Einstein and other generic CRM AI solutions</p>
+   908→        </div>
+   909→        
+   910→        <div class="model-grid">
+   911→            <!-- Our Model -->
+   912→            <div class="model-card ours">
+   913→                <span class="model-badge badge-ours">✓ Our Platform</span>
+   914→                <div class="model-name">SupplyChain-GPT v4.0</div>
+   915→                <div class="model-type">Domain-Specific Transformer · 175B Parameters · Pre-trained on 50M+ SC Documents</div>
+   916→                <div class="model-metrics">
+   917→                    <div class="metric-row">
+   918→                        <span class="metric-label">Accuracy</span>
+   919→                        <span class="metric-value excellent">94.2%</span>
+   920→                    </div>
+   921→                    <div class="metric-row">
+   922→                        <span class="metric-label">Precision</span>
+   923→                        <span class="metric-value excellent">91.8%</span>
+   924→                    </div>
+   925→                    <div class="metric-row">
+   926→                        <span class="metric-label">Recall</span>
+   927→                        <span class="metric-value excellent">89.4%</span>
+   928→                    </div>
+   929→                    <div class="metric-row">
+   930→                        <span class="metric-label">F1 Score</span>
+   931→                        <span class="metric-value excellent">0.905</span>
+   932→                    </div>
+   933→                    <div class="metric-row">
+   934→                        <span class="metric-label">Latency (P99)</span>
+   935→                        <span class="metric-value excellent">&lt;200ms</span>
+   936→                    </div>
+   937→                    <div class="metric-row">
+   938→                        <span class="metric-label">Explainability</span>
+   939→                        <span class="metric-value excellent">Full XAI</span>
+   940→                    </div>
+   941→                </div>
+   942→            </div>
+   943→
+   944→            <!-- Salesforce Einstein -->
+   945→            <div class="model-card competitor">
+   946→                <span class="model-badge badge-them">Salesforce Einstein</span>
+   947→                <div class="model-name">Einstein GPT (Generic)</div>
+   948→                <div class="model-type">Fine-tuned GPT Wrapper · No Domain Training · Generic CRM Model</div>
+   949→                <div class="model-metrics">
+   950→                    <div class="metric-row">
+   951→                        <span class="metric-label">Accuracy</span>
+   952→                        <span class="metric-value poor">~73%</span>
+   953→                    </div>
+   954→                    <div class="metric-row">
+   955→                        <span class="metric-label">Precision</span>
+   956→                        <span class="metric-value meh">~68%</span>
+   957→                    </div>
+   958→                    <div class="metric-row">
+   959→                        <span class="metric-label">Recall</span>
+   960→                        <span class="metric-value meh">~61%</span>
+   961→                    </div>
+   962→                    <div class="metric-row">
+   963→                        <span class="metric-label">F1 Score</span>
+   964→                        <span class="metric-value meh">~0.645</span>
+   965→                    </div>
+   966→                    <div class="metric-row">
+   967→                        <span class="metric-label">Latency (P99)</span>
+   968→                        <span class="metric-value poor">&gt;2s</span>
+   969→                    </div>
+   970→                    <div class="metric-row">
+   971→                        <span class="metric-label">Explainability</span>
+   972→                        <span class="metric-value poor">Basic % only</span>
+   973→                    </div>
+   974→                </div>
+   975→            </div>
+   976→
+   977→            <!-- Our Secondary Model -->
+   978→            <div class="model-card ours">
+   979→                <span class="model-badge badge-ours">✓ Our Platform</span>
+   980→                <div class="model-name">RiskNet-GraphNN</div>
+   981→                <div class="model-type">Graph Neural Network · Knowledge Graph Powered · Multi-tier Analysis</div>
+   982→                <div class="model-metrics">
+   983→                    <div class="metric-row">
+   984→                        <span class="metric-label">Accuracy</span>
+   985→                        <span class="metric-value excellent">91.5%</span>
+   986→                    </div>
+   987→                    <div class="metric-row">
+   988→                        <span class="metric-label">Precision</span>
+   989→                        <span class="metric-value good">89.2%</span>
+   990→                    </div>
+   991→                    <div class="metric-row">
+   992→                        <span class="metric-label">Recall</span>
+   993→                        <span class="metric-value good">87.8%</span>
+   994→                    </div>
+   995→                    <div class="metric-row">
+   996→                        <span class="metric-label">F1 Score</span>
+   997→                        <span class="metric-value good">0.885</span>
+   998→                    </div>
+   999→                    <div class="metric-row">
+  1000→                        <span class="metric-label">Latency (P99)</span>
+  1001→                        <span class="metric-value good">&lt;350ms</span>
+  1002→                    </div>
+  1003→                    <div class="metric-row">
+  1004→                        <span class="metric-label">Coverage</span>
+  1005→                        <span class="metric-value excellent">10M+ nodes</span>
+  1006→                    </div>
+  1007→                </div>
+  1008→            </div>
+  1009→
+  1010→            <!-- Traditional ML Baseline -->
+  1011→            <div class="model-card competitor">
+  1012→                <span class="model-badge badge-them">Traditional ML</span>
+  1013→                <div class="model-name">Random Forest / XGBoost</div>
+  1014→                <div class="model-type">Classical ML · Tabular Data Only · No NLP Capability</div>
+  1015→                <div class="model-metrics">
+  1016→                    <div class="metric-row">
+  1017→                        <span class="metric-label">Accuracy</span>
+  1018→                        <span class="metric-value meh">~68%</span>
+  1019→                    </div>
+  1020→                    <div class="metric-row">
+  1021→                        <span class="metric-label">Precision</span>
+  1022→                        <span class="metric-value meh">~65%</span>
+  1023→                    </div>
+  1024→                    <div class="metric-row">
+  1025→                        <span class="metric-label">Recall</span>
+  1026→                        <span class="metric-value poor">~58%</span>
+  1027→                    </div>
+  1028→                    <div class="metric-row">
+  1029→                        <span class="metric-label">F1 Score</span>
+  1030→                        <span class="metric-value meh">~0.615</span>
+  1031→                    </div>
+  1032→                    <div class="metric-row">
+  1033→                        <span class="metric-label">Latency (P99)</span>
+  1034→                        <span class="metric-value good">&lt;100ms</span>
+  1035→                    </div>
+  1036→                    <div class="metric-row">
+  1037→                        <span class="metric-label">NLP Support</span>
+  1038→                        <span class="metric-value poor">None</span>
+  1039→                    </div>
+  1040→                </div>
+  1041→            </div>
+  1042→        </div>
+  1043→    </section>
+  1044→
+  1045→    <!-- ===== SHAP EXPLAINABILITY ===== -->
+  1046→    <section id="explainability">
+  1047→        <div class="section-header">
+  1048→            <div class="section-tag">🔍 XAI Suite</div>
+  1049→            <h2 class="section-title">SHAP Explainability Visualization</h2>
+  1050→            <p class="section-desc">Full transparency into how each prediction is made — every feature's contribution quantified</p>
+  1051→        </div>
+  1052→
+  1053→        <div class="shap-container">
+  1054→            <!-- Feature Importance Bars -->
+  1055→            <div class="shap-chart">
+  1056→                <div class="chart-title">📊 Feature Importance (SHAP Values)</div>
+  1057→                <div style="font-size:0.82rem;color:var(--text-secondary);margin-bottom:1rem;">
+  1058→                    Risk Prediction for Supplier: <strong style="color:#fff;">Foxconn Technology Group</strong> — Score: <strong style="color:#f87171;">78/100 (HIGH RISK)</strong>
+  1059→                </div>
+  1060→                <div class="feature-bar-container">
+  1061→                    <div class="feature-bar-row">
+  1062→                        <span class="feature-name">Geopolitical Exposure</span>
+  1063→                        <div class="bar-track"><div class="bar-fill bar-negative" style="width:92%;">+18.4</div></div>
+  1064→                        <span class="bar-value value-neg">+18.4</span>
+  1065→                    </div>
+  1066→                    <div class="feature-bar-row">
+  1067→                        <span class="feature-name">Financial Health Δ</span>
+  1068→                        <div class="bar-track"><div class="bar-fill bar-negative" style="width:72%;">+12.8</div></div>
+  1069→                        <span class="bar-value value-neg">+12.8</span>
+  1070→                    </div>
+  1071→                    <div class="feature-bar-row">
+  1072→                        <span class="feature-name">Concentration Risk</span>
+  1073→                        <div class="bar-track"><div class="bar-fill bar-negative" style="width:58%;">+9.2</div></div>
+  1074→                        <span class="bar-value value-neg">+9.2</span>
+  1075→                    </div>
+  1076→                    <div class="feature-bar-row">
+  1077→                        <span class="feature-name">Shipping Route Risk</span>
+  1078→                        <div class="bar-track"><div class="bar-fill bar-negative" style="width:45%;">+6.7</div></div>
+  1079→                        <span class="bar-value value-neg">+6.7</span>
+  1080→                    </div>
+  1081→                    <div class="feature-bar-row">
+  1082→                        <span class="feature-name">ESG Compliance Score</span>
+  1083→                        <div class="bar-track"><div class="bar-fill bar-negative" style="width:38%;">+5.1</div></div>
+  1084→                        <span class="bar-value value-neg">+5.1</span>
+  1085→                    </div>
+  1086→                    <div class="feature-bar-row">
+  1087→                        <span class="feature-name">Historical Performance</span>
+  1088→                        <div class="bar-track"><div class="bar-fill bar-positive" style="width:52%;">-8.3</div></div>
+  1089→                        <span class="bar-value value-pos">-8.3</span>
+  1090→                    </div>
+  1091→                    <div class="feature-bar-row">
+  1092→                        <span class="feature-name">Contract Stability</span>
+  1093→                        <div class="bar-track"><div class="bar-fill bar-positive" style="width:38%;">-5.6</div></div>
+  1094→                        <span class="bar-value value-pos">-5.6</span>
+  1095→                    </div>
+  1096→                    <div class="feature-bar-row">
+  1097→                        <span class="feature-name">Diversification Index</span>
+  1098→                        <div class="bar-track"><div class="bar-fill bar-positive" style="width:22%;">-3.1</div></div>
+  1099→                        <span class="bar-value value-pos">-3.1</span>
+  1100→                    </div>
+  1101→                </div>
+  1102→                <div style="margin-top:1rem;padding:0.75rem;background:rgba(124,58,237,0.08);border:1px solid rgba(124,58,237,0.2);border-radius:10px;font-size:0.8rem;color:#c4b5fd;">
+  1103→                    💡 <strong>Interpretation:</strong> Geopolitical exposure to Taiwan Strait tensions is the dominant risk driver (+18.4 points). Mitigating this through geographic diversification could reduce overall risk by ~23%.
+  1104→                </div>
+  1105→            </div>
+  1106→
+  1107→            <!-- Radar Chart -->
+  1108→            <div class="shap-chart">
+  1109→                <div class="chart-title">🎯 Multi-Dimensional Risk Profile</div>
+  1110→                <div class="radar-placeholder">
+  1111→                    <div class="radar-axis-labels">
+  1112→                        <span class="axis-label">Financial</span>
+  1113→                        <span class="axis-label">Operational</span>
+  1114→                        <span class="axis-label">Geopolitical</span>
+  1115→                        <span class="axis-label">Compliance</span>
+  1116→                        <span class="axis-label">Reputational</span>
+  1117→                        <span class="axis-label">Environmental</span>
+  1118→                    </div>
+  1119→                    <div class="radar-center">
+  1120→                        <div class="radar-score">78</div>
+  1121→                        <div class="radar-label">Overall Risk Score</div>
+  1122→                    </div>
+  1123→                </div>
+  1124→                <div style="display:flex;justify-content:center;gap:1.5rem;margin-top:1.25rem;flex-wrap:wrap;">
+  1125→                    <div style="text-align:center;">
+  1126→                        <div style="font-size:1.2rem;font-weight:700;color:#f87171;">92</div>
+  1127→                        <div style="font-size:0.72rem;color:var(--text-secondary);">Geopolitical</div>
+  1128→                    </div>
+  1129→                    <div style="text-align:center;">
+  1130→                        <div style="font-size:1.2rem;font-weight:700;color:#fbbf24;">74</div>
+  1131→                        <div style="font-size:0.72rem;color:var(--text-secondary);">Operational</div>
+  1132→                    </div>
+  1133→                    <div style="text-align:center;">
+  1134→                        <div style="font-size:1.2rem;font-weight:700;color:#fbbf24;">68</div>
+  1135→                        <div style="font-size:0.72rem;color:var(--text-secondary);">Financial</div>
+  1136→                    </div>
+  1137→                    <div style="text-align:center;">
+  1138→                        <div style="font-size:1.2rem;font-weight:700;color:#67e8f9;">55</div>
+  1139→                        <div style="font-size:0.72rem;color:var(--text-secondary);">Compliance</div>
+  1140→                    </div>
+  1141→                    <div style="text-align:center;">
+  1142→                        <div style="font-size:1.2rem;font-weight:700;color:#34d399;">41</div>
+  1143→                        <div style="font-size:0.72rem;color:var(--text-secondary);">Environmental</div>
+  1144→                    </div>
+  1145→                    <div style="text-align:center;">
+  1146→                        <div style="font-size:1.2rem;font-weight:700;color:#67e8f9;">48</div>
+  1147→                        <div style="font-size:0.72rem;color:var(--text-secondary);">Reputational</div>
+  1148→                    </div>
+  1149→                </div>
+  1150→            </div>
+  1151→        </div>
+  1152→    </section>
+  1153→
+  1154→    <!-- ===== XAI OUTPUT STRUCTURE ===== -->
+  1155→    <section id="xai-output">
+  1156→        <div class="section-header">
+  1157→            <div class="section-tag">🧪 Full XAI Output</div>
+  1158→            <h2 class="section-title">Complete Explainable AI Decision Structure</h2>
+  1159→            <p class="section-desc">Every AI decision comes with full audit trail, counterfactual explanations, and similar case references</p>
+  1160→        </div>
+  1161→
+  1162→        <div class="xai-output">
+  1163→            <div class="xai-header">
+  1164→                <span class="card-title">📋 Prediction Output: Foxconn Risk Assessment</span>
+  1165→                <span style="font-size:0.78rem;color:var(--text-secondary;">Generated: Just now · Model: SupplyChain-GPT v4.0</span>
+  1166→            </div>
+  1167→
+  1168→            <!-- Prediction Box -->
+  1169→            <div class="xai-prediction-box">
+  1170→                <div class="pred-main">
+  1171→                    <div class="pred-label">RISK SCORE</div>
+  1172→                    <div class="pred-score">78</div>
+  1173→                    <div class="pred-level">⚠️ HIGH RISK</div>
+  1174→                </div>
+  1175→                <div class="pred-details">
+  1176→                    <div class="pred-detail-item">
+  1177→                        <div class="pred-detail-val">94.2%</div>
+  1178→                        <div class="pred-detail-lbl">Confidence</div>
+  1179→                    </div>
+  1180→                    <div class="pred-detail-item">
+  1181→                        <div class="pred-detail-val">142ms</div>
+  1182→                        <div class="pred-detail-lbl">Inference Time</div>
+  1183→                    </div>
+  1184→                    <div class="pred-detail-item">
+  1185→                        <div class="pred-detail-val">12,847</div>
+  1186→                        <div class="pred-detail-lbl">Features Analyzed</div>
+  1187→                    </div>
+  1188→                    <div class="pred-detail-item">
+  1189→                        <div class="pred-detail-vl">v4.0</div>
+  1190→                        <div class="pred-detail-lbl">Model Version</div>
+  1191→                    </div>
+  1192→                    <div class="pred-detail-item">
+  1193→                        <div class="pred-detail-val">✅</div>
+  1194→                        <div class="pred-detail-lbl">EU AI Act Ready</div>
+  1195→                    </div>
+  1196→                </div>
+  1197→            </div>
+  1198→
+  1199→            <!-- Counterfactual Explanations -->
+  1200→            <div class="counterfactual-section">
+  1201→                <div class="cf-title">🔄 Counterfactual Explanations — "What Would Change This?"</div>
+  1202→                <div class="cf-list">
+  1203→                    <div class="cf-item">
+  1204→                        <div class="cf-icon">1️⃣</div>
+  1205→                        <div class="cf-content">
+  1206→                            <div class="cf-action">Add secondary supplier in Vietnam or India</div>
+  1207→                            <div class="cf-result">Reducing Taiwan concentration from 85% to below 40% would decrease risk score by approximately <strong>18-22 points</strong></div>
+  1208→                        </div>
+  1209→                        <span class="cf-impact">→ ~56-60</span>
+  1210→                    </div>
+  1211→                    <div class="cf-item">
+  1212→                        <div class="cf-icon">2️⃣</div>
+  1213→                        <div class="cf-content">
+  1214→                            <div class="cf-action">Increase safety stock to 8 weeks coverage</div>
+  1215→                            <div class="cf-result">Buffer stock increase would mitigate supply disruption impact, reducing operational risk component by <strong>~8 points</strong></div>
+  1216→                        </div>
+  1217→                        <span class="cf-impact">→ ~70</span>
+  1218→                    </div>
+  1219→                    <div class="cf-item">
+  1220→                        <div class="cf-icon">3️⃣</div>
+  1221→                        <div class="cf-content">
+  1222→                            <div class="cf-action">Activate alternative shipping route via Cape of Good Hope</div>
+  1223→                            <div class="cf-result">Bypassing Red Sea/Malacca dependency reduces logistics risk component by <strong>~7 points</strong></div>
+  1224→                        </div>
+  1225→                        <span class="cf-impact">→ ~71</span>
+  1226→                    </div>
+  1227→                    <div class="cf-item">
+  1228→                        <div class="cf-icon">4️⃣</div>
+  1229→                        <div class="cf-content">
+  1230→                            <div class="cf-action">Require enhanced financial covenant in contract renewal</div>
+  1231→                            <div class="cf-result">Stronger contractual protections would improve financial stability score by <strong>~5 points</strong></div>
+  1232→                        </div>
+  1233→                        <span class="cf-impact">→ ~73</span>
+  1234→                    </div>
+  1235→                </div>
+  1236→            </div>
+  1237→
+  1238→            <!-- Similar Cases -->
+  1239→            <div class="similar-cases">
+  1240→                <div class="cf-title">📚 Similar Historical Cases (Retrieved from Knowledge Base)</div>
+  1241→                <div class="case-grid">
+  1242→                    <div class="case-card">
+  1243→                        <div class="case-header">
+  1244→                            <span class="case-name">TSMC Arizona Expansion</span>
+  1245→                            <span class="case-similarity">94% similar</span>
+  1246→                        </div>
+  1247→                        <div class="case-outcome positive">✅ Diversification reduced risk 31pts over 18 months</div>
+  1248→                    </div>
+  1249→                    <div class="case-card">
+  1250→                        <div class="case-header">
+  1251→                            <span class="case-name">Samsung Vietnam Shift</span>
+  1252→                            <span class="case-similarity">87% similar</span>
+  1253→                        </div>
+  1254→                        <div class="case-outcome positive">✅ Geographic hedge successful during China tensions</div>
+  1255→                    </div>
+  1256→                    <div class="case-card">
+  1257→                        <div class="case-header">
+  1258→                            <span class="case-name">Apple Supplier Crisis 2022</span>
+  1259→                            <span class="case-similarity">81% similar</span>
+  1260→                        </div>
+  1261→                        <div class="case-outcome negative">⚠️ No diversification led to $6B revenue impact</div>
+  1262→                    </div>
+  1263→                    <div class="case-card">
+  1264→                        <div class="case-header">
+  1265→                            <span class="case-name">Auto OEM Chip Shortage</span>
+  1266→                            <span class="case-similarity">76% similar</span>
+  1267→                        </div>
+  1268→                        <div class="case-outcome negative">⚠️ Single-source dependency caused 11-week shutdown</div>
+  1269→                    </div>
+  1270→                </div>
+  1271→            </div>
+  1272→        </div>
+  1273→    </section>
+  1274→
+  1275→    <!-- ===== AGENT COLLABORATION FLOW ===== -->
+  1276→    <section id="agent-flow">
+  1277→        <div class="section-header">
+  1278→            <div class="section-tag">🤖 Multi-Agent System</div>
+  1279→            <h2 class="section-title">Agent Collaboration Workflow</h2>
+  1280→            <p class="section-desc">How our autonomous AI agents collaborate to deliver comprehensive intelligence</p>
+  1281→        </div>
+  1282→
+  1283→        <div class="agent-flow">
+  1284→            <div class="flow-diagram">
+  1285→                <div class="flow-node node-input">📥 Data Ingestion<br><small>(500+ sources)</small></div>
+  1286→                <span class="flow-arrow">→</span>
+  1287→                <div class="flow-node node-agent">🛡️ Sentinel<br><small>Detection</small></div>
+  1288→                <span class="flow-arrow">→</span>
+  1289→                <div class="flow-node node-agent">🔬 Analyst<br><small>Investigation</small></div>
+  1290→                <span class="flow-arrow">→</span>
+  1291→                <div class="flow-node node-agent">🎯 Orchestrator<br><small>Coordination</small></div>
+  1292→                <span class="flow-arrow">→</span>
+  1293→                <div class="flow-node node-human">👤 Human<br><small>Approval</small></div>
+  1294→                <span class="flow-arrow">→</span>
+  1295→                <div class="flow-node node-output">📤 Action<br><small>Execution</small></div>
+  1296→            </div>
+  1297→
+  1298→            <div class="flow-stages">
+  1299→                <div class="stage-card">
+  1300→                    <div class="stage-num">Stage 1</div>
+  1301→                    <div class="stage-title">🛡️ Sentinel Detection</div>
+  1302→                    <div class="stage-desc">Continuous monitoring of 500+ data feeds. Anomaly detection flags potential risks within milliseconds of data arrival.</div>
+  1303→                </div>
+  1304→                <div class="stage-card">
+  1305→                    <div class="stage-num">Stage 2</div>
+  1306→                    <div class="stage-title">🔬 Analyst Investigation</div>
+  1307→                    <div class="stage-desc">Deep analysis using domain models. Cross-references knowledge graph, runs SHAP explainability, generates counterfactual scenarios.</div>
+  1308→                </div>
+  1309→                <div class="stage-card">
+  1310→                    <div class="stage-num">Stage 3</div>
+  1311→                    <div class="stage-title">🎯 Orchestrator Coordination</div>
+  1312→                    <div class="stage-desc">Prioritizes findings, routes to appropriate stakeholders, coordinates multi-agent tasks, manages escalation workflows.</div>
+  1313→                </div>
+  1314→                <div class="stage-card">
+  1315→                    <div class="stage-num">Stage 4</div>
+  1316→                    <div class="stage-title">👤 Human-in-the-Loop</div>
+  1317→                    <div class="stage-desc">Critical decisions require human approval. Full context provided with AI recommendation confidence scores.</div>
+  1318→                </div>
+  1319→            </div>
+  1320→        </div>
+  1321→    </section>
+  1322→
+  1323→    <!-- ===== NEURAL NETWORK ARCHITECTURE ===== -->
+  1324→    <section id="architecture">
+  1325→        <div class="section-header">
+  1326→            <div class="section-tag">🧮 Technical Deep Dive</div>
+  1327→            <h2 class="section-title">Neural Network Architecture</h2>
+  1328→            <p class="section-desc">Our custom transformer architecture purpose-built for supply chain intelligence</p>
+  1329→        </div>
+  1330→
+  1331→        <div class="nn-architecture">
+  1332→            <div class="chart-title" style="justify-content:center;">SupplyChain-GPT v4.0 Architecture Overview</div>
+  1333→            
+  1334→            <div class="nn-diagram">
+  1335→                <!-- Input Layer -->
+  1336→                <div class="nn-layer layer-input">
+  1337→                    <div class="nn-neuron">T</div>
+  1338→                    <div class="nn-neuron">E</div>
+  1339→                    <div class="nn-neuron">X</div>
+  1340→                    <div class="nn-neuron">T</div>
+  1341→                    <div class="nn-neuron">...</div>
+  1342→                    <div class="layer-label">Input Tokens<br><small>Multi-modal</small></div>
+  1343→                </div>
+  1344→                
+  1345→                <span class="nn-connector">→</span>
+  1346→                
+  1347→                <!-- Embedding Layer -->
+  1348→                <div class="nn-layer layer-embed">
+  1349→                    <div class="nn-neuron">E₁</div>
+  1350→                    <div class="nn-neuron">E₂</div>
+  1351→                    <div class="nn-neuron">E₃</div>
+  1352→                    <div class="nn-neuron">E₄</div>
+  1353→                    <div class="nn-neuron">...</div>
+  1354→                    <div class="layer-label">Embedding<br><small>3072-dim</small></div>
+  1355→                </div>
+  1356→                
+  1357→                <span class="nn-connector">→</span>
+  1358→                
+  1359→                <!-- Attention Layers -->
+  1360→                <div class="nn-layer layer-attn">
+  1361→                    <div class="nn-neuron">Attn</div>
+  1362→                    <div class="nn-neuron">Attn</div>
+  1363→                    <div class="nn-neuron">Attn</div>
+  1364→                    <div class="nn-neuron">FFN</div>
+  1365→                    <div class="layer-label">Transformer<br><small>96 layers</small></div>
+  1366→                </div>
+  1367→                
+  1368→                <span class="nn-connector">→</span>
+  1369→                
+  1370→                <!-- FFN / Task Head -->
+  1371→                <div class="nn-layer layer-ffn">
+  1372→                    <div class="nn-neuron">FFN</div>
+  1373→                    <div class="nn-neuron">Norm</div>
+  1374→                    <div class="nn-neuron">Drop</div>
+  1375→                    <div class="layer-label">Task Head<br><small>Risk Classifier</small></div>
+  1376→                </div>
+  1377→                
+  1378→                <span class="nn-connector">→</span>
+  1379→                
+  1380→                <!-- Output Layer -->
+  1381→                <div class="nn-layer layer-output">
+  1382→                    <div class="nn-neuron">R</div>
+  1383→                    <div class="nn-neuron">Score</div>
+  1384→                    <div class="layer-label">Output<br><small>0-100 Risk</small></div>
+  1385→                </div>
+  1386→            </div>
+  1387→
+  1388→            <div class="nn-specs">
+  1389→                <div class="spec-item">
+  1390→                    <div class="spec-value">175B</div>
+  1391→                    <div class="spec-label">Parameters</div>
+  1392→                </div>
+  1393→                <div class="spec-item">
+  1394→                    <div class="spec-value">96</div>
+  1395→                    <div class="spec-label">Transformer Layers</div>
+  1396→                </div>
+  1397→                <div class="spec-item">
+  1398→                    <div class="spec-value">3072</div>
+  1399→                    <div class="spec-label">Hidden Dimension</div>
+  1400→                </div>
+  1401→                <div class="spec-item">
+  1402→                    <div class="spec-value">48</div>
+  1403→                    <div class="spec-label">Attention Heads</div>
+  1404→                </div>
+  1405→                <div class="spec-item">
+  1406→                    <div class="spec-value">128K</div>
+  1407→                    <div class="spec-label">Context Window</div>
+  1408→                </div>
+  1409→                <div class="spec-item">
+  1410→                    <div class="spec-value">50M+</div>
+  1411→                    <div class="spec-label">Training Docs</div>
+  1412→                </div>
+  1413→            </div>
+  1414→        </div>
+  1415→    </section>
+  1416→
+  1417→    <!-- ===== REAL-TIME INFERENCE STATS ===== -->
+  1418→    <section id="inference">
+  1419→        <div class="section-header">
+  1420→            <div class="section-tag">⚡ Live Performance</div>
+  1421→            <h2 class="section-title">Real-Time Inference Statistics</h2>
+  1422→            <p class="section-desc">Live metrics from our production inference cluster</p>
+  1423→        </div>
+  1424→
+  1425→        <div class="inference-stats">
+  1426→            <div class="stat-card">
+  1427→                <div class="stat-icon">⚡</div>
+  1428→                <div class="stat-big">142ms</div>
+  1429→                <div class="stat-label">Average Latency (P50)</div>
+  1430→                <div class="stat-sub">↓ 93% faster than Salesforce</div>
+  1431→                <div class="stat-chart-mini">
+  1432→                    <div class="mini-bar" style="height:60%;"></div>
+  1433→                    <div class="mini-bar" style="height:45%;"></div>
+  1434→                    <div class="mini-bar" style="height:70%;"></div>
+  1435→                    <div class="mini-bar" style="height:55%;"></div>
+  1436→                    <div class="mini-bar" style="height:40%;"></div>
+  1437→                    <div class="mini-bar" style="height:50%;"></div>
+  1438→                    <div class="mini-bar" style="height:35%;"></div>
+  1439→                    <div class="mini-bar" style="height:42%;"></div>
+  1440→                </div>
+  1441→            </div>
+  1442→            <div class="stat-card">
+  1443→                <div class="stat-icon">📈</div>
+  1444→                <div class="stat-big">2.4M</div>
+  1445→                <div class="stat-label">Inferences/Second</div>
+  1446→                <div class="stat-sub">↑ 47K peak capacity</div>
+  1447→                <div class="stat-chart-mini">
+  1448→                    <div class="mini-bar" style="height:80%;"></div>
+  1449→                    <div class="mini-bar" style="height:85%;"></div>
+  1450→                    <div class="mini-bar" style="height:75%;"></div>
+  1451→                    <div class="mini-bar" style="height:90%;"></div>
+  1452→                    <div class="mini-bar" style="height:82%;"></div>
+  1453→                    <div class="mini-bar" style="height:88%;"></div>
+  1454→                    <div class="mini-bar" style="height:79%;"></div>
+  1455→                    <div class="mini-bar" style="height:84%;"></div>
+  1456→                </div>
+  1457→            </div>
+  1458→            <div class="stat-card">
+  1459→                <div class="stat-icon">🎯</div>
+  1460→                <div class="stat-big">94.2%</div>
+  1461→                <div class="stat-label">Prediction Accuracy</div>
+  1462→                <div class="stat-sub">↑ +21% vs Salesforce</div>
+  1463→                <div class="stat-chart-mini">
+  1464→                    <div class="mini-bar" style="height:92%;"></div>
+  1465→                    <div class="mini-bar" style="height:93%;"></div>
+  1466→                    <div class="mini-bar" style="height:94%;"></div>
+  1467→                    <div class="mini-bar" style="height:94%;"></div>
+  1468→                    <div class="mini-bar" style="height:95%;"></div>
+  1469→                    <div class="mini-bar" style="height:94%;"></div>
+  1470→                    <div class="mini-bar" style="height:94%;"></div>
+  1471→                    <div class="mini-bar" style="height:94%;"></div>
+  1472→                </div>
+  1473→            </div>
+  1474→            <div class="stat-card">
+  1475→                <div class="stat-icon">🔄</div>
+  1476→                <div class="stat-big">99.97%</div>
+  1477→                <div class="stat-label">System Uptime</div>
+  1478→                <div class="stat-sub">Enterprise SLA guaranteed</div>
+  1479→                <div class="stat-chart-mini">
+  1480→                    <div class="mini-bar" style="height:98%;"></div>
+  1481→                    <div class="mini-bar" style="height:99%;"></div>
+  1482→                    <div class="mini-bar" style="height:100%;"></div>
+  1483→                    <div class="mini-bar" style="height:100%;"></div>
+  1484→                    <div class="mini-bar" style="height:99%;"></div>
+  1485→                    <div class="mini-bar" style="height:100%;"></div>
+  1486→                    <div class="mini-bar" style="height:100%;"></div>
+  1487→                    <div class="mini-bar" style="height:100%;"></div>
+  1488→                </div>
+  1489→            </div>
+  1490→        </div>
+  1491→    </section>
+  1492→
+  1493→    <!-- ===== AUDIT TRAIL ===== -->
+  1494→    <section id="audit">
+  1495→        <div class="section-header">
+  1496→            <div class="section-tag">📜 Regulatory Compliance</div>
+  1497→            <h2 class="section-title">Decision Audit Trail</h2>
+  1498→            <p class="section-desc">Complete, tamper-proof record of every AI decision for regulatory compliance</p>
+  1499→        </div>
+  1500→
+  1501→        <div class="audit-trail">
+  1502→            <div class="card-header">
+  1503→                <span class="card-title">📋 Audit Trail: Prediction ID #SC-2025-08472-FXC</span>
+  1504→                <span style="font-size:0.78rem;padding:0.2rem 0.6rem;background:rgba(52,211,153,0.12);color:#34d399;border-radius:6px;">EU AI Act Compliant</span>
+  1505→            </div>
+  1506→            <div class="audit-timeline">
+  1507→                <div class="timeline-item">
+  1508→                    <div class="timeline-marker marker-data">📥</div>
+  1509→                    <div class="timeline-content">
+  1510→                        <div class="timeline-title">Data Ingestion Started</div>
+  1511→                        <div class="timeline-detail">Received 847 data points from 23 sources including financial reports, news feeds, shipping manifests, customs data</div>
+  1512→                    </div>
+  1513→                    <div class="timeline-time">2025-01-15 14:23:01.142 UTC</div>
+  1514→                </div>
+  1515→                <div class="timeline-item">
+  1516→                    <div class="timeline-marker marker-feature">🔍</div>
+  1517→                    <div class="timeline-content">
+  1518→                        <div class="timeline-title">Feature Engineering Complete</div>
+  1519→                        <div class="timeline-detail">Extracted 12,847 features across 6 categories: Financial (2,341), Operational (3,892), Geopolitical (2,156), Compliance (1,847), ESG (1,523), Network (1,088)</div>
+  1520→                    </div>
+  1521→                    <div class="timeline-time">2025-01-15 14:23:01.287 UTC</div>
+  1522→                </div>
+  1523→                <div class="timeline-item">
+  1524→                    <div class="timeline-marker marker-model">🧠</div>
+  1525→                    <div class="timeline-content">
+  1526→                        <div class="timeline-title">Model Inference Executed</div>
+  1527→                        <div class="timeline-detail">SupplyChain-GPT v4.0 (SHA256: a3f8...c2d1) processed input → Raw output: 78.34 | Confidence: 0.942 | P-values computed</div>
+  1528→                    </div>
+  1529→                    <div class="timeline-time">2025-01-15 14:23:01.429 UTC</div>
+  1530→                </div>
+  1531→                <div class="timeline-item">
+  1532→                    <div class="timeline-marker marker-feature">📊</div>
+  1533→                    <div class="timeline-content">
+  1534→                        <div class="timeline-title">SHAP Analysis Completed</div>
+  1535→                        <div class="timeline-detail">Computed 847 SHAP values | Top feature: Geopolitical Exposure (+18.4) | Total explanation size: 24.3KB</div>
+  1536→                    </div>
+  1537→                    <div class="timeline-time">2025-01-15 14:23:02.156 UTC</div>
+  1538→                </div>
+  1539→                <div class="timeline-item">
+  1540→                    <div class="timeline-marker marker-feature">🔄</div>
+  1541→                    <div class="timeline-content">
+  1542→                        <div class="timeline-title">Counterfactual Generation Done</div>
+  1543→                        <div class="timeline-detail">Generated 4 actionable counterfactual scenarios | Best mitigation: Add VN/IN secondary supplier (-22 pts risk reduction)</div>
+  1544→                    </div>
+  1545→                    <div class="timeline-time">2025-01-15 14:23:02.891 UTC</div>
+  1546→                </div>
+  1547→                <div class="timeline-item">
+  1548→                    <div class="timeline-marker marker-output">📤</div>
+  1549→                    <div class="timeline-content">
+  1550→                        <div class="timeline-title">Result Published & Logged</div>
+  1551→                        <div class="timeline-detail">Final output stored in immutable ledger | Hash: 0x7f3a...9c2d | Blockchain verified | Ready for human review</div>
+  1552→                    </div>
+  1553→                    <div class="timeline-time">2025-01-15 14:23:03.004 UTC</div>
+  1554→                </div>
+  1555→            </div>
+  1556→        </div>
+  1557→    </section>
+  1558→
+  1559→</div>
+  1560→
+  1561→<!-- ===== FOOTER ===== -->
+  1562→<footer style="border-top:1px solid var(--glass-border);padding:1.5rem 2rem;text-align:center;color:var(--text-secondary);font-size:0.82rem;margin-top:3rem;">
+  1563→    <p>© 2025 AISupChain Pro | Enterprise Supply Chain Intelligence Platform | SOC 2 Type II Certified | ISO 27001 | GDPR Compliant | EU AI Act Ready</p>
+  1564→</footer>
+  1565→
+  1566→    <script>
+  1567→        // ===== THEME TOGGLE FUNCTIONALITY =====
+  1568→        document.addEventListener("DOMContentLoaded", function() {
+  1569→            const themeToggle = document.getElementById("themeToggle");
+  1570→            const htmlElement = document.documentElement;
+  1571→            
+  1572→            // Check for saved theme preference or default to dark
+  1573→            const savedTheme = localStorage.getItem("theme") || "dark";
+  1574→            htmlElement.setAttribute("data-theme", savedTheme);
+  1575→            
+  1576→            if (themeToggle) {
+  1577→                themeToggle.addEventListener("click", function() {
+  1578→                    const currentTheme = htmlElement.getAttribute("data-theme");
+  1579→                    const newTheme = currentTheme === "dark" ? "light" : "dark";
+  1580→                    
+  1581→                    htmlElement.setAttribute("data-theme", newTheme);
+  1582→                    localStorage.setItem("theme", newTheme);
+  1583→                    
+  1584→                    // Smooth transition
+  1585→                    document.body.style.transition = "background 0.3s ease, color 0.3s ease";
+  1586→                });
+  1587→            }
+  1588→        });
+  1589→    </script>
+  1590→</body>
+  1591→</html>
