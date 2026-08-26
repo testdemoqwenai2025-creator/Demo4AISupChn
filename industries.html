@@ -1,0 +1,713 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Industry Solutions - AI Supply Chain Risk Predictor</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, #f0fdf4 0%, #ffffff 50%, #ecfeff 100%);
+            color: #0a1628;
+            line-height: 1.6;
+        }
+
+        /* Navigation */
+        nav {
+            position: sticky; top: 0; z-index: 100;
+            background: rgba(255,255,255,0.92);
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid rgba(5,150,105,0.15);
+            padding: 1rem 2rem;
+        }
+        .nav-container { max-width: 1400px; margin: 0 auto; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem; }
+        .logo { font-size: 1.25rem; font-weight: bold; color: #059669; text-decoration: none; display: flex; align-items: center; gap: 0.5rem; }
+        .nav-links { display: flex; gap: 0.35rem; align-items: center; flex-wrap: wrap; }
+        .nav-links a {
+            color: #64748b; text-decoration: none; padding: 0.4rem 0.65rem;
+            border-radius: 0.5rem; transition: all 0.3s; font-size: 0.8rem;
+        }
+        .nav-links a:hover, .nav-links a.active { background: rgba(5,150,105,0.1); color: #059669; }
+
+        /* Hero Section */
+        .hero {
+            position: relative; overflow: hidden;
+            padding: 5rem 2rem; text-align: center;
+            border-bottom: 1px solid rgba(59,130,246,0.1);
+        }
+        .hero::before {
+            content: ''; position: absolute; top: 25%; right: 25%;
+            width: 500px; height: 500px; background: rgba(59,130,246,0.06);
+            border-radius: 50%; filter: blur(80px);
+        }
+        .hero-badge {
+            display: inline-flex; align-items: center; gap: 0.5rem;
+            padding: 0.5rem 1rem; border: 1px solid rgba(59,130,246,0.3);
+            border-radius: 2rem; font-size: 0.875rem; color: #3b82f6;
+            margin-bottom: 1.5rem; background: rgba(59,130,246,0.05);
+        }
+        .hero h1 { font-size: 3rem; font-weight: 800; line-height: 1.2; margin-bottom: 1.5rem; }
+        .hero h1 .gradient-text {
+            background: linear-gradient(135deg, #3b82f6, #06b6d4);
+            -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+        }
+        .hero p { font-size: 1.15rem; color: #64748b; max-width: 700px; margin: 0 auto 2rem; }
+
+        /* Global Stats */
+        .global-stats { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1.25rem; max-width: 800px; margin: 3rem auto 0; }
+        .gstat-card {
+            background: rgba(255,255,255,0.7); backdrop-filter: blur(20px);
+            border: 1px solid rgba(59,130,246,0.12); border-radius: 0.75rem;
+            padding: 1.25rem; text-align: center;
+        }
+        .gstat-card .icon { font-size: 1.5rem; margin-bottom: 0.5rem; color: #3b82f6; }
+        .gstat-card .value { font-size: 1.5rem; font-weight: 700; }
+        .gstat-card .label { font-size: 0.78rem; color: #64748b; }
+
+        /* Sections */
+        section { padding: 5rem 2rem; }
+        .section-container { max-width: 1200px; margin: 0 auto; }
+
+        /* Industry Section Header */
+        .section-header { text-align: center; margin-bottom: 4rem; }
+        .section-badge {
+            display: inline-flex; align-items: center; gap: 0.4rem;
+            padding: 0.4rem 0.9rem; background: rgba(100,116,139,0.12);
+            border-radius: 2rem; font-size: 0.82rem; color: #64748b; margin-bottom: 1rem;
+        }
+        .section-title { font-size: 2rem; font-weight: 700; margin-bottom: 0.75rem; }
+        .section-subtitle { color: #64748b; max-width: 550px; margin: 0 auto; font-size: 0.95rem; }
+
+        /* Industry Card Layout */
+        .industry-section { margin-bottom: 6rem; }
+        .industry-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 3rem; align-items: start; }
+        .industry-grid.reverse { direction: rtl; }
+        .industry-grid.reverse > * { direction: ltr; }
+
+        /* Industry Info Column */
+        .industry-tag {
+            display: inline-flex; align-items: center; gap: 0.6rem;
+            padding: 0.6rem 1.25rem; border-radius: 0.75rem; margin-bottom: 1.25rem;
+            font-weight: 600; font-size: 0.95rem;
+        }
+        .tag-manufacturing { background: linear-gradient(135deg, rgba(6,182,212,0.15), rgba(59,130,246,0.15)); color: #06b6d4; }
+        .tag-retail { background: linear-gradient(135deg, rgba(139,92,246,0.15), rgba(168,85,247,0.15)); color: #8b5cf6; }
+        .tag-healthcare { background: linear-gradient(135deg, rgba(244,63,94,0.15), rgba(236,72,153,0.15)); color: #f43f5e; }
+        .tag-automotive { background: linear-gradient(135deg, rgba(245,158,11,0.15), rgba(249,115,22,0.15)); color: #f59e0b; }
+        .tag-technology { background: linear-gradient(135deg, rgba(16,185,129,0.15), rgba(34,197,94,0.15)); color: #10b981; }
+
+        .industry-info h3 { font-size: 1.5rem; font-weight: 700; margin-bottom: 0.75rem; }
+        .industry-info p { color: #64748b; margin-bottom: 1.5rem; line-height: 1.7; }
+
+        /* Stats Grid */
+        .stats-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 0.75rem; margin-bottom: 1.75rem; }
+        .stat-box {
+            background: rgba(255,255,255,0.7); backdrop-filter: blur(10px);
+            border: 1px solid rgba(5,150,105,0.1); border-radius: 0.625rem;
+            padding: 0.875rem 0.5rem; text-align: center;
+        }
+        .stat-box .val { font-size: 1.15rem; font-weight: 700; color: #059669; }
+        .stat-box .lbl { font-size: 0.68rem; color: #94a3b8; margin-top: 0.2rem; line-height: 1.3; }
+
+        /* Challenges & Solutions */
+        .cs-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; margin-bottom: 1.75rem; }
+        .cs-col h4 { font-size: 0.78rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em; color: #64748b; margin-bottom: 0.75rem; display: flex; align-items: center; gap: 0.4rem; }
+        .cs-list { list-style: none; }
+        .cs-list li { display: flex; align-items: flex-start; gap: 0.5rem; font-size: 0.87rem; margin-bottom: 0.55rem; color: #475569; }
+        .cs-list li .dot { width: 6px; height: 6px; border-radius: 50%; flex-shrink: 0; margin-top: 0.45rem; }
+        .dot-amber { background: #f59e0b; }
+        .dot-emerald { background: #10b981; }
+        .check-icon { color: #10b981; flex-shrink: 0; margin-top: 0.15rem; }
+
+        .explore-btn {
+            display: inline-flex; align-items: center; gap: 0.5rem;
+            padding: 0.7rem 1.5rem; border-radius: 0.625rem; font-size: 0.9rem; font-weight: 600;
+            border: none; cursor: pointer; transition: all 0.3s;
+            background: linear-gradient(135deg, #059669, #06b6d4); color: white;
+        }
+        .explore-btn:hover { opacity: 0.9; transform: translateY(-1px); box-shadow: 0 4px 12px rgba(5,150,105,0.3); }
+
+        /* Use Cases Card */
+        .usecase-card {
+            background: rgba(255,255,255,0.8); backdrop-filter: blur(20px);
+            border: 1px solid rgba(5,150,105,0.12); border-radius: 1rem;
+            padding: 1.75rem; height: 100%;
+        }
+        .usecase-header { display: flex; align-items: center; gap: 0.5rem; margin-bottom: 1.25rem; font-weight: 600; font-size: 1rem; }
+        .usecase-item {
+            padding: 1rem; border-radius: 0.75rem; border: 1px solid rgba(5,150,105,0.08);
+            margin-bottom: 0.75rem; transition: all 0.3s;
+        }
+        .usecase-item:hover { border-color: rgba(5,150,105,0.3); }
+        .usecase-item-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.35rem; }
+        .usecase-item h4 { font-size: 0.88rem; font-weight: 600; }
+        .usecase-metric {
+            padding: 0.15rem 0.5rem; border-radius: 0.375rem; font-size: 0.72rem;
+            font-weight: 700; color: #059669; border: 1px solid rgba(5,150,105,0.2);
+        }
+        .usecase-item p { font-size: 0.82rem; color: #64748b; }
+
+        /* ROI Box */
+        .roi-box {
+            margin-top: 1.25rem; padding: 1.25rem; border-radius: 0.75rem;
+            background: linear-gradient(135deg, rgba(5,150,105,0.08), rgba(6,182,212,0.08));
+            border: 1px solid rgba(5,150,105,0.15);
+        }
+        .roi-header { display: flex; justify-content: space-between; align-items: center; }
+        .roi-label { font-size: 0.82rem; color: #64748b; }
+        .roi-value { font-size: 2rem; font-weight: 700; color: #059669; }
+        .roi-desc { font-size: 0.78rem; color: #94a3b8; margin-top: 0.5rem; }
+
+        /* More Industries Grid */
+        .more-section { background: rgba(248,250,252,0.7); }
+        .more-grid { display: grid; grid-template-columns: repeat(6, 1fr); gap: 0.75rem; max-width: 900px; margin: 0 auto; }
+        .more-card {
+            background: rgba(255,255,255,0.8); backdrop-filter: blur(10px);
+            border: 1px solid rgba(5,150,105,0.08); border-radius: 0.75rem;
+            padding: 1rem 0.75rem; text-align: center; cursor: pointer; transition: all 0.3s;
+        }
+        .more-card:hover { border-color: rgba(5,150,105,0.3); transform: translateY(-2px); }
+        .more-card .icon { font-size: 1.5rem; margin-bottom: 0.4rem; color: #94a3b8; }
+        .more-card:hover .icon { color: #059669; }
+        .more-card .name { font-size: 0.72rem; font-weight: 500; color: #475569; }
+
+        /* CTA Section */
+        .cta-card {
+            background: rgba(255,255,255,0.85); backdrop-filter: blur(20px);
+            border: 1px solid rgba(5,150,105,0.12); border-radius: 1.5rem;
+            padding: 4rem 2.5rem; max-width: 750px; margin: 0 auto; text-align: center;
+        }
+        .cta-icon { font-size: 3.5rem; margin-bottom: 1.25rem; }
+        .cta-card h2 { font-size: 1.85rem; font-weight: 700; margin-bottom: 0.75rem; }
+        .cta-card p { color: #64748b; margin-bottom: 2rem; max-width: 450px; margin-left: auto; margin-right: auto; }
+        .cta-buttons { display: flex; justify-content: center; gap: 1rem; flex-wrap: wrap; }
+        .btn-primary {
+            padding: 0.8rem 2rem; border-radius: 0.625rem; font-size: 0.95rem; font-weight: 600;
+            border: none; cursor: pointer; background: linear-gradient(135deg, #059669, #06b6d4); color: white;
+            display: inline-flex; align-items: center; gap: 0.5rem; transition: all 0.3s;
+        }
+        .btn-outline {
+            padding: 0.8rem 2rem; border-radius: 0.625rem; font-size: 0.95rem; font-weight: 600;
+            border: 1px solid rgba(5,150,105,0.3); cursor: pointer; background: white; color: #059669;
+            display: inline-flex; align-items: center; gap: 0.5rem; transition: all 0.3s;
+        }
+        .btn-primary:hover, .btn-outline:hover { transform: translateY(-1px); box-shadow: 0 4px 12px rgba(5,150,105,0.2); }
+
+        footer {
+            background: rgba(5,150,105,0.03); border-top: 1px solid rgba(5,150,105,0.1);
+            padding: 2rem; text-align: center; color: #94a3b8; font-size: 0.85rem;
+        }
+
+        @media (max-width: 1024px) {
+            .global-stats { grid-template-columns: repeat(2, 1fr); }
+            .industry-grid { grid-template-columns: 1fr; }
+            .industry-grid.reverse { direction: ltr; }
+            .stats-grid { grid-template-columns: repeat(2, 1fr); }
+            .more-grid { grid-template-columns: repeat(3, 1fr); }
+        }
+        @media (max-width: 768px) {
+            .hero h1 { font-size: 2rem; }
+            .global-stats { grid-template-columns: repeat(2, 1fr); }
+            .cs-grid { grid-template-columns: 1fr; }
+            .more-grid { grid-template-columns: repeat(2, 1fr); }
+            .nav-links { display: none; }
+        }
+    </style>
+</head>
+<body>
+
+<!-- Navigation -->
+<nav>
+    <div class="nav-container">
+        <a href="/Demo4AISupChn/" class="logo">🛡️ AI Supply Chain</a>
+        <div class="nav-links">
+            <a href="/Demo4AISupChn/">Home</a>
+            <a href="/Demo4AISupChn/dashboard.html">Dashboard</a>
+            <a href="/Demo4AISupChn/command-center.html">Command Center</a>
+            <a href="/Demo4AISupChn/platform.html">Platform</a>
+            <a href="/Demo4AISupChn/intelligence.html">AI/ML Engine</a>
+            <a href="/Demo4AISupChn/resources.html">Resources</a>
+            <a href="/Demo4AISupChn/about.html">About</a>
+            <a href="/Demo4AISupChn/customers.html">Customers</a>
+            <a href="/Demo4AISupChn/agents.html">AI Agents</a>
+            <a href="/Demo4AISupChn/events.html">Events</a>
+            <a href="/Demo4AISupChn/industries.html" class="active">Industries</a>
+            <a href="/Demo4AISupChn/product.html">Product</a>
+            <a href="/Demo4AISupChn/support.html">Support</a>
+        </div>
+    </div>
+</nav>
+
+<!-- Hero Section -->
+<section class="hero">
+    <div class="hero-badge">🏢 Industry Solutions</div>
+    <h1>Solutions for Every<br><span class="gradient-text">Industry</span></h1>
+    <p>Tailored supply chain intelligence solutions designed for the unique challenges of each industry sector. From manufacturing to healthcare — we've got you covered.</p>
+
+    <div class="global-stats">
+        <div class="gstat-card"><div class="icon">🏢</div><div class="value">40+</div><div class="label">Industries Served</div></div>
+        <div class="gstat-card"><div class="icon">📈</div><div class="value">$2.4B+</div><div class="label">Client Savings Generated</div></div>
+        <div class="gstat-card"><div class="icon">🌍</div><div class="value">190+</div><div class="label">Countries Covered</div></div>
+        <div class="gstat-card"><div class="icon">👥</div><div class="value">98.7%</div><div class="label">Client Retention Rate</div></div>
+    </div>
+</section>
+
+<!-- Industry Cards Section -->
+<section>
+    <div class="section-container">
+        <div class="section-header">
+            <div class="section-badge">🎯 Industry Focus</div>
+            <h2 class="section-title">Specialized Solutions by Industry</h2>
+            <p class="section-subtitle">Deep domain expertise combined with cutting-edge AI technology</p>
+        </div>
+
+        <!-- Manufacturing -->
+        <div class="industry-section" id="manufacturing">
+            <div class="industry-grid">
+                <div class="industry-info">
+                    <div class="industry-tag tag-manufacturing">🏭 Manufacturing</div>
+                    <h3>Supply Chain Intelligence for Manufacturing</h3>
+                    <p>End-to-end supply chain visibility for complex multi-tier manufacturing operations with global supplier networks.</p>
+
+                    <div class="stats-grid">
+                        <div class="stat-box"><div class="val">180+</div><div class="lbl">Clients Served</div></div>
+                        <div class="stat-box"><div class="val">45K+</div><div class="lbl">Suppliers Monitored</div></div>
+                        <div class="stat-box"><div class="val">2,400+</div><div class="lbl">Risk Events Prevented</div></div>
+                        <div class="stat-box"><div class="val">340%</div><div class="lbl">Avg. ROI</div></div>
+                    </div>
+
+                    <div class="cs-grid">
+                        <div class="cs-col">
+                            <h4><span style="color:#f59e0b;">⚡</span> Key Challenges</h4>
+                            <ul class="cs-list">
+                                <li><span class="dot dot-amber"></span> Multi-tier supplier visibility gaps</li>
+                                <li><span class="dot dot-amber"></span> Component shortage prediction</li>
+                                <li><span class="dot dot-amber"></span> Quality control across regions</li>
+                                <li><span class="dot dot-amber"></span> Geopolitical disruption risks</li>
+                            </ul>
+                        </div>
+                        <div class="cs-col">
+                            <h4><span style="color:#10b981;">✅</span> Our Solutions</h4>
+                            <ul class="cs-list">
+                                <li><span class="check-icon">✓</span> Real-time tier mapping (1-N)</li>
+                                <li><span class="check-icon">✓</span> AI-powered demand sensing</li>
+                                <li><span class="check-icon">✓</span> Automated quality monitoring</li>
+                                <li><span class="check-icon">✓</span> Geopolitical risk alerts</li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <button class="explore-btn">Explore Manufacturing Solution →</button>
+                </div>
+
+                <div class="usecase-card">
+                    <div class="usecase-header">💡 Use Cases & Results</div>
+
+                    <div class="usecase-item">
+                        <div class="usecase-item-header">
+                            <h4>Tier-N Supplier Discovery</h4>
+                            <span class="usecase-metric">99% visibility</span>
+                        </div>
+                        <p>Map complete supplier chains down to raw materials</p>
+                    </div>
+
+                    <div class="usecase-item">
+                        <div class="usecase-item-header">
+                            <h4>Shortage Prediction</h4>
+                            <span class="usecase-metric">92% accuracy</span>
+                        </div>
+                        <p>Predict component shortages 60+ days in advance</p>
+                    </div>
+
+                    <div class="usecase-item">
+                        <div class="usecase-item-header">
+                            <h4>Quality Risk Scoring</h4>
+                            <span class="usecase-metric">85% reduction</span>
+                        </div>
+                        <p>Continuous quality risk assessment across all suppliers</p>
+                    </div>
+
+                    <div class="roi-box">
+                        <div class="roi-header">
+                            <div>
+                                <div class="roi-label">Average ROI</div>
+                                <div class="roi-value">340%</div>
+                            </div>
+                            <span style="font-size:2.5rem;color:rgba(5,150,105,0.3);">🏆</span>
+                        </div>
+                        <div class="roi-desc">Within 12 months of deployment</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Retail & E-commerce -->
+        <div class="industry-section" id="retail">
+            <div class="industry-grid reverse">
+                <div class="industry-info">
+                    <div class="industry-tag tag-retail">🛍️ Retail & E-commerce</div>
+                    <h3>Supply Chain Intelligence for Retail & E-commerce</h3>
+                    <p>Optimize inventory, reduce stockouts, and ensure ethical sourcing for modern retail supply chains.</p>
+
+                    <div class="stats-grid">
+                        <div class="stat-box"><div class="val">95+</div><div class="lbl">Retail Clients</div></div>
+                        <div class="stat-box"><div class="val">2M+</div><div class="lbl">SKUs Tracked</div></div>
+                        <div class="stat-box"><div class="val">15K+/yr</div><div class="lbl">Stockouts Prevented</div></div>
+                        <div class="stat-box"><div class="val">$45M+</div><div class="lbl">Cost Savings</div></div>
+                    </div>
+
+                    <div class="cs-grid">
+                        <div class="cs-col">
+                            <h4><span style="color:#f59e0b;">⚡</span> Key Challenges</h4>
+                            <ul class="cs-list">
+                                <li><span class="dot dot-amber"></span> Demand volatility management</li>
+                                <li><span class="dot dot-amber"></span> Seasonal inventory optimization</li>
+                                <li><span class="dot dot-amber"></span> Fast fashion compliance</li>
+                                <li><span class="dot dot-amber"></span> Last-mile delivery risks</li>
+                            </ul>
+                        </div>
+                        <div class="cs-col">
+                            <h4><span style="color:#10b981;">✅</span> Our Solutions</h4>
+                            <ul class="cs-list">
+                                <li><span class="check-icon">✓</span> AI demand forecasting</li>
+                                <li><span class="check-icon">✓</span> Dynamic inventory optimization</li>
+                                <li><span class="check-icon">✓</span> EUDR/sustainability tracking</li>
+                                <li><span class="check-icon">✓</span> Logistics risk monitoring</li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <button class="explore-btn">Explore Retail Solution →</button>
+                </div>
+
+                <div class="usecase-card">
+                    <div class="usecase-header">💡 Use Cases & Results</div>
+
+                    <div class="usecase-item">
+                        <div class="usecase-item-header">
+                            <h4>Demand Forecasting</h4>
+                            <span class="usecase-metric">23% less overstock</span>
+                        </div>
+                        <p>ML models predict demand with 94% accuracy at SKU level</p>
+                    </div>
+
+                    <div class="usecase-item">
+                        <div class="usecase-item-header">
+                            <h4>Sustainability Compliance</h4>
+                            <span class="usecase-metric">100% audit ready</span>
+                        </div>
+                        <p>Track and verify sustainable sourcing claims</p>
+                    </div>
+
+                    <div class="usecase-item">
+                        <div class="usecase-item-header">
+                            <h4>Omnichannel Inventory</h4>
+                            <span class="usecase-metric">40% faster</span>
+                        </div>
+                        <p>Unified inventory visibility across all channels</p>
+                    </div>
+
+                    <div class="roi-box">
+                        <div class="roi-header">
+                            <div>
+                                <div class="roi-label">Average ROI</div>
+                                <div class="roi-value">280%</div>
+                            </div>
+                            <span style="font-size:2.5rem;color:rgba(5,150,105,0.3);">🏆</span>
+                        </div>
+                        <div class="roi-desc">Within 9 months of deployment</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Healthcare & Pharma -->
+        <div class="industry-section" id="healthcare">
+            <div class="industry-grid">
+                <div class="industry-info">
+                    <div class="industry-tag tag-healthcare">❤️ Healthcare & Pharma</div>
+                    <h3>Supply Chain Intelligence for Healthcare & Pharma</h3>
+                    <p>Ensure drug safety, regulatory compliance, and supply continuity for life-critical healthcare products.</p>
+
+                    <div class="stats-grid">
+                        <div class="stat-box"><div class="val">65+</div><div class="lbl">Pharma Clients</div></div>
+                        <div class="stat-box"><div class="val">50K+</div><div class="lbl">Drug Products Tracked</div></div>
+                        <div class="stat-box"><div class="val">99.7%</div><div class="lbl">Compliance Score</div></div>
+                        <div class="stat-box"><div class="val">99.9%</div><div class="lbl">Supply Continuity</div></div>
+                    </div>
+
+                    <div class="cs-grid">
+                        <div class="cs-col">
+                            <h4><span style="color:#f59e0b;">⚡</span> Key Challenges</h4>
+                            <ul class="cs-list">
+                                <li><span class="dot dot-amber"></span> Cold chain integrity monitoring</li>
+                                <li><span class="dot dot-amber"></span> Drug authenticity verification</li>
+                                <li><span class="dot dot-amber"></span> Regulatory compliance (FDA/EMA)</li>
+                                <li><span class="dot dot-amber"></span> Critical medicine availability</li>
+                            </ul>
+                        </div>
+                        <div class="cs-col">
+                            <h4><span style="color:#10b981;">✅</span> Our Solutions</h4>
+                            <ul class="cs-list">
+                                <li><span class="check-icon">✓</span> Cold chain IoT integration</li>
+                                <li><span class="check-icon">✓</span> Serialization tracking</li>
+                                <li><span class="check-icon">✓</span> Regulatory change monitoring</li>
+                                <li><span class="check-icon">✓</span> Critical supplier prioritization</li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <button class="explore-btn">Explore Healthcare Solution →</button>
+                </div>
+
+                <div class="usecase-card">
+                    <div class="usecase-header">💡 Use Cases & Results</div>
+
+                    <div class="usecase-item">
+                        <div class="usecase-item-header">
+                            <h4>Cold Chain Monitoring</h4>
+                            <span class="usecase-metric">&lt;0.1% excursions</span>
+                        </div>
+                        <p>Real-time temperature and condition tracking globally</p>
+                    </div>
+
+                    <div class="usecase-item">
+                        <div class="usecase-item-header">
+                            <h4>Drug Supply Security</h4>
+                            <span class="usecase-metric">100% traceability</span>
+                        </div>
+                        <p>Detect counterfeit drugs and diversion risks</p>
+                    </div>
+
+                    <div class="usecase-item">
+                        <div class="usecase-item-header">
+                            <h4>Regulatory Compliance</h4>
+                            <span class="usecase-metric">Zero violations</span>
+                        </div>
+                        <p>Automated FDA/EMA/GDPR compliance tracking</p>
+                    </div>
+
+                    <div class="roi-box">
+                        <div class="roi-header">
+                            <div>
+                                <div class="roi-label">Average ROI</div>
+                                <div class="roi-value">420%</div>
+                            </div>
+                            <span style="font-size:2.5rem;color:rgba(5,150,105,0.3);">🏆</span>
+                        </div>
+                        <div class="roi-desc">Including avoided recalls</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Automotive -->
+        <div class="industry-section" id="automotive">
+            <div class="industry-grid reverse">
+                <div class="industry-info">
+                    <div class="industry-tag tag-automotive">🚗 Automotive</div>
+                    <h3>Supply Chain Intelligence for Automotive</h3>
+                    <p>Manage complex automotive supply chains with thousands of components and just-in-time requirements.</p>
+
+                    <div class="stats-grid">
+                        <div class="stat-box"><div class="val">42+</div><div class="lbl">Auto Clients</div></div>
+                        <div class="stat-box"><div class="val">120K+</div><div class="lbl">Components Tracked</div></div>
+                        <div class="stat-box"><div class="val">380+</div><div class="lbl">Production Lines Protected</div></div>
+                        <div class="stat-box"><div class="val">98%</div><div class="lbl">Line Stoppage Prevention</div></div>
+                    </div>
+
+                    <div class="cs-grid">
+                        <div class="cs-col">
+                            <h4><span style="color:#f59e0b;">⚡</span> Key Challenges</h4>
+                            <ul class="cs-list">
+                                <li><span class="dot dot-amber"></span> Just-in-time dependency risks</li>
+                                <li><span class="dot dot-amber"></span> Semiconductor shortage exposure</li>
+                                <li><span class="dot dot-amber"></span> Multi-tier component sourcing</li>
+                                <li><span class="dot dot-amber"></span> EV transition supply chain</li>
+                            </ul>
+                        </div>
+                        <div class="cs-col">
+                            <h4><span style="color:#10b981;">✅</span> Our Solutions</h4>
+                            <ul class="cs-list">
+                                <li><span class="check-icon">✓</span> JIT risk modeling</li>
+                                <li><span class="check-icon">✓</span> Chip shortage early warning</li>
+                                <li><span class="check-icon">✓</span> Complete BOM mapping</li>
+                                <li><span class="check-icon">✓</span> EV material tracking</li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <button class="explore-btn">Explore Automotive Solution →</button>
+                </div>
+
+                <div class="usecase-card">
+                    <div class="usecase-header">💡 Use Cases & Results</div>
+
+                    <div class="usecase-item">
+                        <div class="usecase-item-header">
+                            <h4>JIT Risk Management</h4>
+                            <span class="usecase-metric">98% prevention</span>
+                        </div>
+                        <p>Predict and prevent production line stoppages</p>
+                    </div>
+
+                    <div class="usecase-item">
+                        <div class="usecase-item-header">
+                            <h4>Semiconductor Tracking</h4>
+                            <span class="usecase-metric">60-day warning</span>
+                        </div>
+                        <p>Monitor chip supply health across all tiers</p>
+                    </div>
+
+                    <div class="usecase-item">
+                        <div class="usecase-item-header">
+                            <h4>BOM Risk Analysis</h4>
+                            <span class="usecase-metric">100% coverage</span>
+                        </div>
+                        <p>Complete bill-of-materials risk assessment</p>
+                    </div>
+
+                    <div class="roi-box">
+                        <div class="roi-header">
+                            <div>
+                                <div class="roi-label">Average ROI</div>
+                                <div class="roi-value">510%</div>
+                            </div>
+                            <span style="font-size:2.5rem;color:rgba(5,150,105,0.3);">🏆</span>
+                        </div>
+                        <div class="roi-desc">Including prevented line stoppages</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Technology & Electronics -->
+        <div class="industry-section" id="technology">
+            <div class="industry-grid">
+                <div class="industry-info">
+                    <div class="industry-tag tag-technology">💻 Technology & Electronics</div>
+                    <h3>Supply Chain Intelligence for Technology & Electronics</h3>
+                    <p>Navigate the fast-paced tech supply chain with real-time insights into component availability and geopolitical risks.</p>
+
+                    <div class="stats-grid">
+                        <div class="stat-box"><div class="val">120+</div><div class="lbl">Tech Clients</div></div>
+                        <div class="stat-box"><div class="val">500K+</div><div class="lbl">Components Monitored</div></div>
+                        <div class="stat-box"><div class="val">35%</div><div class="lbl">Lead Time Reduction</div></div>
+                        <div class="stat-box"><div class="val">200%</div><div class="lbl">Supplier Diversification</div></div>
+                    </div>
+
+                    <div class="cs-grid">
+                        <div class="cs-col">
+                            <h4><span style="color:#f59e0b;">⚡</span> Key Challenges</h4>
+                            <ul class="cs-list">
+                                <li><span class="dot dot-amber"></span> Semiconductor dependencies</li>
+                                <li><span class="dot dot-amber"></span> Rare earth material access</li>
+                                <li><span class="dot dot-amber"></span> Geopolitical trade restrictions</li>
+                                <li><span class="dot dot-amber"></span> Rapid product lifecycle changes</li>
+                            </ul>
+                        </div>
+                        <div class="cs-col">
+                            <h4><span style="color:#10b981;">✅</span> Our Solutions</h4>
+                            <ul class="cs-list">
+                                <li><span class="check-icon">✓</span> Component intelligence platform</li>
+                                <li><span class="check-icon">✓</span> Trade restriction monitoring</li>
+                                <li><span class="check-icon">✓</span> Alternative source identification</li>
+                                <li><span class="check-icon">✓</span> Product lifecycle alignment</li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <button class="explore-btn">Explore Technology Solution →</button>
+                </div>
+
+                <div class="usecase-card">
+                    <div class="usecase-header">💡 Use Cases & Results</div>
+
+                    <div class="usecase-item">
+                        <div class="usecase-item-header">
+                            <h4>Component Intelligence</h4>
+                            <span class="usecase-metric">500K+ tracked</span>
+                        </div>
+                        <p>Real-time health scores for all electronic components</p>
+                    </div>
+
+                    <div class="usecase-item">
+                        <div class="usecase-item-header">
+                            <h4>Trade Alert System</h4>
+                            <span class="usecase-metric">&lt;5 min alert</span>
+                        </div>
+                        <p>Instant alerts on tariffs, sanctions, and export controls</p>
+                    </div>
+
+                    <div class="usecase-item">
+                        <div class="usecase-item-header">
+                            <h4>Source Diversification</h4>
+                            <span class="usecase-metric">200% more options</span>
+                        </div>
+                        <p>AI-recommended alternative suppliers for critical parts</p>
+                    </div>
+
+                    <div class="roi-box">
+                        <div class="roi-header">
+                            <div>
+                                <div class="roi-label">Average ROI</div>
+                                <div class="roi-value">290%</div>
+                            </div>
+                            <span style="font-size:2.5rem;color:rgba(5,150,105,0.3);">🏆</span>
+                        </div>
+                        <div class="roi-desc">Within 6 months of deployment</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</section>
+
+<!-- More Industries -->
+<section class="more-section">
+    <div class="section-container">
+        <div class="section-header">
+            <h2 class="section-title">More Industries We Serve</h2>
+            <p class="section-subtitle">Our platform adapts to any industry's unique supply chain needs</p>
+        </div>
+
+        <div class="more-grid">
+            <div class="more-card"><div class="icon">✈️</div><div class="name">Aerospace & Defense</div></div>
+            <div class="more-card"><div class="icon">🍽️</div><div class="name">Food & Beverage</div></div>
+            <div class="more-card"><div class="icon">⚡</div><div class="name">Energy & Utilities</div></div>
+            <div class="more-card"><div class="icon">🧪</div><div class="name">Chemicals</div></div>
+            <div class="more-card"><div class="icon">🚚</div><div class="name">Logistics & 3PL</div></div>
+            <div class="more-card"><div class="icon">🏦</div><div class="name">Financial Services</div></div>
+            <div class="more-card"><div class="icon">🌾</div><div class="name">Agriculture</div></div>
+            <div class="more-card"><div class="icon">👷</div><div class="name">Construction</div></div>
+            <div class="more-card"><div class="icon">📡</div><div class="name">Telecom</div></div>
+            <div class="more-card"><div class="icon">💎</div><div class="name">Mining</div></div>
+            <div class="more-card"><div class="icon">📦</div><div class="name">Consumer Goods</div></div>
+            <div class="more-card"><div class="icon">📋</div><div class="name">Government</div></div>
+        </div>
+    </div>
+</section>
+
+<!-- CTA Section -->
+<section>
+    <div class="section-container">
+        <div class="cta-card">
+            <div class="cta-icon">🌍</div>
+            <h2>Your Industry, Our Expertise</h2>
+            <p>Tell us about your industry-specific challenges and we'll show you how our AI platform can help.</p>
+            <div class="cta-buttons">
+                <button class="btn-primary">Schedule Industry Consultation →</button>
+                <button class="btn-outline">Download Industry Report 📄</button>
+            </div>
+        </div>
+    </div>
+</section>
+
+<footer>
+    <p>&copy; 2025 AI Supply Chain Risk Predictor. All rights reserved. | Demo4 Platform</p>
+</footer>
+
+</body>
+</html>
