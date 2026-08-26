@@ -1,0 +1,789 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Help & Support - AI Supply Chain Risk Predictor</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, #f0fdf4 0%, #ffffff 50%, #ecfeff 100%);
+            color: #0a1628;
+            line-height: 1.6;
+        }
+
+        /* Navigation */
+        nav {
+            position: sticky; top: 0; z-index: 100;
+            background: rgba(255,255,255,0.92);
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid rgba(5,150,105,0.15);
+            padding: 1rem 2rem;
+        }
+        .nav-container { max-width: 1400px; margin: 0 auto; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem; }
+        .logo { font-size: 1.25rem; font-weight: bold; color: #059669; text-decoration: none; display: flex; align-items: center; gap: 0.5rem; }
+        .nav-links { display: flex; gap: 0.35rem; align-items: center; flex-wrap: wrap; }
+        .nav-links a {
+            color: #64748b; text-decoration: none; padding: 0.4rem 0.65rem;
+            border-radius: 0.5rem; transition: all 0.3s; font-size: 0.8rem;
+        }
+        .nav-links a:hover, .nav-links a.active { background: rgba(5,150,105,0.1); color: #059669; }
+
+        /* Hero Section */
+        .hero {
+            position: relative; overflow: hidden;
+            padding: 5rem 2rem; text-align: center;
+            border-bottom: 1px solid rgba(244,63,94,0.1);
+        }
+        .hero::before {
+            content: ''; position: absolute; top: 33%; right: 33%;
+            width: 400px; height: 400px; background: rgba(244,63,94,0.06);
+            border-radius: 50%; filter: blur(80px);
+        }
+        .hero-badge {
+            display: inline-flex; align-items: center; gap: 0.5rem;
+            padding: 0.5rem 1rem; border: 1px solid rgba(244,63,94,0.3);
+            border-radius: 2rem; font-size: 0.875rem; color: #f43f5e;
+            margin-bottom: 1.5rem; background: rgba(244,63,94,0.05);
+        }
+        .hero h1 { font-size: 3rem; font-weight: 800; line-height: 1.2; margin-bottom: 1.5rem; }
+        .hero h1 .gradient-text {
+            background: linear-gradient(135deg, #f43f5e, #f59e0b);
+            -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+        }
+        .hero p { font-size: 1.15rem; color: #64748b; max-width: 650px; margin: 0 auto 2rem; }
+
+        /* Search Bar */
+        .search-container { max-width: 600px; margin: 0 auto; position: relative; }
+        .search-icon { position: absolute; left: 1rem; top: 50%; transform: translateY(-50%); font-size: 1.15rem; color: #94a3b8; }
+        .search-input {
+            width: 100%; padding: 1rem 1rem 1rem 3rem; border-radius: 0.875rem;
+            border: 1px solid rgba(5,150,105,0.15); font-size: 1rem; outline: none;
+            background: rgba(255,255,255,0.8); backdrop-filter: blur(20px);
+            transition: all 0.3s;
+        }
+        .search-input:focus { border-color: #059669; box-shadow: 0 0 0 3px rgba(5,150,105,0.12); }
+
+        /* Quick Stats */
+        .quick-stats { display: flex; justify-content: center; gap: 2rem; flex-wrap: wrap; margin-top: 2.5rem; }
+        .qs-item { display: flex; align-items: center; gap: 0.4rem; font-size: 0.88rem; }
+        .qs-icon { font-size: 1.1rem; }
+        .qs-value { font-weight: 700; color: #059669; }
+        .qs-label { color: #64748b; }
+
+        /* Sections */
+        section { padding: 4rem 2rem; }
+        .section-container { max-width: 1200px; margin: 0 auto; }
+
+        /* Section Header */
+        .section-header { text-align: center; margin-bottom: 3rem; }
+        .section-title { font-size: 1.75rem; font-weight: 700; margin-bottom: 0.5rem; }
+        .section-subtitle { color: #64748b; font-size: 0.95rem; }
+
+        /* Help Categories Grid */
+        .categories-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.5rem; }
+
+        .category-card {
+            background: rgba(255,255,255,0.8); backdrop-filter: blur(20px);
+            border: 1px solid rgba(5,150,105,0.12); border-radius: 1rem;
+            padding: 1.75rem; transition: all 0.3s; cursor: pointer;
+        }
+        .category-card:hover { transform: scale(1.02) translateY(-4px); box-shadow: 0 16px 40px rgba(5,150,105,0.1); border-color: rgba(5,150,105,0.25); }
+
+        .cat-icon-box {
+            width: 3.5rem; height: 3.5rem; border-radius: 0.875rem;
+            display: flex; align-items: center; justify-content: center;
+            margin-bottom: 1.25rem; font-size: 1.5rem; transition: transform 0.3s;
+        }
+        .category-card:hover .cat-icon-box { transform: scale(1.1); }
+        .cat-cyan { background: linear-gradient(135deg, rgba(6,182,212,0.15), rgba(59,130,246,0.15)); }
+        .cat-emerald { background: linear-gradient(135deg, rgba(16,185,129,0.15), rgba(34,197,94,0.15)); }
+        .cat-violet { background: linear-gradient(135deg, rgba(139,92,246,0.15), rgba(168,85,247,0.15)); }
+        .cat-amber { background: linear-gradient(135deg, rgba(245,158,11,0.15), rgba(249,115,22,0.15)); }
+        .cat-rose { background: linear-gradient(135deg, rgba(244,63,94,0.15), rgba(236,72,153,0.15)); }
+        .cat-green { background: linear-gradient(135deg, rgba(5,150,105,0.15), rgba(16,185,129,0.15)); }
+
+        .cat-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 0.65rem; }
+        .cat-title { font-size: 1.1rem; font-weight: 600; }
+        .cat-badge {
+            padding: 0.2rem 0.55rem; border-radius: 1rem; font-size: 0.72rem;
+            background: rgba(100,116,139,0.12); color: #64748b; font-weight: 500;
+        }
+        .cat-desc { font-size: 0.87rem; color: #64748b; margin-bottom: 1rem; line-height: 1.5; }
+
+        .cat-topics { display: flex; flex-wrap: wrap; gap: 0.35rem; margin-bottom: 1rem; }
+        .topic-tag {
+            padding: 0.2rem 0.55rem; border-radius: 0.375rem; font-size: 0.72rem;
+            border: 1px solid rgba(5,150,105,0.18); color: #475569;
+        }
+
+        .browse-btn {
+            width: 100%; padding: 0.55rem; border-radius: 0.5rem; font-size: 0.85rem; font-weight: 500;
+            border: none; cursor: pointer; background: transparent; color: #64748b;
+            display: flex; align-items: center; justify-content: center; gap: 0.35rem;
+            transition: all 0.3s;
+        }
+        .browse-btn:hover { color: #059669; }
+
+        /* FAQ Section */
+        .faq-section { background: rgba(248,250,252,0.7); }
+        .faq-container { max-width: 850px; margin: 0 auto; }
+
+        .faq-item {
+            background: rgba(255,255,255,0.85); backdrop-filter: blur(20px);
+            border: 1px solid rgba(5,150,105,0.1); border-radius: 0.75rem;
+            overflow: hidden; margin-bottom: 0.75rem; transition: all 0.3s;
+        }
+        .faq-question {
+            width: 100%; padding: 1.25rem; display: flex; justify-content: space-between; align-items: flex-start;
+            text-align: left; background: none; border: none; cursor: pointer; font-size: 0.95rem;
+            font-weight: 600; color: #1e293b; transition: background 0.2s;
+        }
+        .faq-question:hover { background: rgba(5,150,105,0.04); }
+        .faq-icon { color: #94a3b8; font-size: 1.1rem; flex-shrink: 0; margin-top: 0.1rem; }
+        .faq-answer {
+            padding: 0 1.25rem 1.25rem; border-top: 1px solid rgba(5,150,105,0.08);
+            display: none;
+        }
+        .faq-answer.show { display: block; }
+        .faq-answer p { font-size: 0.88rem; color: #64748b; line-height: 1.7; }
+        .faq-category {
+            display: inline-block; margin-top: 0.75rem; padding: 0.2rem 0.6rem;
+            border-radius: 0.375rem; font-size: 0.72rem; background: rgba(100,116,139,0.12); color: #64748b;
+        }
+
+        /* Documentation Grid */
+        .doc-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1rem; }
+
+        .doc-card {
+            background: rgba(255,255,255,0.8); backdrop-filter: blur(10px);
+            border: 1px solid rgba(5,150,105,0.08); border-radius: 0.75rem;
+            padding: 1.25rem; transition: all 0.3s; cursor: pointer;
+            display: flex; align-items: flex-start; gap: 0.75rem; text-decoration: none; color: inherit;
+        }
+        .doc-card:hover { border-color: rgba(5,150,105,0.3); transform: translateY(-2px); }
+        .doc-icon {
+            width: 2.5rem; height: 2.5rem; border-radius: 0.625rem; flex-shrink: 0;
+            background: rgba(5,150,105,0.08); display: flex; align-items: center; justify-content: center;
+            font-size: 1.1rem; transition: background 0.3s;
+        }
+        .doc-card:hover .doc-icon { background: rgba(5,150,105,0.15); }
+        .doc-info h4 { font-size: 0.88rem; font-weight: 600; margin-bottom: 0.2rem; }
+        .doc-info p { font-size: 0.76rem; color: #94a3b8; }
+        .doc-arrow { color: #94a3b8; font-size: 0.85rem; opacity: 0; margin-left: auto; align-self: center; transition: opacity 0.3s; }
+        .doc-card:hover .doc-arrow { opacity: 1; }
+
+        /* Contact Section */
+        .contact-section { background: rgba(248,250,252,0.7); }
+        .contact-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 3rem; }
+
+        /* Contact Form */
+        .form-header { margin-bottom: 1.5rem; }
+        .form-title { font-size: 1.4rem; font-weight: 700; margin-bottom: 0.35rem; }
+        .form-desc { font-size: 0.88rem; color: #64748b; }
+
+        .contact-form {
+            background: rgba(255,255,255,0.85); backdrop-filter: blur(20px);
+            border: 1px solid rgba(5,150,105,0.12); border-radius: 1rem;
+            padding: 1.75rem;
+        }
+        .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-bottom: 1rem; }
+        .form-group { margin-bottom: 1rem; }
+        .form-group label { display: block; font-size: 0.85rem; font-weight: 500; margin-bottom: 0.35rem; color: #374151; }
+        .form-input, .form-select, .form-textarea {
+            width: 100%; padding: 0.65rem 0.875rem; border-radius: 0.5rem;
+            border: 1px solid rgba(5,150,105,0.18); font-size: 0.88rem; outline: none;
+            background: rgba(255,255,255,0.9); transition: all 0.3s;
+        }
+        .form-input:focus, .form-select:focus, .form-textarea:focus { border-color: #059669; box-shadow: 0 0 0 3px rgba(5,150,105,0.1); }
+        .form-textarea { resize: none; min-height: 100px; }
+        .submit-btn {
+            width: 100%; padding: 0.75rem; border-radius: 0.625rem; font-size: 0.9rem; font-weight: 600;
+            border: none; cursor: pointer; background: linear-gradient(135deg, #059669, #06b6d4); color: white;
+            display: flex; align-items: center; justify-content: center; gap: 0.5rem; transition: all 0.3s;
+        }
+        .submit-btn:hover { opacity: 0.9; transform: translateY(-1px); }
+        .form-note { font-size: 0.74rem; color: #94a3b8; text-align: center; margin-top: 0.75rem; }
+
+        /* Contact Options */
+        .contact-options h3 { font-size: 1.4rem; font-weight: 700; margin-bottom: 0.35rem; }
+        .contact-options > p { font-size: 0.88rem; color: #64748b; margin-bottom: 1.5rem; }
+
+        .options-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-bottom: 1.25rem; }
+
+        .option-card {
+            background: rgba(255,255,255,0.85); backdrop-filter: blur(20px);
+            border: 1px solid rgba(5,150,105,0.12); border-radius: 0.875rem;
+            padding: 1.25rem; text-align: center; transition: all 0.3s; cursor: pointer;
+        }
+        .option-card:hover { transform: scale(1.02); border-color: rgba(5,150,105,0.25); }
+        .option-card.primary { border-color: rgba(5,150,105,0.25); }
+
+        .option-icon {
+            width: 3rem; height: 3rem; border-radius: 0.75rem; margin: 0 auto 0.75rem;
+            display: flex; align-items: center; justify-content: center; font-size: 1.25rem;
+            background: rgba(100,116,139,0.1); color: #94a3b8; transition: all 0.3s;
+        }
+        .option-card.primary .option-icon { background: rgba(5,150,105,0.1); color: #059669; }
+        .option-card:hover .option-icon { background: rgba(5,150,105,0.1); color: #059669; }
+
+        .option-title { font-size: 0.95rem; font-weight: 600; margin-bottom: 0.25rem; }
+        .option-desc { font-size: 0.82rem; color: #64748b; margin-bottom: 0.35rem; }
+        .option-avail { font-size: 0.75rem; color: #059669; font-weight: 500; margin-bottom: 0.75rem; }
+        .option-btn {
+            width: 100%; padding: 0.45rem; border-radius: 0.5rem; font-size: 0.82rem; font-weight: 500;
+            border: 1px solid rgba(5,150,105,0.25); cursor: pointer; background: white; color: #059669;
+            transition: all 0.3s;
+        }
+        .option-card.primary .option-btn { background: #059669; color: white; border: none; }
+        .option-btn:hover { opacity: 0.9; }
+
+        /* Status Card */
+        .status-card {
+            background: rgba(255,255,255,0.85); backdrop-filter: blur(20px);
+            border: 1px solid rgba(5,150,105,0.12); border-radius: 0.75rem;
+            padding: 1.25rem; display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;
+        }
+        .status-left { display: flex; align-items: center; gap: 0.75rem; }
+        .status-dot {
+            width: 12px; height: 12px; border-radius: 50%;
+            background: #10b981; animation: pulse-dot 2s infinite;
+        }
+        @keyframes pulse-dot { 0%, 100% { opacity: 1; } 50% { opacity: 0.5; } }
+        .status-name { font-size: 0.88rem; font-weight: 600; }
+        .status-last { font-size: 0.78rem; color: #94a3b8; }
+        .status-link {
+            padding: 0.35rem 0.75rem; border-radius: 0.375rem; font-size: 0.78rem;
+            background: transparent; border: 1px solid rgba(5,150,105,0.2); color: #059669;
+            cursor: pointer; display: flex; align-items: center; gap: 0.3rem; transition: all 0.3s;
+        }
+        .status-link:hover { background: rgba(5,150,105,0.05); }
+
+        /* Community Card */
+        .community-card {
+            background: rgba(255,255,255,0.85); backdrop-filter: blur(20px);
+            border: 1px solid rgba(5,150,105,0.12); border-radius: 0.75rem;
+            padding: 1.25rem; display: flex; align-items: center; gap: 0.75rem;
+        }
+        .community-icon { font-size: 1.5rem; color: #059669; }
+        .community-info h4 { font-size: 0.88rem; font-weight: 600; }
+        .community-info p { font-size: 0.78rem; color: #94a3b8; }
+        .community-btn {
+            padding: 0.35rem 0.75rem; border-radius: 0.375rem; font-size: 0.78rem;
+            background: transparent; border: 1px solid rgba(5,150,105,0.2); color: #059669;
+            cursor: pointer; margin-left: auto; display: flex; align-items: center; gap: 0.3rem; white-space: nowrap;
+        }
+
+        footer {
+            background: rgba(5,150,105,0.03); border-top: 1px solid rgba(5,150,105,0.1);
+            padding: 2rem; text-align: center; color: #94a3b8; font-size: 0.85rem;
+        }
+
+        @media (max-width: 1024px) {
+            .categories-grid { grid-template-columns: repeat(2, 1fr); }
+            .doc-grid { grid-template-columns: repeat(2, 1fr); }
+            .contact-grid { grid-template-columns: 1fr; }
+        }
+        @media (max-width: 768px) {
+            .hero h1 { font-size: 2rem; }
+            .categories-grid { grid-template-columns: 1fr; }
+            .doc-grid { grid-template-columns: 1fr; }
+            .options-grid { grid-template-columns: 1fr; }
+            .form-row { grid-template-columns: 1fr; }
+            .quick-stats { gap: 1rem; }
+            .nav-links { display: none; }
+        }
+    </style>
+</head>
+<body>
+
+<!-- Navigation -->
+<nav>
+    <div class="nav-container">
+        <a href="/Demo4AISupChn/" class="logo">🛡️ AI Supply Chain</a>
+        <div class="nav-links">
+            <a href="/Demo4AISupChn/">Home</a>
+            <a href="/Demo4AISupChn/dashboard.html">Dashboard</a>
+            <a href="/Demo4AISupChn/command-center.html">Command Center</a>
+            <a href="/Demo4AISupChn/platform.html">Platform</a>
+            <a href="/Demo4AISupChn/intelligence.html">AI/ML Engine</a>
+            <a href="/Demo4AISupChn/resources.html">Resources</a>
+            <a href="/Demo4AISupChn/about.html">About</a>
+            <a href="/Demo4AISupChn/customers.html">Customers</a>
+            <a href="/Demo4AISupChn/agents.html">AI Agents</a>
+            <a href="/Demo4AISupChn/events.html">Events</a>
+            <a href="/Demo4AISupChn/industries.html">Industries</a>
+            <a href="/Demo4AISupChn/product.html">Product</a>
+            <a href="/Demo4AISupChn/support.html" class="active">Support</a>
+        </div>
+    </div>
+</nav>
+
+<!-- Hero Section -->
+<section class="hero">
+    <div class="hero-badge">🆘 Help & Support</div>
+    <h1>How Can We<br><span class="gradient-text">Help?</span></h1>
+    <p>Find answers, access documentation, or get in touch with our support team. We're here to ensure your success.</p>
+
+    <div class="search-container">
+        <span class="search-icon">🔍</span>
+        <input type="text" class="search-input" placeholder="Search for answers... (e.g., UFLPA setup, API integration)">
+    </div>
+
+    <div class="quick-stats">
+        <div class="qs-item"><span class="qs-icon">📚</span><span class="qs-value">500+</span><span class="qs-label">Help Articles</span></div>
+        <div class="qs-item"><span class="qs-icon">⏱️</span><span class="qs-value">&lt; 4hr</span><span class="qs-label">Avg Response Time</span></div>
+        <div class="qs-item"><span class="qs-icon">✅</span><span class="qs-value">98%</span><span class="qs-label">Resolution Rate</span></div>
+        <div class="qs-item"><span class="qs-icon">🎧</span><span class="qs-value">24/7</span><span class="qs-label">Enterprise Support</span></div>
+    </div>
+</section>
+
+<!-- Help Categories -->
+<section>
+    <div class="section-container">
+        <div class="section-header">
+            <h2 class="section-title">Browse by Category</h2>
+        </div>
+
+        <div class="categories-grid">
+
+            <!-- Category 1: Getting Started -->
+            <div class="category-card">
+                <div class="cat-icon-box cat-cyan">⚙️</div>
+                <div class="cat-header">
+                    <h3 class="cat-title">Getting Started</h3>
+                    <span class="cat-badge">45 articles</span>
+                </div>
+                <p class="cat-desc">Setup guides, onboarding resources, and first steps to get you up and running quickly.</p>
+                <div class="cat-topics">
+                    <span class="topic-tag">Account Setup</span>
+                    <span class="topic-tag">First Dashboard</span>
+                    <span class="topic-tag">Data Import</span>
+                    <span class="topic-tag">Team Invites</span>
+                </div>
+                <button class="browse-btn">Browse Articles →</button>
+            </div>
+
+            <!-- Category 2: Compliance & Security -->
+            <div class="category-card">
+                <div class="cat-icon-box cat-emerald">🛡️</div>
+                <div class="cat-header">
+                    <h3 class="cat-title">Compliance & Security</h3>
+                    <span class="cat-badge">67 articles</span>
+                </div>
+                <p class="cat-desc">UFLPA, EUDR, GDPR compliance guides and security best practices for your organization.</p>
+                <div class="cat-topics">
+                    <span class="topic-tag">UFLPA Screening</span>
+                    <span class="topic-tag">EUDR Due Diligence</span>
+                    <span class="topic-tag">GDPR Data</span>
+                    <span class="topic-tag">SSO Setup</span>
+                </div>
+                <button class="browse-btn">Browse Articles →</button>
+            </div>
+
+            <!-- Category 3: Data & Integrations -->
+            <div class="category-card">
+                <div class="cat-icon-box cat-violet">🗄️</div>
+                <div class="cat-header">
+                    <h3 class="cat-title">Data & Integrations</h3>
+                    <span class="cat-badge">89 articles</span>
+                </div>
+                <p class="cat-desc">API documentation, ERP connectors, and data management for seamless integration.</p>
+                <div class="cat-topics">
+                    <span class="topic-tag">REST API</span>
+                    <span class="topic-tag">SAP Integration</span>
+                    <span class="topic-tag">Webhooks</span>
+                    <span class="topic-tag">Data Export</span>
+                </div>
+                <button class="browse-btn">Browse Articles →</button>
+            </div>
+
+            <!-- Category 4: AI & Analytics -->
+            <div class="category-card">
+                <div class="cat-icon-box cat-amber">⚡</div>
+                <div class="cat-header">
+                    <h3 class="cat-title">AI & Analytics</h3>
+                    <span class="cat-badge">52 articles</span>
+                </div>
+                <p class="cat-desc">Understanding AI predictions, machine learning models, and analytics features.</p>
+                <div class="cat-topics">
+                    <span class="topic-tag">Risk Scores</span>
+                    <span class="topic-tag">SHAP Explainer</span>
+                    <span class="topic-tag">Forecasting</span>
+                    <span class="topic-tag">Alerts</span>
+                </div>
+                <button class="browse-btn">Browse Articles →</button>
+            </div>
+
+            <!-- Category 5: User Management -->
+            <div class="category-card">
+                <div class="cat-icon-box cat-rose">👥</div>
+                <div class="cat-header">
+                    <h3 class="cat-title">User Management</h3>
+                    <span class="cat-badge">34 articles</span>
+                </div>
+                <p class="cat-desc">Roles, permissions, and team administration for secure collaboration.</p>
+                <div class="cat-topics">
+                    <span class="topic-tag">RBAC</span>
+                    <span class="topic-tag">User Roles</span>
+                    <span class="topic-tag">Audit Logs</span>
+                    <span class="topic-tag">Access Control</span>
+                </div>
+                <button class="browse-btn">Browse Articles →</button>
+            </div>
+
+            <!-- Category 6: Troubleshooting -->
+            <div class="category-card">
+                <div class="cat-icon-box cat-green">🔧</div>
+                <div class="cat-header">
+                    <h3 class="cat-title">Troubleshooting</h3>
+                    <span class="cat-badge">78 articles</span>
+                </div>
+                <p class="cat-desc">Common issues, error codes, and problem resolution guides.</p>
+                <div class="cat-topics">
+                    <span class="topic-tag">Error Codes</span>
+                    <span class="topic-tag">Performance</span>
+                    <span class="topic-tag">Sync Issues</span>
+                    <span class="topic-tag">Login Problems</span>
+                </div>
+                <button class="browse-btn">Browse Articles →</button>
+            </div>
+
+        </div>
+    </div>
+</section>
+
+<!-- FAQ Section -->
+<section class="faq-section">
+    <div class="section-container">
+        <div style="text-align:center;margin-bottom:2.5rem;">
+            <span style="display:inline-flex;align-items:center;gap:0.4rem;padding:0.4rem 0.9rem;border:1px solid rgba(244,63,94,0.3);border-radius:2rem;font-size:0.82rem;color:#f43f5e;background:rgba(244,63,94,0.05);margin-bottom:1rem;">❓ FAQ</span>
+            <h2 class="section-title" style="margin-bottom:0.5rem;">Frequently Asked Questions</h2>
+            <p class="section-subtitle">Quick answers to common questions. Can't find what you're looking for? Contact us below.</p>
+        </div>
+
+        <div class="faq-container">
+
+            <div class="faq-item">
+                <button class="faq-question" onclick="toggleFaq(this)">
+                    <span>How do I get started with the platform?</span>
+                    <span class="faq-icon">▼</span>
+                </button>
+                <div class="faq-answer">
+                    <p>Getting started is easy! After signing up, you'll be guided through our interactive onboarding wizard. We recommend starting with our "Quick Start" guide which takes about 15 minutes. You can also schedule a personalized onboarding session with our success team at no extra cost.</p>
+                    <span class="faq-category">Getting Started</span>
+                </div>
+            </div>
+
+            <div class="faq-item">
+                <button class="faq-question" onclick="toggleFaq(this)">
+                    <span>What data sources does the platform integrate with?</span>
+                    <span class="faq-icon">▼</span>
+                </button>
+                <div class="faq-answer">
+                    <p>We integrate with 50+ enterprise systems including SAP, Oracle, Salesforce, Workday, Coupa, Kinaxis, Blue Yonder, and many more. Our REST API also allows custom integrations with any system that exposes data via API. We support file imports (CSV, Excel, JSON) for one-time data loads.</p>
+                    <span class="faq-category">Integrations</span>
+                </div>
+            </div>
+
+            <div class="faq-item">
+                <button class="faq-question" onclick="toggleFaq(this)">
+                    <span>How accurate are the AI risk predictions?</span>
+                    <span class="faq-icon">▼</span>
+                </button>
+                <div class="faq-answer">
+                    <p>Our AI models achieve 94.2% average accuracy across all prediction types, validated against historical data. Accuracy varies by use case: supply disruption prediction (93%), demand forecasting (92%), compliance risk detection (96%). All predictions include confidence intervals and SHAP explainability.</p>
+                    <span class="faq-category">AI & Analytics</span>
+                </div>
+            </div>
+
+            <div class="faq-item">
+                <button class="faq-question" onclick="toggleFaq(this)">
+                    <span>How does UFLPA compliance screening work?</span>
+                    <span class="faq-icon">▼</span>
+                </button>
+                <div class="faq-answer">
+                    <p>Our UFLPA screening combines multiple data sources including entity databases, news analysis, shipment tracking, and document verification. We screen suppliers against the Entity List, monitor for forced labor indicators, and provide audit-ready documentation. The system automatically flags high-risk entities and provides remediation guidance.</p>
+                    <span class="faq-category">Compliance</span>
+                </div>
+            </div>
+
+            <div class="faq-item">
+                <button class="faq-question" onclick="toggleFaq(this)">
+                    <span>What security certifications do you have?</span>
+                    <span class="faq-icon">▼</span>
+                </button>
+                <div class="faq-answer">
+                    <p>We maintain SOC 2 Type II certification, ISO 27001, GDPR compliance, and are working on FedRAMP authorization. All data is encrypted at rest (AES-256) and in transit (TLS 1.3). We offer data residency options in US, EU, and APAC regions. Regular third-party penetration testing is conducted quarterly.</p>
+                    <span class="faq-category">Security</span>
+                </div>
+            </div>
+
+            <div class="faq-item">
+                <button class="faq-question" onclick="toggleFaq(this)">
+                    <span>Can I customize dashboards and reports?</span>
+                    <span class="faq-icon">▼</span>
+                </button>
+                <div class="faq-answer">
+                    <p>Yes! Professional and Enterprise plans include full dashboard customization. You can create custom widgets, filter views by role, build automated report schedules, and even white-label reports with your company branding. Our API also allows programmatic access to all data for custom reporting tools.</p>
+                    <span class="faq-category">Features</span>
+                </div>
+            </div>
+
+            <div class="faq-item">
+                <button class="faq-question" onclick="toggleFaq(this)">
+                    <span>What support options are available?</span>
+                    <span class="faq-icon">▼</span>
+                </button>
+                <div class="faq-answer">
+                    <p>We offer multi-tiered support: Starter plan gets email support with 24-hour response; Professional includes priority email, chat, and phone during business hours; Enterprise customers get 24/7 dedicated support with a named success manager, &lt;1 hour critical issue response, and optional on-site support.</p>
+                    <span class="faq-category">Support</span>
+                </div>
+            </div>
+
+            <div class="faq-item">
+                <button class="faq-question" onclick="toggleFaq(this)">
+                    <span>How do I add or remove suppliers from monitoring?</span>
+                    <span class="faq-icon">▼</span>
+                </button>
+                <div class="faq-answer">
+                    <p>You can manage suppliers through multiple methods: manual entry via the UI, bulk CSV import, API integration, or automatic discovery through our network mapping feature. Suppliers can be organized into groups, tagged by region/category, and assigned to specific team members for ownership.</p>
+                    <span class="faq-category">User Management</span>
+                </div>
+            </div>
+
+            <div class="faq-item">
+                <button class="faq-question" onclick="toggleFaq(this)">
+                    <span>What happens if I exceed my plan limits?</span>
+                    <span class="faq-icon">▼</span>
+                </button>
+                <div class="faq-answer">
+                    <p>We provide generous headroom (typically 10% overage) before any action is needed. If you consistently exceed limits, we'll reach out to discuss upgrading. We never cut off service unexpectedly — you'll always have advance notice and options to adjust your plan.</p>
+                    <span class="faq-category">Billing</span>
+                </div>
+            </div>
+
+            <div class="faq-item">
+                <button class="faq-question" onclick="toggleFaq(this)">
+                    <span>How often is supplier data updated?</span>
+                    <span class="faq-icon">▼</span>
+                </button>
+                <div class="faq-answer">
+                    <p>Data freshness varies by source type: financial data updates daily, news/social sentiment updates every 15 minutes, compliance databases sync weekly, and trade/sanctions lists update in real-time as changes occur. Premium data sources can be configured for near-real-time updates.</p>
+                    <span class="faq-category">Data</span>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</section>
+
+<!-- Documentation & Resources -->
+<section>
+    <div class="section-container">
+        <div class="section-header">
+            <h2 class="section-title">Documentation & Resources</h2>
+            <p class="section-subtitle">In-depth guides and technical documentation</p>
+        </div>
+
+        <div class="doc-grid">
+
+            <a href="#" class="doc-card">
+                <div class="doc-icon">📖</div>
+                <div class="doc-info"><h4>Quick Start Guide</h4><p>Get up and running in 15 minutes</p></div>
+                <span class="doc-arrow">↗</span>
+            </a>
+
+            <a href="#" class="doc-card">
+                <div class="doc-icon">📄</div>
+                <div class="doc-info"><h4>API Reference</h4><p>Complete REST API documentation</p></div>
+                <span class="doc-arrow">↗</span>
+            </a>
+
+            <a href="#" class="doc-card">
+                <div class="doc-icon">🎥</div>
+                <div class="doc-info"><h4>Video Tutorials</h4><p>Step-by-step video walkthroughs</p></div>
+                <span class="doc-arrow">↗</span>
+            </a>
+
+            <a href="#" class="doc-card">
+                <div class="doc-icon">🗄️</div>
+                <div class="doc-info"><h4>Integration Guides</h4><p>Connect your existing systems</p></div>
+                <span class="doc-arrow">↗</span>
+            </a>
+
+            <a href="#" class="doc-card">
+                <div class="doc-icon">🛡️</div>
+                <div class="doc-info"><h4>Compliance Playbooks</h4><p>UFLPA, EUDR, CSDDD guides</p></div>
+                <span class="doc-arrow">↗</span>
+            </a>
+
+            <a href="#" class="doc-card">
+                <div class="doc-icon">⚡</div>
+                <div class="doc-info"><h4>Best Practices</h4><p>Tips from our customer success team</p></div>
+                <span class="doc-arrow">↗</span>
+            </a>
+
+            <a href="#" class="doc-card">
+                <div class="doc-icon">🔑</div>
+                <div class="doc-info"><h4>Security Whitepaper</h4><p>Detailed security architecture</p></div>
+                <span class="doc-arrow">↗</span>
+            </a>
+
+            <a href="#" class="doc-card">
+                <div class="doc-icon">🐛</div>
+                <div class="doc-info"><h4>Release Notes</h4><p>Latest features and improvements</p></div>
+                <span class="doc-arrow">↗</span>
+            </a>
+
+        </div>
+    </div>
+</section>
+
+<!-- Contact Section -->
+<section class="contact-section">
+    <div class="section-container">
+        <div class="contact-grid">
+
+            <!-- Contact Form -->
+            <div>
+                <div class="form-header">
+                    <span style="display:inline-flex;align-items:center;gap:0.4rem;padding:0.35rem 0.85rem;border:1px solid rgba(244,63,94,0.3);border-radius:2rem;font-size:0.82rem;color:#f43f5e;background:rgba(244,63,94,0.05);margin-bottom:0.75rem;">✉️ Contact Us</span>
+                    <h3 class="form-title">Send Us a Message</h3>
+                    <p class="form-desc">Have a question that's not covered in our FAQs? Fill out the form below and we'll get back to you promptly.</p>
+                </div>
+
+                <div class="contact-form">
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>Full Name *</label>
+                            <input type="text" class="form-input" placeholder="John Doe">
+                        </div>
+                        <div class="form-group">
+                            <label>Work Email *</label>
+                            <input type="email" class="form-input" placeholder="john@company.com">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label>Company</label>
+                        <input type="text" class="form-input" placeholder="Your company name">
+                    </div>
+                    <div class="form-group">
+                        <label>Subject *</label>
+                        <select class="form-select">
+                            <option value="">Select a topic...</option>
+                            <option value="technical">Technical Issue</option>
+                            <option value="billing">Billing Question</option>
+                            <option value="feature">Feature Request</option>
+                            <option value="integration">Integration Help</option>
+                            <option value="compliance">Compliance Inquiry</option>
+                            <option value="enterprise">Enterprise Sales</option>
+                            <option value="other">Other</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Message *</label>
+                        <textarea class="form-textarea" placeholder="Describe your question or issue in detail..." rows="4"></textarea>
+                    </div>
+                    <button class="submit-btn">📤 Send Message</button>
+                    <p class="form-note">By submitting, you agree to our Privacy Policy. We typically respond within 4 business hours.</p>
+                </div>
+            </div>
+
+            <!-- Contact Options -->
+            <div class="contact-options">
+                <h3>Other Ways to Reach Us</h3>
+                <p>Choose the contact method that works best for you.</p>
+
+                <div class="options-grid">
+
+                    <div class="option-card primary">
+                        <div class="option-icon">💬</div>
+                        <h4 class="option-title">Live Chat</h4>
+                        <p class="option-desc">Chat with our support team in real-time</p>
+                        <p class="option-avail">Available 24/7 for Enterprise</p>
+                        <button class="option-btn">Start Chat</button>
+                    </div>
+
+                    <div class="option-card">
+                        <div class="option-icon">✉️</div>
+                        <h4 class="option-title">Email Support</h4>
+                        <p class="option-desc">support@aisupplychain.com</p>
+                        <p class="option-avail">Response within 4 hours</p>
+                        <button class="option-btn">Send Email</button>
+                    </div>
+
+                    <div class="option-card">
+                        <div class="option-icon">📞</div>
+                        <h4 class="option-title">Phone Support</h4>
+                        <p class="option-desc">+1 (888) 555-SUPP</p>
+                        <p class="option-avail">Mon-Fri 9AM-6PM EST</p>
+                        <button class="option-btn">Call Now</button>
+                    </div>
+
+                    <div class="option-card">
+                        <div class="option-icon">🎥</div>
+                        <h4 class="option-title">Schedule a Call</h4>
+                        <p class="option-desc">Book time with a solutions engineer</p>
+                        <p class="option-avail">Available within 24 hours</p>
+                        <button class="option-btn">Book Now</button>
+                    </div>
+
+                </div>
+
+                <!-- Status Page -->
+                <div class="status-card">
+                    <div class="status-left">
+                        <div class="status-dot"></div>
+                        <div>
+                            <div class="status-name">All Systems Operational</div>
+                            <div class="status-last">Last incident: 14 days ago</div>
+                        </div>
+                    </div>
+                    <button class="status-link">Status Page ↗</button>
+                </div>
+
+                <!-- Community -->
+                <div class="community-card">
+                    <div class="community-icon">🌍</div>
+                    <div class="community-info">
+                        <h4>Join Our Community</h4>
+                        <p>Connect with other users, share tips, and get advice</p>
+                    </div>
+                    <button class="community-btn">Community Forum ↗</button>
+                </div>
+
+            </div>
+
+        </div>
+    </div>
+</section>
+
+<footer>
+    <p>&copy; 2025 AI Supply Chain Risk Predictor. All rights reserved. | Demo4 Platform</p>
+</footer>
+
+<script>
+function toggleFaq(btn) {
+    var item = btn.parentElement;
+    var answer = item.querySelector('.faq-answer');
+    var icon = btn.querySelector('.faq-icon');
+    
+    if (answer.classList.contains('show')) {
+        answer.classList.remove('show');
+        icon.textContent = '▼';
+    } else {
+        // Close all others
+        document.querySelectorAll('.faq-answer.show').forEach(function(a) {
+            a.classList.remove('show');
+            a.parentElement.querySelector('.faq-icon').textContent = '▼';
+        });
+        answer.classList.add('show');
+        icon.textContent = '▲';
+    }
+}
+</script>
+
+</body>
+</html>

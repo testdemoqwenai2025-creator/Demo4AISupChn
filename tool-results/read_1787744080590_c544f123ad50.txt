@@ -1,0 +1,524 @@
+     1→<!DOCTYPE html>
+     2→<html lang="en">
+     3→<head>
+     4→    <meta charset="UTF-8">
+     5→    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+     6→    <title>About Us - AI Supply Chain Risk Predictor</title>
+     7→    <style>
+     8→        * { margin: 0; padding: 0; box-sizing: border-box; }
+     9→        body {
+    10→            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    11→            background: linear-gradient(135deg, #f0fdf4 0%, #ffffff 50%, #ecfeff 100%);
+    12→            color: #0a1628;
+    13→            line-height: 1.6;
+    14→        }
+    15→
+    16→        /* Navigation */
+    17→        nav {
+    18→            position: sticky; top: 0; z-index: 100;
+    19→            background: rgba(255,255,255,0.92);
+    20→            backdrop-filter: blur(20px);
+    21→            border-bottom: 1px solid rgba(5,150,105,0.15);
+    22→            padding: 1rem 2rem;
+    23→        }
+    24→        .nav-container { max-width: 1400px; margin: 0 auto; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem; }
+    25→        .logo { font-size: 1.25rem; font-weight: bold; color: #059669; text-decoration: none; }
+    26→        .nav-links { display: flex; gap: 0.5rem; align-items: center; flex-wrap: wrap; }
+    27→        .nav-links a {
+    28→            color: #64748b; text-decoration: none; padding: 0.5rem 0.75rem;
+    29→            border-radius: 0.5rem; transition: all 0.3s; font-size: 0.875rem;
+    30→        }
+    31→        .nav-links a:hover, .nav-links a.active { background: rgba(5,150,105,0.1); color: #059669; }
+    32→
+    33→        /* Hero Section */
+    34→        .hero {
+    35→            position: relative; overflow: hidden;
+    36→            padding: 5rem 2rem; text-align: center;
+    37→            border-bottom: 1px solid rgba(5,150,105,0.1);
+    38→        }
+    39→        .hero::before {
+    40→            content: ''; position: absolute; top: 25%; left: 25%;
+    41→            width: 400px; height: 400px; background: rgba(59,130,246,0.08);
+    42→            border-radius: 50%; filter: blur(80px);
+    43→        }
+    44→        .hero::after {
+    45→            content: ''; position: absolute; bottom: 25%; right: 25%;
+    46→            width: 350px; height: 350px; background: rgba(6,182,212,0.08);
+    47→            border-radius: 50%; filter: blur(80px);
+    48→        }
+    49→        .badge {
+    50→            display: inline-flex; align-items: center; gap: 0.5rem;
+    51→            background: rgba(59,130,246,0.1); border: 1px solid rgba(59,130,246,0.3);
+    52→            padding: 0.5rem 1rem; border-radius: 9999px; margin-bottom: 2rem;
+    53→            color: #3b82f6; font-size: 0.875rem; font-weight: 500;
+    54→        }
+    55→        h1 {
+    56→            font-size: 3rem; font-weight: bold; line-height: 1.2; margin-bottom: 1.5rem;
+    57→            position: relative;
+    58→        }
+    59→        .gradient-text {
+    60→            background: linear-gradient(135deg, #3b82f6, #06b6d4);
+    61→            -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+    62→        }
+    63→        .subtitle { font-size: 1.2rem; color: #64748b; max-width: 700px; margin: 0 auto 3rem; }
+    64→
+    65→        /* Glass Card */
+    66→        .glass {
+    67→            background: rgba(255,255,255,0.7);
+    68→            backdrop-filter: blur(20px);
+    69→            border: 1px solid rgba(5,150,105,0.15);
+    70→            border-radius: 1rem;
+    71→        }
+    72→        .mission-grid {
+    73→            display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+    74→            gap: 2rem; max-width: 900px; margin: 0 auto;
+    75→        }
+    76→        .mission-card { padding: 2.5rem; text-align: center; transition: transform 0.3s; }
+    77→        .mission-card:hover { transform: scale(1.02); }
+    78→        .mission-icon {
+    79→            width: 64px; height: 64px; border-radius: 50%;
+    80→            display: flex; align-items: center; justify-content: center;
+    81→            margin: 0 auto 1.5rem; font-size: 1.75rem;
+    82→        }
+    83→        .mission-icon.emerald { background: rgba(16,185,129,0.15); }
+    84→        .mission-icon.cyan { background: rgba(6,182,212,0.15); }
+    85→        .mission-card h2 { font-size: 1.5rem; margin-bottom: 1rem; color: #1e293b; }
+    86→        .mission-card p { color: #64748b; line-height: 1.7; }
+    87→
+    88→        /* Stats Section */
+    89→        .stats-section { padding: 3rem 2rem; border-bottom: 1px solid rgba(5,150,105,0.1); }
+    90→        .stats-grid {
+    91→            display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+    92→            gap: 1.5rem; max-width: 1100px; margin: 0 auto;
+    93→        }
+    94→        .stat-item { text-align: center; }
+    95→        .stat-item .icon { font-size: 1.5rem; margin-bottom: 0.5rem; color: #3b82f6; }
+    96→        .stat-value { font-size: 1.75rem; font-weight: bold; color: #1e293b; }
+    97→        .stat-label { font-size: 0.8rem; color: #94a3b8; margin-top: 0.25rem; }
+    98→
+    99→        /* Section Common */
+   100→        .section { padding: 5rem 2rem; max-width: 1200px; margin: 0 auto; }
+   101→        .section-alt { padding: 5rem 2rem; background: rgba(248,250,252,0.7); }
+   102→        .section-header { text-align: center; margin-bottom: 3rem; }
+   103→        .section-header .badge {
+   104→            background: rgba(5,150,105,0.1); border-color: rgba(5,150,105,0.2);
+   105→            color: #059669; margin-bottom: 1rem;
+   106→        }
+   107→        .section-header h2 { font-size: 2.25rem; margin-bottom: 1rem; color: #1e293b; }
+   108→        .section-header p { color: #64748b; max-width: 600px; margin: 0 auto; font-size: 1.1rem; }
+   109→
+   110→        /* Values Grid */
+   111→        .values-grid {
+   112→            display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+   113→            gap: 1.5rem;
+   114→        }
+   115→        .value-card { padding: 1.5rem; transition: all 0.3s; cursor: pointer; }
+   116→        .value-card:hover { transform: scale(1.02); border-color: rgba(5,150,105,0.3); }
+   117→        .value-icon {
+   118→            width: 56px; height: 56px; border-radius: 12px;
+   119→            display: flex; align-items: center; justify-content: center;
+   120→            margin-bottom: 1rem; font-size: 1.5rem;
+   121→        }
+   122→        .value-card h3 { font-size: 1.15rem; margin-bottom: 0.5rem; color: #1e293b; }
+   123→        .value-card p { font-size: 0.9rem; color: #64748b; line-height: 1.6; }
+   124→
+   125→        /* Team Grid */
+   126→        .team-grid {
+   127→            display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+   128→            gap: 1.5rem;
+   129→        }
+   130→        .team-card { padding: 1.5rem; text-align: center; transition: all 0.3s; }
+   131→        .team-card:hover { transform: scale(1.02); }
+   132→        .avatar {
+   133→            width: 80px; height: 80px; border-radius: 50%;
+   134→            display: flex; align-items: center; justify-content: center;
+   135→            margin: 0 auto 1rem; font-size: 1.5rem; font-weight: bold; color: white;
+   136→        }
+   137→        .team-card h3 { font-size: 1.05rem; color: #1e293b; }
+   138→        .team-card .role { font-size: 0.85rem; color: #059669; font-weight: 500; margin-top: 0.25rem; }
+   139→        .team-card .bio { font-size: 0.8rem; color: #94a3b8; margin-top: 0.75rem; line-height: 1.5; }
+   140→        .social-links { display: flex; justify-content: center; gap: 0.5rem; margin-top: 0.75rem; }
+   141→        .social-link {
+   142→            width: 32px; height: 32px; border-radius: 8px;
+   143→            display: flex; align-items: center; justify-content: center;
+   144→            background: rgba(5,150,105,0.08); color: #64748b;
+   145→            text-decoration: none; font-size: 0.85rem; transition: all 0.3s;
+   146→        }
+   147→        .social-link:hover { background: rgba(5,150,105,0.2); color: #059669; }
+   148→
+   149→        /* Timeline */
+   150→        .timeline { max-width: 800px; margin: 0 auto; position: relative; }
+   151→        .timeline::before {
+   152→            content: ''; position: absolute; left: 32px; top: 0; bottom: 0;
+   153→            width: 2px; background: rgba(5,150,105,0.15);
+   154→        }
+   155→        .timeline-item { display: flex; gap: 1.5rem; margin-bottom: 2rem; }
+   156→        .timeline-dot {
+   157→            width: 64px; height: 64px; border-radius: 50%; flex-shrink: 0;
+   158→            display: flex; align-items: center; justify-content: center;
+   159→            font-size: 1.25rem; z-index: 1;
+   160→        }
+   161→        .timeline-dot.milestone {
+   162→            background: linear-gradient(135deg, #059669, #06b6d4); color: white;
+   163→        }
+   164→        .timeline-dot.normal { background: rgba(255,255,255,0.8); border: 1px solid rgba(5,150,105,0.2); }
+   165→        .timeline-content { flex: 1; padding: 1.25rem; border-radius: 12px; }
+   166→        .timeline-year {
+   167→            display: inline-block; padding: 0.25rem 0.75rem; border-radius: 6px;
+   168→            font-size: 0.8rem; font-weight: 600; margin-bottom: 0.5rem;
+   169→            font-family: monospace;
+   170→        }
+   171→        .timeline-year.milestone { background: #059669; color: white; }
+   172→        .timeline-year.normal { background: rgba(5,150,105,0.1); color: #059669; }
+   173→        .milestone-badge {
+   174→            display: inline-block; padding: 0.125rem 0.5rem; border-radius: 4px;
+   175→            font-size: 0.7rem; font-weight: 600; background: #f59e0b; color: white;
+   176→            margin-left: 0.5rem;
+   177→        }
+   178→        .timeline-content h3 { font-size: 1.1rem; margin-bottom: 0.5rem; color: #1e293b; }
+   179→        .timeline-content p { font-size: 0.9rem; color: #64748b; }
+   180→
+   181→        /* ESG Section */
+   182→        .esg-grid {
+   183→            display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+   184→            gap: 2rem;
+   185→        }
+   186→        .esg-card { padding: 1.5rem; }
+   187→        .esg-card h3 { font-size: 1.15rem; margin-bottom: 1rem; display: flex; align-items: center; gap: 0.5rem; color: #1e293b; }
+   188→        .esg-list { list-style: none; }
+   189→        .esg-list li {
+   190→            display: flex; align-items: start; gap: 0.5rem;
+   191→            padding: 0.5rem 0; font-size: 0.9rem; color: #475569;
+   192→        }
+   193→        .esg-list li::before { content: "✅"; flex-shrink: 0; }
+   194→
+   195→        /* Careers CTA */
+   196→        .cta-card { padding: 4rem 2rem; text-align: center; max-width: 800px; margin: 0 auto; }
+   197→        .cta-icon { font-size: 3.5rem; margin-bottom: 1.5rem; }
+   198→        .cta-card h2 { font-size: 2rem; margin-bottom: 1rem; color: #1e293b; }
+   199→        .cta-card p { color: #64748b; margin-bottom: 2rem; max-width: 500px; margin-left: auto; margin-right: auto; }
+   200→        .btn-group { display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap; margin-bottom: 2rem; }
+   201→        .btn {
+   202→            padding: 0.875rem 2rem; border-radius: 0.75rem; font-weight: 600;
+   203→            text-decoration: none; transition: all 0.3s; cursor: pointer;
+   204→            border: none; font-size: 1rem; display: inline-flex; align-items: center; gap: 0.5rem;
+   205→        }
+   206→        .btn-primary {
+   207→            background: linear-gradient(135deg, #059669, #06b6d4); color: white;
+   208→            box-shadow: 0 4px 12px rgba(5,150,105,0.3);
+   209→        }
+   210→        .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 8px 20px rgba(5,150,105,0.4); }
+   211→        .btn-secondary {
+   212→            background: white; color: #059669;
+   213→            border: 2px solid #059669;
+   214→        }
+   215→        .btn-secondary:hover { background: rgba(5,150,105,0.05); }
+   216→        .culture-stats {
+   217→            display: flex; flex-wrap: wrap; justify-content: center; gap: 2rem;
+   218→            padding-top: 2rem; border-top: 1px solid rgba(5,150,105,0.15);
+   219→            font-size: 0.875rem; color: #94a3b8;
+   220→        }
+   221→        .culture-stat { display: flex; align-items: center; gap: 0.5rem; }
+   222→
+   223→        @media (max-width: 768px) {
+   224→            h1 { font-size: 2rem; }
+   225→            .nav-links { display: none; }
+   226→            .timeline::before { left: 20px; }
+   227→            .timeline-dot { width: 40px; height: 40px; font-size: 1rem; }
+   228→            .section { padding: 3rem 1rem; }
+   229→            .section-alt { padding: 3rem 1rem; }
+   230→        }
+   231→    </style>
+   232→</head>
+   233→<body>
+   234→    <!-- Navigation -->
+   235→    <nav>
+   236→        <div class="nav-container">
+   237→            <a href="/Demo4AISupChn/" class="logo">🛡️ AI Supply Chain</a>
+   238→            <div class="nav-links">
+   239→                <a href="/Demo4AISupChn/">Home</a>
+   240→                <a href="/Demo4AISupChn/dashboard.html">Dashboard</a>
+   241→                <a href="/Demo4AISupChn/command-center.html">Command Center</a>
+   242→                <a href="/Demo4AISupChn/platform.html">Platform</a>
+   243→                <a href="/Demo4AISupChn/intelligence.html">AI/ML Engine</a>
+   244→                <a href="/Demo4AISupChn/resources.html">Resources</a>
+   245→                <a href="/Demo4AISupChn/about.html" class="active">About</a>
+   246→                <a href="/Demo4AISupChn/customers.html">Customers</a>
+   247→            </div>
+   248→        </div>
+   249→    </nav>
+   250→
+   251→    <!-- Hero - Mission & Vision -->
+   252→    <section class="hero">
+   253→        <div style="position: relative;">
+   254→            <div class="badge">ℹ️ About Us</div>
+   255→            <h1>Building the Future of<br><span class="gradient-text">Supply Chain Intelligence</span></h1>
+   256→            <p class="subtitle">
+   257→                We're on a mission to make global supply chains more transparent, resilient, and sustainable
+   258→                through the power of artificial intelligence.
+   259→            </p>
+   260→
+   261→            <div class="mission-grid">
+   262→                <div class="glass mission-card">
+   263→                    <div class="mission-icon emerald">🎯</div>
+   264→                    <h2>Our Mission</h2>
+   265→                    <p>To empower every organization with AI-driven supply chain intelligence that prevents disruptions,
+   266→                    ensures compliance, and enables sustainable growth — making global trade safer and more efficient for all.</p>
+   267→                </div>
+   268→                <div class="glass mission-card">
+   269→                    <div class="mission-icon cyan">👁️</div>
+   270→                    <h2>Our Vision</h2>
+   271→                    <p>A world where every supply chain is fully visible, intelligently managed, and resilient to disruption —
+   272→                    where businesses can operate with confidence knowing their supply chains are protected by AI.</p>
+   273→                </div>
+   274→            </div>
+   275→        </div>
+   276→    </section>
+   277→
+   278→    <!-- Company Stats -->
+   279→    <section class="stats-section">
+   280→        <div class="stats-grid">
+   281→            <div class="stat-item"><div class="icon">👥</div><div class="stat-value">500+</div><div class="stat-label">Enterprise Customers</div></div>
+   282→            <div class="stat-item"><div class="icon">🌍</div><div class="stat-value">190+</div><div class="stat-label">Countries Covered</div></div>
+   283→            <div class="stat-item"><div class="icon">💰</div><div class="stat-value">$150M+</div><div class="stat-label">Total Funding</div></div>
+   284→            <div class="stat-item"><div class="icon">👥</div><div class="stat-value">350+</div><div class="stat-label">Team Members</div></div>
+   285→            <div class="stat-item"><div class="icon">📅</div><div class="stat-value">6</div><div class="stat-label">Years of Innovation</div></div>
+   286→            <div class="stat-item"><div class="icon">🎯</div><div class="stat-value">$2.4B+</div><div class="stat-label">Client Savings Generated</div></div>
+   287→        </div>
+   288→    </section>
+   289→
+   290→    <!-- Core Values -->
+   291→    <section class="section">
+   292→        <div class="section-header">
+   293→            <div class="badge">❤️ Our Values</div>
+   294→            <h2>What Drives Us</h2>
+   295→            <p>Our core values guide everything we do — from product decisions to how we treat each other</p>
+   296→        </div>
+   297→        <div class="values-grid">
+   298→            <div class="glass value-card">
+   299→                <div class="value-icon" style="background:linear-gradient(135deg,rgba(16,185,129,0.2),rgba(34,197,94,0.2))">✅</div>
+   300→                <h3>Integrity First</h3>
+   301→                <p>We build trust through transparency. Our AI models are explainable, our data practices are ethical, and our commitments are kept.</p>
+   302→            </div>
+   303→            <div class="glass value-card">
+   304→                <div class="value-icon" style="background:linear-gradient(135deg,rgba(245,158,11,0.2),rgba(251,191,36,0.2))">💡</div>
+   305→                <h3>Innovation Driven</h3>
+   306→                <p>We push the boundaries of what's possible in supply chain AI. Continuous research and development keeps us at the cutting edge.</p>
+   307→            </div>
+   308→            <div class="glass value-card">
+   309→                <div class="value-icon" style="background:linear-gradient(135deg,rgba(139,92,246,0.2),rgba(168,85,247,0.2))">👥</div>
+   310→                <h3>Customer Obsessed</h3>
+   311→                <p>Every decision starts with "what's best for our customers?" Your success is our success, and we measure ourselves by your outcomes.</p>
+   312→            </div>
+   313→            <div class="glass value-card">
+   314→                <div class="value-icon" style="background:linear-gradient(135deg,rgba(6,182,212,0.2),rgba(59,130,246,0.2))">🌍</div>
+   315→                <h3>Global Impact</h3>
+   316→                <p>Supply chains connect the world. We believe in using technology to create more resilient, sustainable, and equitable global trade.</p>
+   317→            </div>
+   318→            <div class="glass value-card">
+   319→                <div class="value-icon" style="background:linear-gradient(135deg,rgba(244,63,94,0.2),rgba(251,113,133,0.2))">⚡</div>
+   320→                <h3>Action Oriented</h3>
+   321→                <p>Insights without action are just noise. We focus on delivering actionable intelligence that drives real business decisions.</p>
+   322→            </div>
+   323→            <div class="glass value-card">
+   324→                <div class="value-icon" style="background:linear-gradient(135deg,rgba(5,150,105,0.2),rgba(6,182,212,0.2))">🤝</div>
+   325→                <h3>Collaborative Spirit</h3>
+   326→                <p>We work alongside our customers as partners. Together, we solve problems that neither could tackle alone.</p>
+   327→            </div>
+   328→        </div>
+   329→    </section>
+   330→
+   331→    <!-- Leadership Team -->
+   332→    <section class="section-alt">
+   333→        <div class="section-header">
+   334→            <div class="badge">👥 Leadership Team</div>
+   335→            <h2>Meet Our Leaders</h2>
+   336→            <p>A world-class team of experts in AI, supply chain, and enterprise software</p>
+   337→        </div>
+   338→        <div class="team-grid">
+   339→            <div class="glass team-card">
+   340→                <div class="avatar" style="background:linear-gradient(135deg,#8b5cf6,#a855f7)">AK</div>
+   341→                <h3>Dr. Alexandra Kim</h3>
+   342→                <div class="role">CEO & Co-Founder</div>
+   343→                <p class="bio">Former VP at McKinsey. PhD in Operations Research from MIT. 15+ years in supply chain transformation.</p>
+   344→                <div class="social-links"><a href="#" class="social-link">in</a><a href="#" class="social-link">𝕏</a></div>
+   345→            </div>
+   346→            <div class="glass team-card">
+   347→                <div class="avatar" style="background:linear-gradient(135deg,#06b6d4,#3b82f6)">MC</div>
+   348→                <h3>Marcus Chen</h3>
+   349→                <div class="role">CTO & Co-Founder</div>
+   350→                <p class="bio">Ex-Google AI Lead. Built ML systems serving billions of users. Published researcher with 50+ papers.</p>
+   351→                <div class="social-links"><a href="#" class="social-link">in</a><a href="#" class="social-link">𝕏</a></div>
+   352→            </div>
+   353→            <div class="glass team-card">
+   354→                <div class="avatar" style="background:linear-gradient(135deg,#10b981,#34d399)">SP</div>
+   355→                <h3>Dr. Sarah Patel</h3>
+   356→                <div class="role">Chief Data Scientist</div>
+   357→                <p class="bio">Former Amazon Science. Expert in NLP and time-series prediction. Led AI teams at scale for 10+ years.</p>
+   358→                <div class="social-links"><a href="#" class="social-link">in</a><a href="#" class="social-link">𝕏</a></div>
+   359→            </div>
+   360→            <div class="glass team-card">
+   361→                <div class="avatar" style="background:linear-gradient(135deg,#f59e0b,#f97316)">JR</div>
+   362→                <h3>James Rodriguez</h3>
+   363→                <div class="role">VP of Engineering</div>
+   364→                <p class="bio">Built platforms at Stripe and Airbnb. Specializes in distributed systems and real-time data processing.</p>
+   365→                <div class="social-links"><a href="#" class="social-link">in</a><a href="#" class="social-link">𝕏</a></div>
+   366→            </div>
+   367→            <div class="glass team-card">
+   368→                <div class="avatar" style="background:linear-gradient(135deg,#f43f5e,#fb7185)">EN</div>
+   369→                <h3>Emily Nakamura</h3>
+   370→                <div class="role">VP of Product</div>
+   371→                <p class="bio">Product leader at Salesforce and Workday. Deep expertise in enterprise SaaS and UX design.</p>
+   372→                <div class="social-links"><a href="#" class="social-link">in</a><a href="#" class="social-link">𝕏</a></div>
+   373→            </div>
+   374→            <div class="glass team-card">
+   375→                <div class="avatar" style="background:linear-gradient(135deg,#3b82f6,#6366f1)">DO</div>
+   376→                <h3>David Okafor</h3>
+   377→                <div class="role">Chief Revenue Officer</div>
+   378→                <p class="bio">Scaled sales organizations at Oracle and SAP. Passionate about helping enterprises transform operations.</p>
+   379→                <div class="social-links"><a href="#" class="social-link">in</a><a href="#" class="social-link">𝕏</a></div>
+   380→            </div>
+   381→            <div class="glass team-card">
+   382→                <div class="avatar" style="background:linear-gradient(135deg,#14b8a6,#06b6d4)">LT</div>
+   383→                <h3>Lisa Thompson</h3>
+   384→                <div class="role">VP of Customer Success</div>
+   385→                <p class="bio">Built customer success teams at HubSpot and Zendesk. Obsessed with customer outcomes and retention.</p>
+   386→                <div class="social-links"><a href="#" class="social-link">in</a><a href="#" class="social-link">𝕏</a></div>
+   387→            </div>
+   388→            <div class="glass team-card">
+   389→                <div class="avatar" style="background:linear-gradient(135deg,#d946ef,#ec4899)">HM</div>
+   390→                <h3>Dr. Hans Mueller</h3>
+   391→                <div class="role">Head of Compliance Research</div>
+   392→                <p class="bio">International trade law expert. Former WTO advisor. Leads our regulatory intelligence team.</p>
+   393→                <div class="social-links"><a href="#" class="social-link">in</a><a href="#" class="social-link">𝕏</a></div>
+   394→            </div>
+   395→        </div>
+   396→        <div style="text-align:center;margin-top:2rem;">
+   397→            <a href="#" class="btn btn-secondary">View All Team Members →</a>
+   398→        </div>
+   399→    </section>
+   400→
+   401→    <!-- Timeline / History -->
+   402→    <section class="section">
+   403→        <div class="section-header">
+   404→            <div class="badge" style="background:rgba(59,130,246,0.1);border-color:rgba(59,130,246,0.3);color:#3b82f6;">📅 Our Journey</div>
+   405→            <h2>Company History</h2>
+   406→            <p>From a bold idea to an industry-leading platform</p>
+   407→        </div>
+   408→        <div class="timeline">
+   409→            <div class="timeline-item">
+   410→                <div class="timeline-dot milestone">🚀</div>
+   411→                <div class="glass timeline-content">
+   412→                    <div><span class="timeline-year milestone">2019</span><span class="milestone-badge">Milestone</span></div>
+   413→                    <h3>Founded</h3>
+   414→                    <p>Company founded by Dr. Alexandra Kim and Marcus Chen with a vision to bring AI to supply chain risk management.</p>
+   415→                </div>
+   416→            </div>
+   417→            <div class="timeline-item">
+   418→                <div class="timeline-dot normal">🎯</div>
+   419→                <div class="glass timeline-content">
+   420→                    <div><span class="timeline-year normal">2020</span></div>
+   421→                    <h3>Seed Funding & First Product</h3>
+   422→                    <p>Raised $5M seed round. Launched MVP with basic risk scoring for 50 pilot customers.</p>
+   423→                </div>
+   424→            </div>
+   425→            <div class="timeline-item">
+   426→                <div class="timeline-dot milestone">🧠</div>
+   427→                <div class="glass timeline-content">
+   428→                    <div><span class="timeline-year milestone">2021</span><span class="milestone-badge">Milestone</span></div>
+   429→                    <h3>Series A & AI Engine Launch</h3>
+   430→                    <p>Raised $25M Series A. Released first AI-powered predictions with SHAP explainability.</p>
+   431→                </div>
+   432→            </div>
+   433→            <div class="timeline-item">
+   434→                <div class="timeline-dot normal">🏢</div>
+   435→                <div class="glass timeline-content">
+   436→                    <div><span class="timeline-year normal">2022</span></div>
+   437→                    <h3>Enterprise Expansion</h3>
+   438→                    <p>Reached 100+ enterprise customers. Added UFLPA compliance module. SOC 2 certified.</p>
+   439→                </div>
+   440→            </div>
+   441→            <div class="timeline-item">
+   442→                <div class="timeline-dot milestone">🌍</div>
+   443→                <div class="glass timeline-content">
+   444→                    <div><span class="timeline-year milestone">2023</span><span class="milestone-badge">Milestone</span></div>
+   445→                    <h3>Series B & Global Growth</h3>
+   446→                    <p>Raised $75M Series B. Expanded to 40 countries. Launched EUDR and CSDDD modules.</p>
+   447→                </div>
+   448→            </div>
+   449→            <div class="timeline-item">
+   450→                <div class="timeline-dot normal">⚡</div>
+   451→                <div class="glass timeline-content">
+   452→                    <div><span class="timeline-year normal">2024</span></div>
+   453→                    <h3>AI Agent Platform</h3>
+   454→                    <p>Launched autonomous AI agents. Reached 500+ customers. $2B+ in client savings generated.</p>
+   455→                </div>
+   456→            </div>
+   457→            <div class="timeline-item">
+   458→                <div class="timeline-dot milestone">🏆</div>
+   459→                <div class="glass timeline-content">
+   460→                    <div><span class="timeline-year milestone">2025</span><span class="milestone-badge">Milestone</span></div>
+   461→                    <h3>Industry Leadership</h3>
+   462→                    <p>Recognized as Gartner Cool Vendor. Expanding into new verticals and geographies.</p>
+   463→                </div>
+   464→            </div>
+   465→        </div>
+   466→    </section>
+   467→
+   468→    <!-- ESG Section -->
+   469→    <section class="section-alt">
+   470→        <div class="section-header">
+   471→            <div class="badge">🌿 ESG Commitment</div>
+   472→            <h2>Environmental, Social & Governance</h2>
+   473→            <p>We believe in building a responsible business that creates positive impact beyond profits</p>
+   474→        </div>
+   475→        <div class="esg-grid">
+   476→            <div class="glass esg-card">
+   477→                <h3>🌿 Environmental</h3>
+   478→                <ul class="esg-list">
+   479→                    <li>Carbon-neutral operations since 2023</li>
+   480→                    <li>Green cloud infrastructure</li>
+   481→                    <li>Sustainable sourcing policies</li>
+   482→                </ul>
+   483→            </div>
+   484→            <div class="glass esg-card">
+   485→                <h3>👥 Social</h3>
+   486→                <ul class="esg-list">
+   487→                    <li>Diverse workforce (52% underrepresented groups)</li>
+   488→                    <li>Global hiring across 30 countries</li>
+   489→                    <li>Employee volunteer program</li>
+   490→                </ul>
+   491→            </div>
+   492→            <div class="glass esg-card">
+   493→                <h3>🔒 Governance</h3>
+   494→                <ul class="esg-list">
+   495→                    <li>Independent board of directors</li>
+   496→                    <li>Ethics committee oversight</li>
+   497→                    <li>Transparent reporting</li>
+   498→                </ul>
+   499→            </div>
+   500→        </div>
+   501→    </section>
+   502→
+   503→    <!-- Careers CTA -->
+   504→    <section class="section">
+   505→        <div class="glass cta-card">
+   506→            <div class="cta-icon">🚀</div>
+   507→            <h2>Join Our Mission</h2>
+   508→            <p>We're always looking for talented people who share our passion for innovation and impact.
+   509→               Check out our open positions and help us shape the future of supply chains.</p>
+   510→            <div class="btn-group">
+   511→                <a href="#" class="btn btn-primary">View Open Positions →</a>
+   512→                <a href="#" class="btn btn-secondary">Learn About Culture</a>
+   513→            </div>
+   514→            <div class="culture-stats">
+   515→                <div class="culture-stat">🌍 Remote-first culture</div>
+   516→                <div class="culture-stat">👥 350+ team members globally</div>
+   517→                <div class="culture-stat">❤️ 4.8/5 Glassdoor rating</div>
+   518→                <div class="culture-stat">📚 $10K learning budget</div>
+   519→            </div>
+   520→        </div>
+   521→    </section>
+   522→</body>
+   523→</html>
+   524→
