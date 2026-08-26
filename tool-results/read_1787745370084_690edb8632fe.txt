@@ -1,0 +1,1202 @@
+     1→<!DOCTYPE html>
+     2→<html lang="en">
+     3→<head>
+     4→    <meta charset="UTF-8">
+     5→    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+     6→    <title>AI Supply Chain Risk Platform | Beyond CRM AI - Enterprise Intelligence</title>
+     7→    <style>
+     8→        /* ===== CSS RESET & BASE ===== */
+     9→        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    10→        :root {
+    11→            --primary: #1e40af;
+    12→            --primary-light: #3b82f6;
+    13→            --cyan: #06b6d4;
+    14→            --emerald: #059669;
+    15→            --purple: #7c3aed;
+    16→            --rose: #e11d48;
+    17→            --amber: #f59e0b;
+    18→            --dark: #0f172a;
+    19→            --dark-lighter: #1e293b;
+    20→            --glass-bg: rgba(255,255,255,0.05);
+    21→            --glass-border: rgba(255,255,255,0.1);
+    22→            --text-primary: #f8fafc;
+    23→            --text-secondary: #94a3b8;
+    24→            --gradient-1: linear-gradient(135deg, #1e40af 0%, #7c3aed 50%, #06b6d4 100%);
+    25→            --gradient-2: linear-gradient(135deg, #059669 0%, #06b6d4 100%);
+    26→            --gradient-3: linear-gradient(135deg, #7c3aed 0%, #e11d48 100%);
+    27→        }
+    28→        html { scroll-behavior: smooth; }
+    29→        body {
+    30→            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+    31→            background: var(--dark);
+    32→            color: var(--text-primary);
+    33→            line-height: 1.6;
+    34→            overflow-x: hidden;
+    35→        }
+    36→        a { color: inherit; text-decoration: none; }
+    37→        
+    38→        /* ===== ANIMATED BACKGROUND ===== */
+    39→        .hero-bg {
+    40→            position: relative;
+    41→            background: linear-gradient(135deg, #0a0e27 0%, #1a1a4e 25%, #0d2137 50%, #1a0a2e 75%, #0a1628 100%);
+    42→            min-height: 100vh;
+    43→            overflow: hidden;
+    44→        }
+    45→        .hero-bg::before {
+    46→            content: '';
+    47→            position: absolute;
+    48→            top: -50%;
+    49→            left: -50%;
+    50→            width: 200%;
+    51→            height: 200%;
+    52→            background: radial-gradient(circle at 20% 80%, rgba(30,64,175,0.3) 0%, transparent 50%),
+    53→                        radial-gradient(circle at 80% 20%, rgba(124,58,237,0.25) 0%, transparent 50%),
+    54→                        radial-gradient(circle at 40% 40%, rgba(6,182,212,0.15) 0%, transparent 40%),
+    55→                        radial-gradient(circle at 70% 70%, rgba(5,150,105,0.2) 0%, transparent 45%);
+    56→            animation: bgFloat 20s ease-in-out infinite;
+    57→        }
+    58→        @keyframes bgFloat {
+    59→            0%, 100% { transform: translate(0, 0) rotate(0deg); }
+    60→            33% { transform: translate(2%, -2%) rotate(1deg); }
+    61→            66% { transform: translate(-1%, 1%) rotate(-1deg); }
+    62→        }
+    63→        .grid-overlay {
+    64→            position: absolute;
+    65→            top: 0; left: 0; right: 0; bottom: 0;
+    66→            background-image: 
+    67→                linear-gradient(rgba(59,130,246,0.03) 1px, transparent 1px),
+    68→                linear-gradient(90deg, rgba(59,130,246,0.03) 1px, transparent 1px);
+    69→            background-size: 60px 60px;
+    70→            pointer-events: none;
+    71→        }
+    72→        .particles {
+    73→            position: absolute;
+    74→            top: 0; left: 0; right: 0; bottom: 0;
+    75→            pointer-events: none;
+    76→        }
+    77→        .particle {
+    78→            position: absolute;
+    79→            width: 4px; height: 4px;
+    80→            background: rgba(6,182,212,0.6);
+    81→            border-radius: 50%;
+    82→            animation: particleFloat 8s ease-in-out infinite;
+    83→        }
+    84→        .particle:nth-child(1) { top: 20%; left: 10%; animation-delay: 0s; width: 6px; height: 6px; }
+    85→        .particle:nth-child(2) { top: 60%; left: 80%; animation-delay: 1s; width: 3px; height: 3px; }
+    86→        .particle:nth-child(3) { top: 40%; left: 60%; animation-delay: 2s; width: 5px; height: 5px; }
+    87→        .particle:nth-child(4) { top: 80%; left: 30%; animation-delay: 3s; width: 4px; height: 4px; }
+    88→        .particle:nth-child(5) { top: 10%; left: 70%; animation-delay: 4s; width: 3px; height: 3px; }
+    89→        .particle:nth-child(6) { top: 70%; left: 15%; animation-delay: 5s; width: 5px; height: 5px; }
+    90→        .particle:nth-child(7) { top: 30%; left: 90%; animation-delay: 6s; width: 4px; height: 4px; }
+    91→        .particle:nth-child(8) { top: 90%; left: 50%; animation-delay: 7s; width: 6px; height: 6px; }
+    92→        @keyframes particleFloat {
+    93→            0%, 100% { transform: translateY(0) scale(1); opacity: 0.6; }
+    94→            50% { transform: translateY(-30px) scale(1.2); opacity: 1; }
+    95→        }
+    96→
+    97→        /* ===== NAVIGATION ===== */
+    98→        nav {
+    99→            position: fixed;
+   100→            top: 0; left: 0; right: 0;
+   101→            z-index: 1000;
+   102→            padding: 1rem 2rem;
+   103→            background: rgba(15,23,42,0.85);
+   104→            backdrop-filter: blur(20px);
+   105→            border-bottom: 1px solid var(--glass-border);
+   106→            display: flex;
+   107→            justify-content: space-between;
+   108→            align-items: center;
+   109→            flex-wrap: wrap;
+   110→            gap: 1rem;
+   111→        }
+   112→        .nav-brand {
+   113→            display: flex;
+   114→            align-items: center;
+   115→            gap: 0.75rem;
+   116→            font-size: 1.35rem;
+   117→            font-weight: 700;
+   118→            background: var(--gradient-1);
+   119→            -webkit-background-clip: text;
+   120→            -webkit-text-fill-color: transparent;
+   121→            background-clip: text;
+   122→        }
+   123→        .nav-brand-icon {
+   124→            width: 42px; height: 42px;
+   125→            background: var(--gradient-1);
+   126→            border-radius: 12px;
+   127→            display: flex;
+   128→            align-items: center;
+   129→            justify-content: center;
+   130→            font-size: 1.4rem;
+   131→            -webkit-text-fill-color: white;
+   132→        }
+   133→        .nav-links {
+   134→            display: flex;
+   135→            gap: 0.5rem;
+   136→            flex-wrap: wrap;
+   137→        }
+   138→        .nav-links a {
+   139→            padding: 0.55rem 1rem;
+   140→            border-radius: 10px;
+   141→            font-size: 0.88rem;
+   142→            font-weight: 500;
+   143→            transition: all 0.3s ease;
+   144→            color: var(--text-secondary);
+   145→            border: 1px solid transparent;
+   146→        }
+   147→        .nav-links a:hover, .nav-links a.active {
+   148→            background: var(--glass-bg);
+   149→            color: var(--text-primary);
+   150→            border-color: var(--glass-border);
+   151→            transform: translateY(-1px);
+   152→        }
+   153→        .nav-links a.active {
+   154→            background: linear-gradient(135deg, rgba(30,64,175,0.3), rgba(124,58,237,0.3));
+   155→            border-color: rgba(59,130,246,0.3);
+   156→        }
+   157→
+   158→        /* ===== HERO SECTION ===== */
+   159→        .hero {
+   160→            position: relative;
+   161→            z-index: 1;
+   162→            padding: 8rem 2rem 4rem;
+   163→            max-width: 1400px;
+   164→            margin: 0 auto;
+   165→            text-align: center;
+   166→        }
+   167→        .hero-badge {
+   168→            display: inline-flex;
+   169→            align-items: center;
+   170→            gap: 0.5rem;
+   171→            padding: 0.5rem 1.25rem;
+   172→            background: rgba(124,58,237,0.15);
+   173→            border: 1px solid rgba(124,58,237,0.3);
+   174→            border-radius: 50px;
+   175→            font-size: 0.85rem;
+   176→            color: #c4b5fd;
+   177→            margin-bottom: 1.5rem;
+   178→            animation: pulse-glow 2s ease-in-out infinite;
+   179→        }
+   180→        @keyframes pulse-glow {
+   181→            0%, 100% { box-shadow: 0 0 20px rgba(124,58,237,0.2); }
+   182→            50% { box-shadow: 0 0 30px rgba(124,58,237,0.4); }
+   183→        }
+   184→        .hero h1 {
+   185→            font-size: clamp(2.2rem, 5vw, 4rem);
+   186→            font-weight: 800;
+   187→            line-height: 1.15;
+   188→            margin-bottom: 1.25rem;
+   189→            background: linear-gradient(135deg, #ffffff 0%, #93c5fd 40%, #a78bfa 70%, #67e8f9 100%);
+   190→            -webkit-background-clip: text;
+   191→            -webkit-text-fill-color: transparent;
+   192→            background-clip: text;
+   193→        }
+   194→        .hero-subtitle {
+   195→            font-size: clamp(1.05rem, 2vw, 1.35rem);
+   196→            color: var(--text-secondary);
+   197→            max-width: 800px;
+   198→            margin: 0 auto 2.5rem;
+   199→            line-height: 1.7;
+   200→        }
+   201→        .hero-buttons {
+   202→            display: flex;
+   203→            gap: 1rem;
+   204→            justify-content: center;
+   205→            flex-wrap: wrap;
+   206→            margin-bottom: 3rem;
+   207→        }
+   208→        .btn-primary {
+   209→            padding: 0.9rem 2rem;
+   210→            background: var(--gradient-1);
+   211→            border: none;
+   212→            border-radius: 12px;
+   213→            color: white;
+   214→            font-size: 1rem;
+   215→            font-weight: 600;
+   216→            cursor: pointer;
+   217→            transition: all 0.3s ease;
+   218→            display: inline-flex;
+   219→            align-items: center;
+   220→            gap: 0.5rem;
+   221→        }
+   222→        .btn-primary:hover {
+   223→            transform: translateY(-3px);
+   224→            box-shadow: 0 15px 40px rgba(30,64,175,0.4);
+   225→        }
+   226→        .btn-secondary {
+   227→            padding: 0.9rem 2rem;
+   228→            background: var(--glass-bg);
+   229→            border: 1px solid var(--glass-border);
+   230→            border-radius: 12px;
+   231→            color: var(--text-primary);
+   232→            font-size: 1rem;
+   233→            font-weight: 600;
+   234→            cursor: pointer;
+   235→            transition: all 0.3s ease;
+   236→            backdrop-filter: blur(10px);
+   237→            display: inline-flex;
+   238→            align-items: center;
+   239→            gap: 0.5rem;
+   240→        }
+   241→        .btn-secondary:hover {
+   242→            transform: translateY(-3px);
+   243→            background: rgba(255,255,255,0.1);
+   244→            border-color: rgba(255,255,255,0.2);
+   245→        }
+   246→
+   247→        /* ===== LIVE STATS TICKER ===== */
+   248→        .stats-ticker {
+   249→            display: grid;
+   250→            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+   251→            gap: 1rem;
+   252→            max-width: 1100px;
+   253→            margin: 0 auto 4rem;
+   254→        }
+   255→        .stat-card {
+   256→            background: var(--glass-bg);
+   257→            backdrop-filter: blur(20px);
+   258→            border: 1px solid var(--glass-border);
+   259→            border-radius: 16px;
+   260→            padding: 1.5rem;
+   261→            text-align: center;
+   262→            transition: all 0.3s ease;
+   263→            position: relative;
+   264→            overflow: hidden;
+   265→        }
+   266→        .stat-card::before {
+   267→            content: '';
+   268→            position: absolute;
+   269→            top: 0; left: 0; right: 0;
+   270→            height: 3px;
+   271→            background: var(--gradient-1);
+   272→        }
+   273→        .stat-card:hover {
+   274→            transform: translateY(-5px);
+   275→            border-color: rgba(59,130,246,0.3);
+   276→            box-shadow: 0 20px 40px rgba(0,0,0,0.3);
+   277→        }
+   278→        .stat-value {
+   279→            font-size: 2.2rem;
+   280→            font-weight: 800;
+   281→            background: var(--gradient-1);
+   282→            -webkit-background-clip: text;
+   283→            -webkit-text-fill-color: transparent;
+   284→            background-clip: text;
+   285→            margin-bottom: 0.25rem;
+   286→        }
+   287→        .stat-label {
+   288→            font-size: 0.85rem;
+   289→            color: var(--text-secondary);
+   290→        }
+   291→        .stat-compare {
+   292→            font-size: 0.75rem;
+   293→            color: var(--emerald);
+   294→            margin-top: 0.35rem;
+   295→        }
+   296→
+   297→        /* ===== SECTION STYLES ===== */
+   298→        section {
+   299→            padding: 5rem 2rem;
+   300→            max-width: 1400px;
+   301→            margin: 0 auto;
+   302→        }
+   303→        .section-header {
+   304→            text-align: center;
+   305→            margin-bottom: 3.5rem;
+   306→        }
+   307→        .section-tag {
+   308→            display: inline-block;
+   309→            padding: 0.4rem 1rem;
+   310→            background: rgba(6,182,212,0.12);
+   311→            border: 1px solid rgba(6,182,212,0.25);
+   312→            border-radius: 50px;
+   313→            font-size: 0.82rem;
+   314→            color: #67e8f9;
+   315→            margin-bottom: 1rem;
+   316→            text-transform: uppercase;
+   317→            letter-spacing: 1px;
+   318→        }
+   319→        .section-title {
+   320→            font-size: clamp(1.8rem, 3.5vw, 2.75rem);
+   321→            font-weight: 750;
+   322→            margin-bottom: 1rem;
+   323→            background: linear-gradient(135deg, #fff 0%, #94a3b8 100%);
+   324→            -webkit-background-clip: text;
+   325→            -webkit-text-fill-color: transparent;
+   326→            background-clip: text;
+   327→        }
+   328→        .section-desc {
+   329→            font-size: 1.1rem;
+   330→            color: var(--text-secondary);
+   331→            max-width: 700px;
+   332→            margin: 0 auto;
+   333→        }
+   334→
+   335→        /* ===== 6 PILLARS ===== */
+   336→        .pillars-grid {
+   337→            display: grid;
+   338→            grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
+   339→            gap: 1.5rem;
+   340→        }
+   341→        .pillar-card {
+   342→            background: var(--glass-bg);
+   343→            backdrop-filter: blur(20px);
+   344→            border: 1px solid var(--glass-border);
+   345→            border-radius: 20px;
+   346→            padding: 2rem;
+   347→            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+   348→            position: relative;
+   349→            overflow: hidden;
+   350→        }
+   351→        .pillar-card::after {
+   352→            content: '';
+   353→            position: absolute;
+   354→            top: 0; left: 0; right: 0; bottom: 0;
+   355→            background: linear-gradient(135deg, transparent 0%, rgba(59,130,246,0.03) 100%);
+   356→            opacity: 0;
+   357→            transition: opacity 0.4s ease;
+   358→        }
+   359→        .pillar-card:hover {
+   360→            transform: translateY(-8px) scale(1.02);
+   361→            border-color: rgba(59,130,246,0.4);
+   362→            box-shadow: 0 25px 60px rgba(0,0,0,0.4), 0 0 40px rgba(59,130,246,0.1);
+   363→        }
+   364→        .pillar-card:hover::after { opacity: 1; }
+   365→        .pillar-icon {
+   366→            width: 60px; height: 60px;
+   367→            border-radius: 16px;
+   368→            display: flex;
+   369→            align-items: center;
+   370→            justify-content: center;
+   371→            font-size: 1.75rem;
+   372→            margin-bottom: 1.25rem;
+   373→            position: relative;
+   374→            z-index: 1;
+   375→        }
+   376→        .pillar-card:nth-child(1) .pillar-icon { background: linear-gradient(135deg, #1e40af, #3b82f6); }
+   377→        .pillar-card:nth-child(2) .pillar-icon { background: linear-gradient(135deg, #059669, #10b981); }
+   378→        .pillar-card:nth-child(3) .pillar-icon { background: linear-gradient(135deg, #7c3aed, #a78bfa); }
+   379→        .pillar-card:nth-child(4) .pillar-icon { background: linear-gradient(135deg, #06b6d4, #22d3ee); }
+   380→        .pillar-card:nth-child(5) .pillar-icon { background: linear-gradient(135deg, #e11d48, #fb7185); }
+   381→        .pillar-card:nth-child(6) .pillar-icon { background: linear-gradient(135deg, #f59e0b, #fbbf24); }
+   382→        .pillar-title {
+   383→            font-size: 1.2rem;
+   384→            font-weight: 700;
+   385→            margin-bottom: 0.65rem;
+   386→            position: relative;
+   387→            z-index: 1;
+   388→        }
+   389→        .pillar-desc {
+   390→            font-size: 0.92rem;
+   391→            color: var(--text-secondary);
+   392→            line-height: 1.6;
+   393→            margin-bottom: 1rem;
+   394→            position: relative;
+   395→            z-index: 1;
+   396→        }
+   397→        .pillar-vs {
+   398→            display: flex;
+   399→            align-items: center;
+   400→            gap: 0.5rem;
+   401→            font-size: 0.8rem;
+   402→            padding: 0.6rem 0.85rem;
+   403→            background: rgba(225,29,72,0.08);
+   404→            border: 1px solid rgba(225,29,72,0.2);
+   405→            border-radius: 10px;
+   406→            position: relative;
+   407→            z-index: 1;
+   408→        }
+   409→        .vs-badge {
+   410→            background: rgba(225,29,72,0.2);
+   411→            color: #fb7185;
+   412→            padding: 0.15rem 0.5rem;
+   413→            border-radius: 6px;
+   414→            font-weight: 600;
+   415→            font-size: 0.72rem;
+   416→        }
+   417→        .vs-text { color: #fca5a5; }
+   418→
+   419→        /* ===== AI AGENTS SHOWCASE ===== */
+   420→        .agents-showcase {
+   421→            background: linear-gradient(180deg, transparent 0%, rgba(30,64,175,0.05) 50%, transparent 100%);
+   422→            border-radius: 32px;
+   423→            padding: 3rem 2rem;
+   424→            margin-top: 2rem;
+   425→        }
+   426→        .agents-grid {
+   427→            display: grid;
+   428→            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+   429→            gap: 1.25rem;
+   430→        }
+   431→        .agent-card {
+   432→            background: var(--glass-bg);
+   433→            backdrop-filter: blur(20px);
+   434→            border: 1px solid var(--glass-border);
+   435→            border-radius: 18px;
+   436→            padding: 1.5rem;
+   437→            transition: all 0.3s ease;
+   438→            position: relative;
+   439→        }
+   440→        .agent-card:hover {
+   441→            transform: translateY(-5px);
+   442→            border-color: rgba(6,182,212,0.4);
+   443→            box-shadow: 0 15px 40px rgba(6,182,212,0.1);
+   444→        }
+   445→        .agent-header {
+   446→            display: flex;
+   447→            align-items: center;
+   448→            gap: 1rem;
+   449→            margin-bottom: 1rem;
+   450→        }
+   451→        .agent-avatar {
+   452→            width: 52px; height: 52px;
+   453→            border-radius: 14px;
+   454→            display: flex;
+   455→            align-items: center;
+   456→            justify-content: center;
+   457→            font-size: 1.5rem;
+   458→            flex-shrink: 0;
+   459→        }
+   460→        .agent-card:nth-child(1) .agent-avatar { background: linear-gradient(135deg, #ef4444, #f97316); }
+   461→        .agent-card:nth-child(2) .agent-avatar { background: linear-gradient(135deg, #3b82f6, #8b5cf6); }
+   462→        .agent-card:nth-child(3) .agent-avatar { background: linear-gradient(135deg, #10b981, #06b6d4); }
+   463→        .agent-card:nth-child(4) .agent-avatar { background: linear-gradient(135deg, #f59e0b, #eab308); }
+   464→        .agent-card:nth-child(5) .agent-avatar { background: linear-gradient(135deg, #ec4899, #8b5cf6); }
+   465→        .agent-card:nth-child(6) .agent-avatar { background: linear-gradient(135deg, #06b6d4, #3b82f6); }
+   466→        .agent-info h4 {
+   467→            font-size: 1.05rem;
+   468→            font-weight: 700;
+   469→            margin-bottom: 0.2rem;
+   470→        }
+   471→        .agent-status {
+   472→            display: inline-flex;
+   473→            align-items: center;
+   474→            gap: 0.35rem;
+   475→            font-size: 0.75rem;
+   476→            color: #34d399;
+   477→        }
+   478→        .status-dot {
+   479→            width: 8px; height: 8px;
+   480→            background: #34d399;
+   481→            border-radius: 50%;
+   482→            animation: statusPulse 2s ease-in-out infinite;
+   483→        }
+   484→        @keyframes statusPulse {
+   485→            0%, 100% { opacity: 1; box-shadow: 0 0 0 0 rgba(52,211,153,0.4); }
+   486→            50% { opacity: 0.8; box-shadow: 0 0 0 6px rgba(52,211,153,0); }
+   487→        }
+   488→        .agent-capabilities {
+   489→            display: flex;
+   490→            flex-wrap: wrap;
+   491→            gap: 0.4rem;
+   492→            margin-bottom: 1rem;
+   493→        }
+   494→        .capability-tag {
+   495→            padding: 0.25rem 0.6rem;
+   496→            background: rgba(59,130,246,0.12);
+   497→            border: 1px solid rgba(59,130,246,0.2);
+   498→            border-radius: 6px;
+   499→            font-size: 0.72rem;
+   500→            color: #93c5fd;
+   501→        }
+   502→        .agent-metrics {
+   503→            display: grid;
+   504→            grid-template-columns: 1fr 1fr;
+   505→            gap: 0.6rem;
+   506→        }
+   507→        .metric-item {
+   508→            text-align: center;
+   509→            padding: 0.5rem;
+   510→            background: rgba(0,0,0,0.2);
+   511→            border-radius: 8px;
+   512→        }
+   513→        .metric-val {
+   514→            font-size: 1rem;
+   515→            font-weight: 700;
+   516→            color: #67e8f9;
+   517→        }
+   518→        .metric-lbl {
+   519→            font-size: 0.68rem;
+   520→            color: var(--text-secondary);
+   521→        }
+   522→
+   523→        /* ===== TECH STACK ===== */
+   524→        .tech-stack {
+   525→            display: grid;
+   526→            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+   527→            gap: 1.25rem;
+   528→        }
+   529→        .tech-card {
+   530→            background: var(--glass-bg);
+   531→            backdrop-filter: blur(20px);
+   532→            border: 1px solid var(--glass-border);
+   533→            border-radius: 16px;
+   534→            padding: 1.5rem;
+   535→            display: flex;
+   536→            align-items: center;
+   537→            gap: 1rem;
+   538→            transition: all 0.3s ease;
+   539→        }
+   540→        .tech-card:hover {
+   541→            transform: translateY(-4px);
+   542→            border-color: rgba(139,92,246,0.4);
+   543→            background: rgba(139,92,246,0.08);
+   544→        }
+   545→        .tech-icon {
+   546→            width: 48px; height: 48px;
+   547→            border-radius: 12px;
+   548→            display: flex;
+   549→            align-items: center;
+   550→            justify-content: center;
+   551→            font-size: 1.4rem;
+   552→            flex-shrink: 0;
+   553→        }
+   554→        .tech-card:nth-child(1) .tech-icon { background: linear-gradient(135deg, #ee4c2c, #ff6b35); }
+   555→        .tech-card:nth-child(2) .tech-icon { background: linear-gradient(135deg, #ff6f00, #ffb300); }
+   556→        .tech-card:nth-child(3) .tech-icon { background: linear-gradient(135deg, #0052cc, #2684ff); }
+   557→        .tech-card:nth-child(4) .tech-icon { background: linear-gradient(135deg, #dc382d, #ff4438); }
+   558→        .tech-card:nth-child(5) .tech-icon { background: linear-gradient(135deg, #6db33f, #96c93d); }
+   559→        .tech-card:nth-child(6) .tech-icon { background: linear-gradient(135deg, #232f3e, #ff9900); }
+   560→        .tech-card:nth-child(7) .tech-icon { background: linear-gradient(135deg, #0078d4, #00bcf2); }
+   561→        .tech-card:nth-child(8) .tech-icon { background: linear-gradient(135deg, #4285f4, #34a853); }
+   562→        .tech-info h4 { font-size: 0.95rem; font-weight: 600; margin-bottom: 0.2rem; }
+   563→        .tech-info p { font-size: 0.8rem; color: var(--text-secondary); }
+   564→
+   565→        /* ===== COMPARISON TABLE ===== */
+   566→        .comparison-section {
+   567→            background: var(--glass-bg);
+   568→            backdrop-filter: blur(20px);
+   569→            border: 1px solid var(--glass-border);
+   570→            border-radius: 24px;
+   571→            padding: 2.5rem;
+   572→            margin-top: 3rem;
+   573→        }
+   574→        .comparison-table {
+   575→            width: 100%;
+   576→            border-collapse: separate;
+   577→            border-spacing: 0;
+   578→            margin-top: 1.5rem;
+   579→        }
+   580→        .comparison-table th {
+   581→            padding: 1rem;
+   582→            text-align: left;
+   583→            font-size: 0.85rem;
+   584→            font-weight: 600;
+   585→            text-transform: uppercase;
+   586→            letter-spacing: 0.5px;
+   587→            color: var(--text-secondary);
+   588→            border-bottom: 1px solid var(--glass-border);
+   589→        }
+   590→        .comparison-table th:first-child { border-radius: 12px 0 0 0; }
+   591→        .comparison-table th:last-child { border-radius: 0 12px 0 0; }
+   592→        .comparison-table td {
+   593→            padding: 1rem;
+   594→            border-bottom: 1px solid rgba(255,255,255,0.04);
+   595→            font-size: 0.92rem;
+   596→        }
+   597→        .comparison-table tr:last-child td:first-child { border-radius: 0 0 0 12px; }
+   598→        .comparison-table tr:last-child td:last-child { border-radius: 0 0 12px 0; }
+   599→        .comparison-table tr:hover td { background: rgba(59,130,246,0.05); }
+   600→        .our-col { color: #34d399; font-weight: 600; }
+   601→        .sf-col { color: #94a3b8; }
+   602→        .win-indicator {
+   603→            display: inline-block;
+   604→            padding: 0.15rem 0.5rem;
+   605→            background: rgba(52,211,153,0.15);
+   606→            border: 1px solid rgba(52,211,153,0.3);
+   607→            border-radius: 6px;
+   608→            font-size: 0.72rem;
+   609→            color: #34d399;
+   610→            margin-left: 0.5rem;
+   611→        }
+   612→
+   613→        /* ===== CTA SECTION ===== */
+   614→        .cta-section {
+   615→            text-align: center;
+   616→            padding: 5rem 2rem;
+   617→            position: relative;
+   618→        }
+   619→        .cta-box {
+   620→            background: linear-gradient(135deg, rgba(30,64,175,0.2) 0%, rgba(124,58,237,0.2) 50%, rgba(6,182,212,0.15) 100%);
+   621→            border: 1px solid rgba(59,130,246,0.2);
+   622→            border-radius: 28px;
+   623→            padding: 4rem 2rem;
+   624→            position: relative;
+   625→            overflow: hidden;
+   626→        }
+   627→        .cta-box::before {
+   628→            content: '';
+   629→            position: absolute;
+   630→            top: -50%; left: -50%;
+   631→            width: 200%; height: 200%;
+   632→            background: radial-gradient(circle at center, rgba(6,182,212,0.08) 0%, transparent 60%);
+   633→            animation: ctaGlow 8s ease-in-out infinite;
+   634→        }
+   635→        @keyframes ctaGlow {
+   636→            0%, 100% { transform: rotate(0deg); }
+   637→            50% { transform: rotate(180deg); }
+   638→        }
+   639→        .cta-box h2 {
+   640→            font-size: clamp(1.6rem, 3vw, 2.5rem);
+   641→            font-weight: 750;
+   642→            margin-bottom: 1rem;
+   643→            position: relative;
+   644→            z-index: 1;
+   645→        }
+   646→        .cta-box p {
+   647→            font-size: 1.1rem;
+   648→            color: var(--text-secondary);
+   649→            max-width: 600px;
+   650→            margin: 0 auto 2rem;
+   651→            position: relative;
+   652→            z-index: 1;
+   653→        }
+   654→        .cta-box .btn-primary { position: relative; z-index: 1; }
+   655→
+   656→        /* ===== FOOTER ===== */
+   657→        footer {
+   658→            border-top: 1px solid var(--glass-border);
+   659→            padding: 3rem 2rem;
+   660→            text-align: center;
+   661→            color: var(--text-secondary);
+   662→            font-size: 0.88rem;
+   663→        }
+   664→        footer a { color: #93c5fd; }
+   665→        footer a:hover { text-decoration: underline; }
+   666→
+   667→        /* ===== RESPONSIVE ===== */
+   668→        @media (max-width: 768px) {
+   669→            nav { padding: 0.75rem 1rem; }
+   670→            .nav-links { justify-content: center; }
+   671→            .hero { padding: 7rem 1rem 3rem; }
+   672→            section { padding: 3rem 1rem; }
+   673→            .pillars-grid { grid-template-columns: 1fr; }
+   674→            .agents-grid { grid-template-columns: 1fr; }
+   675→            .stats-ticker { grid-template-columns: repeat(2, 1fr); }
+   676→            .comparison-section { padding: 1.5rem; overflow-x: auto; }
+   677→            .comparison-table { min-width: 550px; }
+   678→        }
+   679→
+   680→        /* ===== UTILITY CLASSES ===== */
+   681→        .glow-text { text-shadow: 0 0 30px rgba(59,130,246,0.5); }
+   682→        .fade-in { animation: fadeIn 0.6s ease forwards; }
+   683→        @keyframes fadeIn {
+   684→            from { opacity: 0; transform: translateY(20px); }
+   685→            to { opacity: 1; transform: translateY(0); }
+   686→        }
+   687→        .counter-animate {
+   688→            display: inline-block;
+   689→            animation: countUp 2s ease-out forwards;
+   690→        }
+   691→    </style>
+   692→</head>
+   693→<body>
+   694→
+   695→<!-- ===== NAVIGATION ===== -->
+   696→<nav>
+   697→    <div class="nav-brand">
+   698→        <div class="nav-brand-icon">🧠</div>
+   699→        <span>AISupChain Pro</span>
+   700→    </div>
+   701→    <div class="nav-links">
+   702→        <a href="/Demo4AISupChn/" class="active">🏠 Home</a>
+   703→        <a href="/Demo4AISupChn/dashboard.html">📊 Dashboard</a>
+   704→        <a href="/Demo4AISupChn/intelligence.html">🔬 Intelligence</a>
+   705→        <a href="/Demo4AISupChn/agents.html">🤖 Agents</a>
+   706→        <a href="/Demo4AISupChn/platform.html">⚙️ Platform</a>
+   707→        <a href="/Demo4AISupChn/command-center.html">🎯 Command Center</a>
+   708→        <a href="/Demo4AISupChn/about.html">ℹ️ About</a>
+   709→        <a href="/Demo4AISupChn/customers.html">👥 Customers</a>
+   710→    </div>
+   711→</nav>
+   712→
+   713→<!-- ===== HERO SECTION ===== -->
+   714→<div class="hero-bg">
+   715→    <div class="grid-overlay"></div>
+   716→    <div class="particles">
+   717→        <div class="particle"></div><div class="particle"></div><div class="particle"></div>
+   718→        <div class="particle"></div><div class="particle"></div><div class="particle"></div>
+   719→        <div class="particle"></div><div class="particle"></div>
+   720→    </div>
+   721→    
+   722→    <section class="hero">
+   723→        <div class="hero-badge">
+   724→            <span>🚀</span>
+   725→            <span>Next-Gen Enterprise AI Platform v4.0</span>
+   726→            <span style="animation: pulse 2s infinite;">●</span>
+   727→        </div>
+   728→        
+   729→        <h1>Beyond CRM AI<br><span class="glow-text">Enterprise Supply Chain Intelligence</span></h1>
+   730→        
+   731→        <p class="hero-subtitle">
+   732→            The world's most advanced AI-powered supply chain risk platform. 
+   733→            Domain-specific foundation models, real-time intelligence engine, 
+   734→            and autonomous multi-agent systems that make Salesforce Einstein look like a toy.
+   735→        </p>
+   736→        
+   737→        <div class="hero-buttons">
+   738→            <a href="/Demo4AISupChn/dashboard.html" class="btn-primary">
+   739→                🚀 Launch Dashboard
+   740→            </a>
+   741→            <a href="/Demo4AISupChn/intelligence.html" class="btn-secondary">
+   742→                🔬 Explore AI Engine
+   743→            </a>
+   744→            <a href="/Demo4AISupChn/agents.html" class="btn-secondary">
+   745→                🤖 Meet Our Agents
+   746→            </a>
+   747→        </div>
+   748→
+   749→        <!-- Live Stats Ticker -->
+   750→        <div class="stats-ticker">
+   751→            <div class="stat-card">
+   752→                <div class="stat-value">94%</div>
+   753→                <div class="stat-label">Prediction Accuracy</div>
+   754→                <div class="stat-compare">↑ vs Salesforce ~75%</div>
+   755→            </div>
+   756→            <div class="stat-card">
+   757→                <div class="stat-value">&lt;5min</div>
+   758→                <div class="stat-label">Alert Response Time</div>
+   759→                <div class="stat-compare">↑ vs Salesforce hours</div>
+   760→            </div>
+   761→            <div class="stat-card">
+   762→                <div class="stat-value">190+</div>
+   763→                <div class="stat-label">Countries Monitored</div>
+   764→                <div class="stat-compare">Global Coverage</div>
+   765→            </div>
+   766→            <div class="stat-card">
+   767→                <div class="stat-value">$2.3B</div>
+   768→                <div class="stat-label">Risks Mitigated</div>
+   769→                <div class="stat-compare">Enterprise Value</div>
+   770→            </div>
+   771→            <div class="stat-card">
+   772→                <div class="stat-value">500+</div>
+   773→                <div class="stat-label">Enterprise Clients</div>
+   774→                <div class="stat-compare">Fortune 500 Trusted</div>
+   775→            </div>
+   776→        </div>
+   777→    </section>
+   778→</div>
+   779→
+   780→<!-- ===== 6 PILLARS OF SUPERIORITY ===== -->
+   781→<section id="pillars">
+   782→    <div class="section-header">
+   783→        <div class="section-tag">🏆 Competitive Advantage</div>
+   784→        <h2 class="section-title">6 Pillars of AI Superiority</h2>
+   785→        <p class="section-desc">
+   786→            Why leading enterprises choose our platform over generic CRM AI solutions
+   787→        </p>
+   788→    </div>
+   789→    
+   790→    <div class="pillars-grid">
+   791→        <!-- Pillar 1 -->
+   792→        <div class="pillar-card">
+   793→            <div class="pillar-icon">🧠</div>
+   794→            <h3 class="pillar-title">Domain-Specific Foundation Models</h3>
+   795→            <p class="pillar-desc">
+   796→                Pre-trained on 50M+ supply chain documents, customs data, shipping manifests, 
+   797→                and financial records. Not a generic LLM fine-tuned — purpose-built from 
+   798→                ground up for supply chain intelligence.
+   799→            </p>
+   800→            <div class="pillar-vs">
+   801→                <span class="vs-badge">vs SF</span>
+   802→                <span class="vs-text">Salesforce uses generic GPT wrappers with no domain expertise</span>
+   803→            </div>
+   804→        </div>
+   805→        
+   806→        <!-- Pillar 2 -->
+   807→        <div class="pillar-card">
+   808→            <div class="pillar-icon">⚡</div>
+   809→            <h3 class="pillar-title">Real-Time Intelligence Engine</h3>
+   810→            <p class="pillar-desc">
+   811→                Sub-200ms risk scoring with Apache Kafka streaming pipeline processing 
+   812→                2M+ events/sec. Redis sub-millisecond caching ensures instant responses 
+   813→                for mission-critical decisions.
+   814→            </p>
+   815→            <div class="pillar-vs">
+   816→                <span class="vs-badge">vs SF</span>
+   817→                <span class="vs-text">Salesforce batch processes with 15+ minute delays</span>
+   818→            </div>
+   819→        </div>
+   820→        
+   821→        <!-- Pillar 3 -->
+   822→        <div class="pillar-card">
+   823→            <div class="pillar-icon">🕸️</div>
+   824→            <h3 class="pillar-title">Knowledge Graph Network Analysis</h3>
+   825→            <p class="pillar-desc">
+   826→                Neo4j/AWS Neptune powered graph database mapping 10M+ supplier relationships 
+   827→                across 6 tiers. Detect hidden dependencies, single points of failure, 
+   828→                and cascading risk propagation.
+   829→            </p>
+   830→            <div class="pillar-vs">
+   831→                <span class="vs-badge">vs SF</span>
+   832→                <span class="vs-text">Salesforce has flat relational data, zero network analysis</span>
+   833→            </div>
+   834→        </div>
+   835→        
+   836→        <!-- Pillar 4 -->
+   837→        <div class="pillar-card">
+   838→            <div class="pillar-icon">🔍</div>
+   839→            <h3 class="pillar-title">Advanced XAI Suite</h3>
+   840→            <p class="pillar-desc">
+   841→                Full explainability stack: SHAP values, counterfactual explanations, 
+   842→                attention visualization, complete audit trails, and regulatory-ready 
+   843→                decision documentation for EU AI Act compliance.
+   844→            </p>
+   845→            <div class="pillar-vs">
+   846→                <span class="vs-badge">vs SF</span>
+   847→                <span class="vs-text">Salesforce offers basic "confidence scores" only</span>
+   848→            </div>
+   849→        </div>
+   850→        
+   851→        <!-- Pillar 5 -->
+   852→        <div class="pillar-card">
+   853→            <div class="pillar-icon">🎮</div>
+   854→            <h3 class="pillar-title">Scenario Simulation Engine</h3>
+   855→            <p class="pillar-desc">
+   856→                Monte Carlo simulations (10K scenarios/sec), what-if analysis, stress testing, 
+   857→                and war-gaming capabilities. Model geopolitical events, natural disasters, 
+   858→                financial crises before they happen.
+   859→            </p>
+   860→            <div class="pillar-vs">
+   861→                <span class="vs-badge">vs SF</span>
+   862→                <span class="vs-text">Salesforce has zero predictive simulation capability</span>
+   863→            </div>
+   864→        </div>
+   865→        
+   866→        <!-- Pillar 6 -->
+   867→        <div class="pillar-card">
+   868→            <div class="pillar-icon">🤖</div>
+   869→            <h3 class="pillar-title">Autonomous AI Agents</h3>
+   870→            <p class="pillar-desc">
+   871→                Multi-agent collaboration system with 6 specialized autonomous agents. 
+   872→                Self-orchestrating workflows, human-in-the-loop approvals, and 
+   873→                continuous learning from every interaction.
+   874→            </p>
+   875→            <div class="pillar-vs">
+   876→                <span class="vs-badge">vs SF</span>
+   877→                <span class="vs-text">Salesforce has simple chatbots, not autonomous agents</span>
+   878→            </div>
+   879→        </div>
+   880→    </div>
+   881→</section>
+   882→
+   883→<!-- ===== AI AGENTS SHOWCASE ===== -->
+   884→<section id="agents">
+   885→    <div class="section-header">
+   886→        <div class="section-tag">🤖 Autonomous Intelligence</div>
+   887→        <h2 class="section-title">Meet Your AI Agent Fleet</h2>
+   888→        <p class="section-desc">
+   889→            Six specialized AI agents working 24/7 to protect your supply chain
+   890→        </p>
+   891→    </div>
+   892→    
+   893→    <div class="agents-showcase">
+   894→        <div class="agents-grid">
+   895→            <!-- Agent 1: Sentinel -->
+   896→            <div class="agent-card">
+   897→                <div class="agent-header">
+   898→                    <div class="agent-avatar">🛡️</div>
+   899→                    <div class="agent-info">
+   900→                        <h4>Sentinel Agent</h4>
+   901→                        <div class="agent-status"><span class="status-dot"></span> Active · Monitoring</div>
+   902→                    </div>
+   903→                </div>
+   904→                <div class="agent-capabilities">
+   905→                    <span class="capability-tag">24/7 Surveillance</span>
+   906→                    <span class="capability-tag">Threat Detection</span>
+   907→                    <span class="capability-tag">Alert Generation</span>
+   908→                </div>
+   909→                <div class="agent-metrics">
+   910→                    <div class="metric-item"><div class="metric-val">847K</div><div class="metric-lbl">Events/Day</div></div>
+   911→                    <div class="metric-item"><div class="metric-val">99.7%</div><div class="metric-lbl">Uptime</div></div>
+   912→                </div>
+   913→            </div>
+   914→            
+   915→            <!-- Agent 2: Analyst -->
+   916→            <div class="agent-card">
+   917→                <div class="agent-header">
+   918→                    <div class="agent-avatar">🔬</div>
+   919→                    <div class="agent-info">
+   920→                        <h4>Analyst Agent</h4>
+   921→                        <div class="agent-status"><span class="status-dot"></span> Active · Investigating</div>
+   922→                    </div>
+   923→                </div>
+   924→                <div class="agent-capabilities">
+   925→                    <span class="capability-tag">Deep Research</span>
+   926→                    <span class="capability-tag">Pattern Recognition</span>
+   927→                    <span class="capability-tag">Root Cause</span>
+   928→                </div>
+   929→                <div class="agent-metrics">
+   930→                    <div class="metric-item"><div class="metric-val">12.3s</div><div class="metric-lbl">Avg Analysis</div></div>
+   931→                    <div class="metric-item"><div class="metric-val">98%</div><div class="metric-lbl">Accuracy</div></div>
+   932→                </div>
+   933→            </div>
+   934→            
+   935→            <!-- Agent 3: Compliance -->
+   936→            <div class="agent-card">
+   937→                <div class="agent-header">
+   938→                    <div class="agent-avatar">⚖️</div>
+   939→                    <div class="agent-info">
+   940→                        <h4>Compliance Agent</h4>
+   941→                        <div class="agent-status"><span class="status-dot"></span> Active · Tracking</div>
+   942→                    </div>
+   943→                </div>
+   944→                <div class="agent-capabilities">
+   945→                    <span class="capability-tag">Regulatory Monitor</span>
+   946→                    <span class="capability-tag">Sanctions Check</span>
+   947→                    <span class="capability-tag">Audit Ready</span>
+   948→                </div>
+   949→                <div class="agent-metrics">
+   950→                    <div class="metric-item"><div class="metric-val">156</div><div class="metric-lbl">Regulations</div></div>
+   951→                    <div class="metric-item"><div class="metric-val">100%</div><div class="metric-lbl">Coverage</div></div>
+   952→                </div>
+   953→            </div>
+   954→            
+   955→            <!-- Agent 4: Forecast -->
+   956→            <div class="agent-card">
+   957→                <div class="agent-header">
+   958→                    <div class="agent-avatar">📈</div>
+   959→                    <div class="agent-info">
+   960→                        <h4>Forecast Agent</h4>
+   961→                        <div class="agent-status"><span class="status-dot"></span> Active · Predicting</div>
+   962→                    </div>
+   963→                </div>
+   964→                <div class="agent-capabilities">
+   965→                    <span class="capability-tag">Demand Forecast</span>
+   966→                    <span class="capability-tag">Price Prediction</span>
+   967→                    <span class="capability-tag">Trend Analysis</span>
+   968→                </div>
+   969→                <div class="agent-metrics">
+   970→                    <div class="metric-item"><div class="metric-val">91%</div><div class="metric-lbl">Forecast Acc.</div></div>
+   971→                    <div class="metric-item"><div class="metric-val">90-day</div><div class="metric-lbl">Horizon</div></div>
+   972→                </div>
+   973→            </div>
+   974→            
+   975→            <!-- Agent 5: Orchestrator -->
+   976→            <div class="agent-card">
+   977→                <div class="agent-header">
+   978→                    <div class="agent-avatar">🎯</div>
+   979→                    <div class="agent-info">
+   980→                        <h4>Orchestrator Agent</h4>
+   981→                        <div class="agent-status"><span class="status-dot"></span> Active · Coordinating</div>
+   982→                    </div>
+   983→                </div>
+   984→                <div class="agent-capabilities">
+   985→                    <span class="capability-tag">Workflow Mgmt</span>
+   986→                    <span class="capability-tag">Task Routing</span>
+   987→                    <span class="capability-tag">Priority Queue</span>
+   988→                </div>
+   989→                <div class="agent-metrics">
+   990→                    <div class="metric-item"><div class="metric-val">2.4K</div><div class="metric-lbl">Tasks/Day</div></div>
+   991→                    <div class="metric-item"><div class="metric-val">&lt;1s</div><div class="metric-lbl">Routing</div></div>
+   992→                </div>
+   993→            </div>
+   994→            
+   995→            <!-- Agent 6: Negotiation -->
+   996→            <div class="agent-card">
+   997→                <div class="agent-header">
+   998→                    <div class="agent-avatar">💬</div>
+   999→                    <div class="agent-info">
+  1000→                        <h4>Negotiation Agent</h4>
+  1001→                        <div class="agent-status"><span class="status-dot"></span> Active · Communicating</div>
+  1002→                    </div>
+  1003→                </div>
+  1004→                <div class="agent-capabilities">
+  1005→                    <span class="capability-tag">Auto Comms</span>
+  1006→                    <span class="capability-tag">Contract Review</span>
+  1007→                    <span class="capability-tag">SLA Monitor</span>
+  1008→                </div>
+  1009→                <div class="agent-metrics">
+  1010→                    <div class="metric-item"><div class="metric-val">18%</div><div class="metric-lbl">Cost Savings</div></div>
+  1011→                    <div class="metric-item"><div class="metric-val">5.2K</div><div class="metric-lbl">Comms/Mo</div></div>
+  1012→                </div>
+  1013→            </div>
+  1014→        </div>
+  1015→    </div>
+  1016→</section>
+  1017→
+  1018→<!-- ===== TECHNOLOGY STACK ===== -->
+  1019→<section id="technology">
+  1020→    <div class="section-header">
+  1021→        <div class="section-tag">⚡ Technical Architecture</div>
+  1022→        <h2 class="section-title">Enterprise-Grade Technology Stack</h2>
+  1023→        <p class="section-desc">
+  1024→            Built on the most advanced AI/ML infrastructure available
+  1025→        </p>
+  1026→    </div>
+  1027→    
+  1028→    <div class="tech-stack">
+  1029→        <div class="tech-card">
+  1030→            <div class="tech-icon">🔥</div>
+  1031→            <div class="tech-info">
+  1032→                <h4>PyTorch 2.x + TensorFlow</h4>
+  1033→                <p>Hybrid deep learning framework for custom transformer models</p>
+  1034→            </div>
+  1035→        </div>
+  1036→        <div class="tech-card">
+  1037→            <div class="tech-icon">🧮</div>
+  1038→            <div class="tech-info">
+  1039→                <h4>JAX / Flax</h4>
+  1040→                <p>High-performance numerical computing for large-scale inference</p>
+  1041→            </div>
+  1042→        </div>
+  1043→        <div class="tech-card">
+  1044→            <div class="tech-icon">🔗</div>
+  1045→            <div class="tech-info">
+  1046→                <h4>Neo4j + AWS Neptune</h4>
+  1047→                <p>Graph databases for knowledge network & relationship mapping</p>
+  1048→            </div>
+  1049→        </div>
+  1050→        <div class="tech-card">
+  1051→            <div class="tech-icon">📡</div>
+  1052→            <div class="tech-info">
+  1053→                <h4>Apache Kafka</h4>
+  1054→                <p>Distributed event streaming at 2M+ messages per second</p>
+  1055→            </div>
+  1056→        </div>
+  1057→        <div class="tech-card">
+  1058→            <div class="tech-icon">⚡</div>
+  1059→            <div class="tech-info">
+  1060→                <h4>Redis Cluster</h4>
+  1061→                <p>Sub-millisecond caching layer with 99.999% availability</p>
+  1062→            </div>
+  1063→        </div>
+  1064→        <div class="tech-card">
+  1065→            <div class="tech-icon">☁️</div>
+  1066→            <div class="tech-info">
+  1067→                <h4>Multi-Cloud (AWS/Azure/GCP)</h4>
+  1068→                <p>Cloud-agnostic deployment with automatic failover</p>
+  1069→            </div>
+  1070→        </div>
+  1071→        <div class="tech-card">
+  1072→            <div class="tech-icon">🐳</div>
+  1073→            <div class="tech-info">
+  1074→                <h4>Kubernetes + Istio</h4>
+  1075→                <p>Container orchestration with service mesh for microservices</p>
+  1076→            </div>
+  1077→        </div>
+  1078→        <div class="tech-card">
+  1079→            <div class="tech-icon">🛡️</div>
+  1080→            <div class="tech-info">
+  1081→                <h4>SOC 2 Type II / ISO 27001</h4>
+  1082→                <p>Enterprise security compliance with end-to-end encryption</p>
+  1083→            </div>
+  1084→        </div>
+  1085→    </div>
+  1086→</section>
+  1087→
+  1088→<!-- ===== COMPETITIVE COMPARISON ===== -->
+  1089→<section id="comparison">
+  1090→    <div class="comparison-section">
+  1091→        <div class="section-header" style="margin-bottom: 1rem;">
+  1092→            <div class="section-tag">📊 Head-to-Head Comparison</div>
+  1093→            <h2 class="section-title" style="font-size: 1.8rem;">Why We Win Every Time</h2>
+  1094→        </div>
+  1095→        
+  1096→        <table class="comparison-table">
+  1097→            <thead>
+  1098→                <tr>
+  1099→                    <th>Capability</th>
+  1100→                    <th>Our Platform</th>
+  1101→                    <th>Salesforce Einstein</th>
+  1102→                    <th>Advantage</th>
+  1103→                </tr>
+  1104→            </thead>
+  1105→            <tbody>
+  1106→                <tr>
+  1107→                    <td>Prediction Accuracy</td>
+  1108→                    <td class="our-col">94% <span class="win-indicator">✓ Winner</span></td>
+  1109→                    <td class="sf-col">~73%</td>
+  1110→                    <td>+21%</td>
+  1111→                </tr>
+  1112→                <tr>
+  1113→                    <td>Risk Alert Latency</td>
+  1114→                    <td class="our-col">&lt;5 minutes <span class="win-indicator">✓ Winner</span></td>
+  1115→                    <td class="sf-col">2-8 hours</td>
+  1116→                    <td>96x faster</td>
+  1117→                </tr>
+  1118→                <tr>
+  1119→                    <td>Domain Expertise</td>
+  1120→                    <td class="our-col">Supply Chain Native <span class="win-indicator">✓ Winner</span></td>
+  1121→                    <td class="sf-col">Generic CRM</td>
+  1122→                    <td>Specialized</td>
+  1123→                </tr>
+  1124→                <tr>
+  1125→                    <td>XAI / Explainability</td>
+  1126→                    <td class="our-col">Full SHAP + Counterfactuals <span class="win-indicator">✓ Winner</span></td>
+  1127→                    <td class="sf-col">Basic confidence %</td>
+  1128→                    <td>Complete vs Basic</td>
+  1129→                </tr>
+  1130→                <tr>
+  1131→                    <td>Knowledge Graph</td>
+  1132→                    <td class="our-col">10M+ relationships <span class="win-indicator">✓ Winner</span></td>
+  1133→                    <td class="sf-col">None</td>
+  1134→                    <td>Infinite advantage</td>
+  1135→                </tr>
+  1136→                <tr>
+  1137→                    <td>AI Agents</td>
+  1138→                    <td class="our-col">6 Autonomous Agents <span class="win-indicator">✓ Winner</span></td>
+  1139→                    <td class="sf-col">Chatbot only</td>
+  1140→                    <td>True autonomy</td>
+  1141→                </tr>
+  1142→                <tr>
+  1143→                    <td>Scenario Simulation</td>
+  1144→                    <td class="our-col">Monte Carlo + What-If <span class="win-indicator">✓ Winner</span></td>
+  1145→                    <td class="sf-col">Not available</td>
+  1146→                    <td>Unique feature</td>
+  1147→                </tr>
+  1148→                <tr>
+  1149→                    <td>Data Sources</td>
+  1150→                    <td class="our-col">500+ integrated feeds <span class="win-indicator">✓ Winner</span></td>
+  1151→                    <td class="sf-col">~50 internal</td>
+  1152→                    <td>10x coverage</td>
+  1153→                </tr>
+  1154→                <tr>
+  1155→                    <td>Countries Covered</td>
+  1156→                    <td class="our-col">190+ countries <span class="win-indicator">✓ Winner</span></td>
+  1157→                    <td class="sf-col">~40 major markets</td>
+  1158→                    <td>Global reach</td>
+  1159→                </tr>
+  1160→                <tr>
+  1161→                    <td>API Latency (P99)</td>
+  1162→                    <td class="our-col">&lt;200ms <span class="win-indicator">✓ Winner</span></td>
+  1163→                    <td class="sf-col">&gt;2 seconds</td>
+  1164→                    <td>10x faster</td>
+  1165→                </tr>
+  1166→            </tbody>
+  1167→        </table>
+  1168→    </div>
+  1169→</section>
+  1170→
+  1171→<!-- ===== CTA SECTION ===== -->
+  1172→<section class="cta-section">
+  1173→    <div class="cta-box">
+  1174→        <h2>Ready to Transform Your Supply Chain?</h2>
+  1175→        <p>
+  1176→            Join 500+ Fortune 500 companies already using next-generation AI 
+  1177→            to eliminate supply chain risks before they happen.
+  1178→        </p>
+  1179→        <div class="hero-buttons">
+  1180→            <a href="/Demo4AISupChn/dashboard.html" class="btn-primary">
+  1181→                🚀 Start Free Trial
+  1182→            </a>
+  1183→            <a href="/Demo4AISupChn/about.html" class="btn-secondary">
+  1184→                📞 Schedule Demo
+  1185→            </a>
+  1186→        </div>
+  1187→    </div>
+  1188→</section>
+  1189→
+  1190→<!-- ===== FOOTER ===== -->
+  1191→<footer>
+  1192→    <p>
+  1193→        © 2025 AISupChain Pro | Next-Generation Supply Chain AI Platform<br>
+  1194→        <a href="#">Privacy Policy</a> · <a href="#">Terms of Service</a> · <a href="#">Security</a> · <a href="#">Compliance</a>
+  1195→    </p>
+  1196→    <p style="margin-top: 0.75rem; font-size: 0.8rem;">
+  1197→        SOC 2 Type II Certified · ISO 27001 · GDPR Compliant · EU AI Act Ready
+  1198→    </p>
+  1199→</footer>
+  1200→
+  1201→</body>
+  1202→</html>

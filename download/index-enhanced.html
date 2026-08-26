@@ -1,0 +1,1415 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Supply Chain Risk Platform | Beyond CRM AI - Enterprise Intelligence</title>
+    <style>
+        /* ===== CSS RESET & BASE ===== */
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+        
+        /* ===== THEME VARIABLES ===== */
+        :root, [data-theme="dark"] {
+            --primary: #1e40af;
+            --primary-light: #3b82f6;
+            --cyan: #06b6d4;
+            --emerald: #059669;
+            --purple: #7c3aed;
+            --rose: #e11d48;
+            --amber: #f59e0b;
+            --dark: #0f172a;
+            --dark-lighter: #1e293b;
+            --glass-bg: rgba(255,255,255,0.05);
+            --glass-border: rgba(255,255,255,0.1);
+            --text-primary: #f8fafc;
+            --text-secondary: #94a3b8;
+            --nav-bg: rgba(15,23,42,0.85);
+            --card-bg: rgba(30,41,59,0.6);
+            --dropdown-bg: rgba(15,23,42,0.95);
+            --input-bg: rgba(30,41,59,0.8);
+            --border-color: rgba(255,255,255,0.1);
+            --shadow-color: rgba(0,0,0,0.3);
+            --gradient-1: linear-gradient(135deg, #1e40af 0%, #7c3aed 50%, #06b6d4 100%);
+            --gradient-2: linear-gradient(135deg, #059669 0%, #06b6d4 100%);
+            --gradient-3: linear-gradient(135deg, #7c3aed 0%, #e11d48 100%);
+            --hero-bg-start: #0a0e27;
+            --hero-bg-mid1: #1a1a4e;
+            --hero-bg-mid2: #0d2137;
+            --hero-bg-mid3: #1a0a2e;
+            --hero-bg-end: #0a1628;
+        }
+        
+        [data-theme="light"] {
+            --primary: #1e40af;
+            --primary-light: #3b82f6;
+            --cyan: #0891b2;
+            --emerald: #047857;
+            --purple: #6d28d9;
+            --rose: #be123c;
+            --amber: #d97706;
+            --dark: #f8fafc;
+            --dark-lighter: #e2e8f0;
+            --glass-bg: rgba(255,255,255,0.7);
+            --glass-border: rgba(0,0,0,0.1);
+            --text-primary: #0f172a;
+            --text-secondary: #475569;
+            --nav-bg: rgba(248,250,252,0.9);
+            --card-bg: rgba(255,255,255,0.8);
+            --dropdown-bg: rgba(255,255,255,0.98);
+            --input-bg: rgba(248,250,252,0.9);
+            --border-color: rgba(0,0,0,0.1);
+            --shadow-color: rgba(0,0,0,0.1);
+            --gradient-1: linear-gradient(135deg, #1e40af 0%, #7c3aed 50%, #0891b2 100%);
+            --gradient-2: linear-gradient(135deg, #047857 0%, #0891b2 100%);
+            --gradient-3: linear-gradient(135deg, #6d28d9 0%, #be123c 100%);
+            --hero-bg-start: #f0f9ff;
+            --hero-bg-mid1: #e0f2fe;
+            --hero-bg-mid2: #f0fdf4;
+            --hero-bg-mid3: #faf5ff;
+            --hero-bg-end: #fff7ed;
+        }
+        
+        html { scroll-behavior: smooth; }
+        
+        body {
+            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+            background: var(--dark);
+            color: var(--text-primary);
+            line-height: 1.6;
+            overflow-x: hidden;
+            transition: background 0.3s ease, color 0.3s ease;
+        }
+        
+        a { color: inherit; text-decoration: none; }
+        
+        /* ===== ANIMATED BACKGROUND ===== */
+        .hero-bg {
+            position: relative;
+            background: linear-gradient(135deg, var(--hero-bg-start) 0%, var(--hero-bg-mid1) 25%, var(--hero-bg-mid2) 50%, var(--hero-bg-mid3) 75%, var(--hero-bg-end) 100%);
+            min-height: 100vh;
+            overflow: hidden;
+            transition: background 0.3s ease;
+        }
+        
+        .hero-bg::before {
+            content: '';
+            position: absolute;
+            top: -50%; left: -50%;
+            width: 200%; height: 200%;
+            background: radial-gradient(circle at 20% 80%, rgba(30,64,175,0.3) 0%, transparent 50%),
+                        radial-gradient(circle at 80% 20%, rgba(124,58,237,0.25) 0%, transparent 50%),
+                        radial-gradient(circle at 40% 40%, rgba(6,182,212,0.15) 0%, transparent 40%),
+                        radial-gradient(circle at 70% 70%, rgba(5,150,105,0.2) 0%, transparent 45%);
+            animation: bgFloat 20s ease-in-out infinite;
+        }
+        
+        @keyframes bgFloat {
+            0%, 100% { transform: translate(0, 0) rotate(0deg); }
+            33% { transform: translate(2%, -2%) rotate(1deg); }
+            66% { transform: translate(-1%, 1%) rotate(-1deg); }
+        }
+        
+        .grid-overlay {
+            position: absolute;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background-image: 
+                linear-gradient(rgba(59,130,246,0.03) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(59,130,246,0.03) 1px, transparent 1px);
+            background-size: 60px 60px;
+            pointer-events: none;
+        }
+        
+        .particles {
+            position: absolute;
+            top: 0; left: 0; right: 0; bottom: 0;
+            pointer-events: none;
+        }
+        
+        .particle {
+            position: absolute;
+            width: 4px; height: 4px;
+            background: rgba(6,182,212,0.6);
+            border-radius: 50%;
+            animation: particleFloat 8s ease-in-out infinite;
+        }
+        
+        .particle:nth-child(1) { top: 20%; left: 10%; animation-delay: 0s; width: 6px; height: 6px; }
+        .particle:nth-child(2) { top: 60%; left: 80%; animation-delay: 1s; width: 3px; height: 3px; }
+        .particle:nth-child(3) { top: 40%; left: 60%; animation-delay: 2s; width: 5px; height: 5px; }
+        .particle:nth-child(4) { top: 80%; left: 30%; animation-delay: 3s; width: 4px; height: 4px; }
+        .particle:nth-child(5) { top: 10%; left: 70%; animation-delay: 4s; width: 3px; height: 3px; }
+        .particle:nth-child(6) { top: 70%; left: 15%; animation-delay: 5s; width: 5px; height: 5px; }
+        .particle:nth-child(7) { top: 30%; left: 90%; animation-delay: 6s; width: 4px; height: 4px; }
+        .particle:nth-child(8) { top: 90%; left: 50%; animation-delay: 7s; width: 6px; height: 6px; }
+        
+        @keyframes particleFloat {
+            0%, 100% { transform: translateY(0) scale(1); opacity: 0.6; }
+            50% { transform: translateY(-30px) scale(1.2); opacity: 1; }
+        }
+
+        /* ===== ENHANCED NAVIGATION ===== */
+        nav {
+            position: fixed;
+            top: 0; left: 0; right: 0;
+            z-index: 1000;
+            padding: 0.75rem 2rem;
+            background: var(--nav-bg);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border-bottom: 1px solid var(--border-color);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 1rem;
+            transition: background 0.3s ease, border-color 0.3s ease;
+        }
+        
+        .nav-left {
+            display: flex;
+            align-items: center;
+            gap: 1.5rem;
+        }
+        
+        .nav-brand {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            font-size: 1.35rem;
+            font-weight: 700;
+            background: var(--gradient-1);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        
+        .nav-brand-icon {
+            width: 42px; height: 42px;
+            background: var(--gradient-1);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.4rem;
+            -webkit-text-fill-color: white;
+            box-shadow: 0 4px 15px rgba(30,64,175,0.3);
+        }
+        
+        /* ===== SEARCH BAR ===== */
+        .search-container {
+            position: relative;
+            width: 280px;
+        }
+        
+        .search-input {
+            width: 100%;
+            padding: 0.6rem 1rem 0.6rem 2.5rem;
+            background: var(--input-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 10px;
+            color: var(--text-primary);
+            font-size: 0.88rem;
+            outline: none;
+            transition: all 0.3s ease;
+        }
+        
+        .search-input::placeholder {
+            color: var(--text-secondary);
+        }
+        
+        .search-input:focus {
+            border-color: var(--primary-light);
+            box-shadow: 0 0 0 3px rgba(59,130,246,0.1);
+            width: 320px;
+        }
+        
+        .search-icon {
+            position: absolute;
+            left: 0.75rem;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+            pointer-events: none;
+        }
+        
+        .search-results {
+            position: absolute;
+            top: calc(100% + 8px);
+            left: 0;
+            right: 0;
+            background: var(--dropdown-bg);
+            backdrop-filter: blur(20px);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            box-shadow: 0 10px 40px var(--shadow-color);
+            max-height: 400px;
+            overflow-y: auto;
+            display: none;
+            z-index: 1001;
+        }
+        
+        .search-results.active {
+            display: block;
+        }
+        
+        .search-result-item {
+            padding: 0.75rem 1rem;
+            cursor: pointer;
+            transition: background 0.2s ease;
+            border-bottom: 1px solid var(--border-color);
+        }
+        
+        .search-result-item:last-child {
+            border-bottom: none;
+        }
+        
+        .search-result-item:hover {
+            background: var(--glass-bg);
+        }
+        
+        .search-result-title {
+            font-weight: 600;
+            font-size: 0.9rem;
+            color: var(--text-primary);
+            margin-bottom: 0.25rem;
+        }
+        
+        .search-result-desc {
+            font-size: 0.8rem;
+            color: var(--text-secondary);
+        }
+        
+        /* ===== NAV LINKS WITH DROPDOWNS ===== */
+        .nav-center {
+            display: flex;
+            gap: 0.25rem;
+            flex-wrap: wrap;
+        }
+        
+        .nav-item {
+            position: relative;
+        }
+        
+        .nav-links > .nav-item > a,
+        .nav-links a {
+            padding: 0.55rem 1rem;
+            border-radius: 10px;
+            font-size: 0.88rem;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            color: var(--text-secondary);
+            border: 1px solid transparent;
+            display: flex;
+            align-items: center;
+            gap: 0.35rem;
+            cursor: pointer;
+        }
+        
+        .nav-links > .nav-item > a:hover,
+        .nav-links a:hover {
+            background: var(--glass-bg);
+            color: var(--text-primary);
+            border-color: var(--border-color);
+            transform: translateY(-1px);
+        }
+        
+        .nav-links > .nav-item > a.active {
+            background: linear-gradient(135deg, rgba(30,64,175,0.3), rgba(124,58,237,0.3));
+            border-color: rgba(59,130,246,0.3);
+            color: var(--text-primary);
+        }
+        
+        .dropdown-arrow {
+            font-size: 0.7rem;
+            transition: transform 0.3s ease;
+        }
+        
+        .nav-item:hover .dropdown-arrow {
+            transform: rotate(180deg);
+        }
+        
+        /* ===== DROPDOWN MENUS ===== */
+        .dropdown-menu {
+            position: absolute;
+            top: calc(100% + 8px);
+            left: 0;
+            min-width: 320px;
+            background: var(--dropdown-bg);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid var(--border-color);
+            border-radius: 16px;
+            box-shadow: 0 20px 60px var(--shadow-color);
+            opacity: 0;
+            visibility: hidden;
+            transform: translateY(-10px);
+            transition: all 0.3s ease;
+            z-index: 1001;
+            overflow: hidden;
+        }
+        
+        .nav-item:hover .dropdown-menu {
+            opacity: 1;
+            visibility: visible;
+            transform: translateY(0);
+        }
+        
+        .dropdown-header {
+            padding: 1rem 1.25rem 0.75rem;
+            border-bottom: 1px solid var(--border-color);
+            background: linear-gradient(135deg, rgba(59,130,246,0.1), rgba(124,58,237,0.1));
+        }
+        
+        .dropdown-title {
+            font-size: 0.95rem;
+            font-weight: 700;
+            color: var(--text-primary);
+            margin-bottom: 0.25rem;
+        }
+        
+        .dropdown-subtitle {
+            font-size: 0.78rem;
+            color: var(--text-secondary);
+        }
+        
+        .dropdown-content {
+            padding: 0.75rem;
+            max-height: 400px;
+            overflow-y: auto;
+        }
+        
+        .dropdown-section {
+            margin-bottom: 0.75rem;
+        }
+        
+        .dropdown-section:last-child {
+            margin-bottom: 0;
+        }
+        
+        .dropdown-section-title {
+            font-size: 0.72rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: var(--primary-light);
+            margin-bottom: 0.5rem;
+            padding: 0 0.5rem;
+        }
+        
+        .dropdown-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 0.75rem;
+            padding: 0.6rem 0.75rem;
+            border-radius: 8px;
+            transition: all 0.2s ease;
+            cursor: pointer;
+        }
+        
+        .dropdown-item:hover {
+            background: var(--glass-bg);
+            transform: translateX(3px);
+        }
+        
+        .dropdown-item-icon {
+            width: 32px;
+            height: 32px;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.9rem;
+            flex-shrink: 0;
+        }
+        
+        .dropdown-item-icon.ap { background: linear-gradient(135deg, #dc2626, #991b1b); }
+        .dropdown-item-icon.yahoo { background: linear-gradient(135deg, #7b00ff, #5b00cc); }
+        .dropdown-item-icon.wsj { background: linear-gradient(135deg, #0f172a, #1e293b); }
+        .dropdown-item-icon.reuters { background: linear-gradient(135deg, #ea580c, #c2410c); }
+        .dropdown-item-icon.bloomberg { background: linear-gradient(135deg, #000000, #333333); }
+        .dropdown-item-icon.cnbc { background: linear-gradient(135deg, #059669, #047857); }
+        .dropdown-item-icon.rss { background: linear-gradient(135deg, #f59e0b, #d97706); }
+        .dropdown-item-icon.custom { background: var(--gradient-2); }
+        
+        .dropdown-item-text {
+            flex: 1;
+            min-width: 0;
+        }
+        
+        .dropdown-item-title {
+            font-size: 0.85rem;
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: 0.15rem;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+        
+        .dropdown-item-desc {
+            font-size: 0.75rem;
+            color: var(--text-secondary);
+            line-height: 1.4;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+        
+        .dropdown-item-meta {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            margin-top: 0.3rem;
+            font-size: 0.7rem;
+            color: var(--text-secondary);
+        }
+        
+        .dropdown-item-source {
+            padding: 0.15rem 0.5rem;
+            background: var(--glass-bg);
+            border-radius: 4px;
+            font-weight: 500;
+        }
+        
+        .dropdown-item-time {
+            opacity: 0.7;
+        }
+        
+        .dropdown-footer {
+            padding: 0.75rem 1.25rem;
+            border-top: 1px solid var(--border-color);
+            background: rgba(59,130,246,0.05);
+        }
+        
+        .dropdown-footer a {
+            font-size: 0.82rem;
+            font-weight: 600;
+            color: var(--primary-light);
+            display: flex;
+            align-items: center;
+            gap: 0.4rem;
+            transition: gap 0.3s ease;
+        }
+        
+        .dropdown-footer a:hover {
+            gap: 0.7rem;
+        }
+        
+        /* ===== NAV RIGHT (ACTIONS) ===== */
+        .nav-right {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+        
+        /* ===== THEME TOGGLE ===== */
+        .theme-toggle {
+            width: 44px;
+            height: 44px;
+            border-radius: 12px;
+            background: var(--input-bg);
+            border: 1px solid var(--border-color);
+            color: var(--text-secondary);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.15rem;
+            transition: all 0.3s ease;
+        }
+        
+        .theme-toggle:hover {
+            background: var(--glass-bg);
+            color: var(--text-primary);
+            transform: rotate(15deg);
+            border-color: var(--primary-light);
+        }
+        
+        .theme-toggle .icon-sun { display: none; }
+        .theme-toggle .icon-moon { display: inline-block; }
+        
+        [data-theme="light"] .theme-toggle .icon-sun { display: inline-block; }
+        [data-theme="light"] .theme-toggle .icon-moon { display: none; }
+        
+        /* ===== LOGIN BUTTON ===== */
+        .btn-login {
+            padding: 0.6rem 1.25rem;
+            border-radius: 10px;
+            background: transparent;
+            border: 1px solid var(--border-color);
+            color: var(--text-primary);
+            font-size: 0.88rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .btn-login:hover {
+            background: var(--glass-bg);
+            border-color: var(--primary-light);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 15px rgba(59,130,246,0.2);
+        }
+        
+        /* ===== GET STARTED CTA ===== */
+        .btn-get-started {
+            padding: 0.65rem 1.5rem;
+            border-radius: 10px;
+            background: var(--gradient-2);
+            border: none;
+            color: white;
+            font-size: 0.88rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            box-shadow: 0 4px 20px rgba(5,150,105,0.3);
+        }
+        
+        .btn-get-started:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 25px rgba(5,150,105,0.4);
+        }
+        
+        .btn-get-started::after {
+            content: '→';
+            transition: transform 0.3s ease;
+        }
+        
+        .btn-get-started:hover::after {
+            transform: translateX(4px);
+        }
+
+        /* ===== HERO SECTION ===== */
+        .hero {
+            position: relative;
+            z-index: 1;
+            padding: 8rem 2rem 4rem;
+            max-width: 1400px;
+            margin: 0 auto;
+            text-align: center;
+        }
+        
+        .hero-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.5rem 1.25rem;
+            background: rgba(124,58,237,0.15);
+            border: 1px solid rgba(124,58,237,0.3);
+            border-radius: 50px;
+            font-size: 0.85rem;
+            color: #c4b5fd;
+            margin-bottom: 1.5rem;
+            animation: pulse-glow 2s ease-in-out infinite;
+        }
+        
+        [data-theme="light"] .hero-badge {
+            background: rgba(124,58,237,0.1);
+            color: #7c3aed;
+        }
+        
+        @keyframes pulse-glow {
+            0%, 100% { box-shadow: 0 0 20px rgba(124,58,237,0.2); }
+            50% { box-shadow: 0 0 30px rgba(124,58,237,0.4); }
+        }
+        
+        .hero h1 {
+            font-size: clamp(2.2rem, 5vw, 4rem);
+            font-weight: 800;
+            line-height: 1.15;
+            margin-bottom: 1.25rem;
+            background: linear-gradient(135deg, #ffffff 0%, #93c5fd 40%, #a78bfa 70%, #67e8f9 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        
+        [data-theme="light"] .hero h1 {
+            background: linear-gradient(135deg, #0f172a 0%, #1e40af 40%, #7c3aed 70%, #0891b2 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        
+        .hero-subtitle {
+            font-size: clamp(1.05rem, 2vw, 1.35rem);
+            color: var(--text-secondary);
+            max-width: 800px;
+            margin: 0 auto 2.5rem;
+            line-height: 1.7;
+        }
+        
+        .hero-actions {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            flex-wrap: wrap;
+            margin-bottom: 4rem;
+        }
+        
+        .btn-primary {
+            padding: 1rem 2rem;
+            border-radius: 14px;
+            background: var(--gradient-1);
+            border: none;
+            color: white;
+            font-size: 1rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            box-shadow: 0 8px 30px rgba(30,64,175,0.3);
+        }
+        
+        .btn-primary:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 12px 40px rgba(30,64,175,0.4);
+        }
+        
+        .btn-secondary {
+            padding: 1rem 2rem;
+            border-radius: 14px;
+            background: var(--glass-bg);
+            border: 1px solid var(--glass-border);
+            color: var(--text-primary);
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .btn-secondary:hover {
+            background: rgba(255,255,255,0.1);
+            border-color: rgba(255,255,255,0.2);
+            transform: translateY(-3px);
+        }
+        
+        /* ===== STATS BAR ===== */
+        .stats-bar {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1.5rem;
+            max-width: 1000px;
+            margin: 0 auto 4rem;
+            padding: 2rem;
+            background: var(--card-bg);
+            backdrop-filter: blur(20px);
+            border: 1px solid var(--glass-border);
+            border-radius: 20px;
+        }
+        
+        .stat-item {
+            text-align: center;
+        }
+        
+        .stat-value {
+            font-size: 2.5rem;
+            font-weight: 800;
+            background: var(--gradient-2);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 0.25rem;
+        }
+        
+        .stat-label {
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+        }
+
+        /* ===== MOBILE RESPONSIVE ===== */
+        @media (max-width: 1024px) {
+            .dropdown-menu {
+                min-width: 280px;
+                left: 50%;
+                transform: translateX(-50%) translateY(-10px);
+            }
+            
+            .nav-item:hover .dropdown-menu {
+                transform: translateX(-50%) translateY(0);
+            }
+        }
+        
+        @media (max-width: 768px) {
+            nav {
+                padding: 0.75rem 1rem;
+            }
+            
+            .nav-left, .nav-center, .nav-right {
+                width: 100%;
+                justify-content: center;
+            }
+            
+            .search-container {
+                width: 100%;
+                max-width: 400px;
+                order: 3;
+            }
+            
+            .nav-brand {
+                order: 1;
+            }
+            
+            .nav-links {
+                order: 2;
+                justify-content: center;
+            }
+            
+            .nav-right {
+                order: 4;
+                justify-content: center;
+                flex-wrap: wrap;
+            }
+            
+            .dropdown-menu {
+                position: fixed;
+                top: auto;
+                bottom: 0;
+                left: 0;
+                right: 0;
+                width: 100%;
+                border-radius: 20px 20px 0 0;
+                max-height: 70vh;
+                transform: translateY(100%);
+            }
+            
+            .nav-item:hover .dropdown-menu {
+                transform: translateY(0);
+            }
+            
+            .hero {
+                padding: 6rem 1rem 3rem;
+            }
+            
+            .stats-bar {
+                grid-template-columns: repeat(2, 1fr);
+                padding: 1.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Animated Background -->
+    <div class="hero-bg">
+        <div class="grid-overlay"></div>
+        <div class="particles">
+            <div class="particle"></div>
+            <div class="particle"></div>
+            <div class="particle"></div>
+            <div class="particle"></div>
+            <div class="particle"></div>
+            <div class="particle"></div>
+            <div class="particle"></div>
+            <div class="particle"></div>
+        </div>
+
+        <!-- Enhanced Navigation -->
+        <nav>
+            <div class="nav-left">
+                <!-- Brand -->
+                <a href="index.html" class="nav-brand">
+                    <div class="nav-brand-icon">🤖</div>
+                    AI SupChn
+                </a>
+                
+                <!-- Search Bar -->
+                <div class="search-container">
+                    <span class="search-icon">🔍</span>
+                    <input type="text" class="search-input" placeholder="Search features, docs, resources..." id="searchInput">
+                    <div class="search-results" id="searchResults">
+                        <div class="search-result-item">
+                            <div class="search-result-title">AI Risk Intelligence</div>
+                            <div class="search-result-desc">Predictive analytics for supply chain disruptions</div>
+                        </div>
+                        <div class="search-result-item">
+                            <div class="search-result-title">Dashboard</div>
+                            <div class="search-result-desc">Real-time monitoring and KPI tracking</div>
+                        </div>
+                        <div class="search-result-item">
+                            <div class="search-result-title">Documentation</div>
+                            <div class="search-result-desc">API references and integration guides</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Nav Links with Dropdowns -->
+            <div class="nav-center nav-links">
+                <!-- Platform Dropdown -->
+                <div class="nav-item">
+                    <a href="platform.html">
+                        Platform
+                        <span class="dropdown-arrow">▾</span>
+                    </a>
+                    <div class="dropdown-menu">
+                        <div class="dropdown-header">
+                            <div class="dropdown-title">Platform Overview</div>
+                            <div class="dropdown-subtitle">Enterprise-grade AI infrastructure</div>
+                        </div>
+                        <div class="dropdown-content">
+                            <div class="dropdown-section">
+                                <div class="dropdown-section-title">📊 Market Intelligence</div>
+                                <div class="dropdown-item">
+                                    <div class="dropdown-item-icon yahoo">📈</div>
+                                    <div class="dropdown-item-text">
+                                        <div class="dropdown-item-title">Yahoo Finance Integration</div>
+                                        <div class="dropdown-item-desc">Real-time stock market data, commodity prices, and financial metrics affecting supply chains</div>
+                                        <div class="dropdown-item-meta">
+                                            <span class="dropdown-item-source">Yahoo Finance</span>
+                                            <span class="dropdown-item-time">2 min ago</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="dropdown-item">
+                                    <div class="dropdown-item-icon wsj">📰</div>
+                                    <div class="dropdown-item-text">
+                                        <div class="dropdown-item-title">WSJ Supply Chain Digest</div>
+                                        <div class="dropdown-item-desc">Curated Wall Street Journal insights on global trade, logistics, and market disruptions</div>
+                                        <div class="dropdown-item-meta">
+                                            <span class="dropdown-item-source">Wall Street Journal</span>
+                                            <span class="dropdown-item-time">15 min ago</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="dropdown-item">
+                                    <div class="dropdown-item-icon reuters">🌐</div>
+                                    <div class="dropdown-item-text">
+                                        <div class="dropdown-item-title">Reuters Market Pulse</div>
+                                        <div class="dropdown-item-desc">Breaking news on geopolitical events, trade policies, and economic indicators</div>
+                                        <div class="dropdown-item-meta">
+                                            <span class="dropdown-item-source">Reuters</span>
+                                            <span class="dropdown-item-time">5 min ago</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="dropdown-section">
+                                <div class="dropdown-section-title">🤖 AI Capabilities</div>
+                                <div class="dropdown-item">
+                                    <div class="dropdown-item-icon custom">🧠</div>
+                                    <div class="dropdown-item-text">
+                                        <div class="dropdown-item-title">ML Predictive Models</div>
+                                        <div class="dropdown-item-desc">Advanced machine learning for demand forecasting and risk assessment</div>
+                                        <div class="dropdown-item-meta">
+                                            <span class="dropdown-item-source">AI Engine</span>
+                                            <span class="dropdown-item-time">Live</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="dropdown-item">
+                                    <div class="dropdown-item-icon custom">🔮</div>
+                                    <div class="dropdown-item-text">
+                                        <div class="dropdown-item-title">XAI Explainability</div>
+                                        <div class="dropdown-item-desc">SHAP-based explainable AI for transparent decision-making</div>
+                                        <div class="dropdown-item-meta">
+                                            <span class="dropdown-item-source">XAI Module</span>
+                                            <span class="dropdown-item-time">Live</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="dropdown-footer">
+                            <a href="platform.html">Explore Full Platform →</a>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Solutions/Industries Dropdown -->
+                <div class="nav-item">
+                    <a href="industries.html">
+                        Solutions
+                        <span class="dropdown-arrow">▾</span>
+                    </a>
+                    <div class="dropdown-menu">
+                        <div class="dropdown-header">
+                            <div class="dropdown-title">Industry Solutions</div>
+                            <div class="dropdown-subtitle">Tailored for your vertical</div>
+                        </div>
+                        <div class="dropdown-content">
+                            <div class="dropdown-section">
+                                <div class="dropdown-section-title">🏭 Manufacturing</div>
+                                <div class="dropdown-item">
+                                    <div class="dropdown-item-icon ap">⚙️</div>
+                                    <div class="dropdown-item-text">
+                                        <div class="dropdown-item-title">AP Manufacturing Alert</div>
+                                        <div class="dropdown-item-desc">Factory output declines 2.3% amid semiconductor shortage - AP News analysis on production bottlenecks</div>
+                                        <div class="dropdown-item-meta">
+                                            <span class="dropdown-item-source">AP News</span>
+                                            <span class="dropdown-item-time">1 hr ago</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="dropdown-item">
+                                    <div class="dropdown-item-icon bloomberg">💹</div>
+                                    <div class="dropdown-item-text">
+                                        <div class="dropdown-item-title">Bloomberg Industrial</div>
+                                        <div class="dropdown-item-desc">Global manufacturing PMI shows expansion in Asia, contraction in Europe - supply chain implications</div>
+                                        <div class="dropdown-item-meta">
+                                            <span class="dropdown-item-source">Bloomberg</span>
+                                            <span class="dropdown-item-time">3 hrs ago</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="dropdown-section">
+                                <div class="dropdown-section-title">🚚 Logistics & Transport</div>
+                                <div class="dropdown-item">
+                                    <div class="dropdown-item-icon cnbc">🚢</div>
+                                    <div class="dropdown-item-text">
+                                        <div class="dropdown-item-title">CNBC Shipping Index</div>
+                                        <div class="dropdown-item-desc">Container rates stabilize as new capacity comes online - freight market analysis</div>
+                                        <div class="dropdown-item-meta">
+                                            <span class="dropdown-item-source">CNBC</span>
+                                            <span class="dropdown-item-time">45 min ago</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="dropdown-item">
+                                    <div class="dropdown-item-icon rss">📡</div>
+                                    <div class="dropdown-item-text">
+                                        <div class="dropdown-item-title">Port Authority RSS Feed</div>
+                                        <div class="dropdown-item-desc">Real-time port congestion data, customs delays, and shipping route optimizations</div>
+                                        <div class="dropdown-item-meta">
+                                            <span class="dropdown-item-source">RSS Feed</span>
+                                            <span class="dropdown-item-time">Live</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="dropdown-section">
+                                <div class="dropdown-section-title">💊 Healthcare & Pharma</div>
+                                <div class="dropdown-item">
+                                    <div class="dropdown-item-icon wsj">💉</div>
+                                    <div class="dropdown-item-text">
+                                        <div class="dropdown-item-title">Pharma Cold Chain Monitor</div>
+                                        <div class="dropdown-item-desc">Temperature excursions cost pharma $35B annually - WSJ investigation on vaccine distribution</div>
+                                        <div class="dropdown-item-meta">
+                                            <span class="dropdown-item-source">WSJ Health</span>
+                                            <span class="dropdown-item-time">4 hrs ago</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="dropdown-section">
+                                <div class="dropdown-section-title">🛒 Retail & E-commerce</div>
+                                <div class="dropdown-item">
+                                    <div class="dropdown-item-icon yahoo">🛍️</div>
+                                    <div class="dropdown-item-text">
+                                        <div class="dropdown-item-title">Consumer Demand Signals</div>
+                                        <div class="dropdown-item-desc">Retail sales up 4.1% YoY - inventory optimization strategies from Yahoo Finance retail sector</div>
+                                        <div class="dropdown-item-meta">
+                                            <span class="dropdown-item-source">Yahoo Finance</span>
+                                            <span class="dropdown-item-time">2 hrs ago</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="dropdown-footer">
+                            <a href="industries.html">View All 17+ Industries →</a>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Intelligence Dropdown -->
+                <div class="nav-item">
+                    <a href="intelligence.html">
+                        Intelligence
+                        <span class="dropdown-arrow">▾</span>
+                    </a>
+                    <div class="dropdown-menu">
+                        <div class="dropdown-header">
+                            <div class="dropdown-title">AI Intelligence Center</div>
+                            <div class="dropdown-subtitle">Real-time insights & predictions</div>
+                        </div>
+                        <div class="dropdown-content">
+                            <div class="dropdown-section">
+                                <div class="dropdown-section-title">📰 News Aggregation</div>
+                                <div class="dropdown-item">
+                                    <div class="dropdown-item-icon ap">🗞️</div>
+                                    <div class="dropdown-item-text">
+                                        <div class="dropdown-item-title">AP Breaking News Feed</div>
+                                        <div class="dropdown-item-desc">Global breaking news affecting supply chains - natural disasters, political unrest, trade wars</div>
+                                        <div class="dropdown-item-meta">
+                                            <span class="dropdown-item-source">Associated Press</span>
+                                            <span class="dropdown-item-time">Live</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="dropdown-item">
+                                    <div class="dropdown-item-icon reuters">📊</div>
+                                    <div class="dropdown-item-text">
+                                        <div class="dropdown-item-title">Reuters Intelligence Brief</div>
+                                        <div class="dropdown-item-desc">In-depth analysis on currency fluctuations, tariff changes, and trade agreements</div>
+                                        <div class="dropdown-item-meta">
+                                            <span class="dropdown-item-source">Reuters</span>
+                                            <span class="dropdown-item-time">30 min ago</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="dropdown-section">
+                                <div class="dropdown-section-title">💰 Financial Markets</div>
+                                <div class="dropdown-item">
+                                    <div class="dropdown-item-icon bloomberg">📈</div>
+                                    <div class="dropdown-item-text">
+                                        <div class="dropdown-item-title">Bloomberg Terminal Data</div>
+                                        <div class="dropdown-item-desc">Commodity prices, FX rates, and market volatility indices impacting sourcing decisions</div>
+                                        <div class="dropdown-item-meta">
+                                            <span class="dropdown-item-source">Bloomberg</span>
+                                            <span class="dropdown-item-time">Real-time</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="dropdown-item">
+                                    <div class="dropdown-item-icon yahoo">💵</div>
+                                    <div class="dropdown-item-text">
+                                        <div class="dropdown-item-title">Yahoo Finance Portfolio Tracker</div>
+                                        <div class="dropdown-item-desc">Monitor supplier financial health, credit ratings, and bankruptcy risk signals</div>
+                                        <div class="dropdown-item-meta">
+                                            <span class="dropdown-item-source">Yahoo Finance</span>
+                                            <span class="dropdown-item-time">15 min delay</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="dropdown-item">
+                                    <div class="dropdown-item-icon cnbc">🏦</div>
+                                    <div class="dropdown-item-text">
+                                        <div class="dropdown-item-title">CNBC Markets Analysis</div>
+                                        <div class="dropdown-item-desc">Expert commentary on interest rate impacts, inflation trends, and economic outlooks</div>
+                                        <div class="dropdown-item-meta">
+                                            <span class="dropdown-item-source">CNBC</span>
+                                            <span class="dropdown-item-time">1 hr ago</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="dropdown-section">
+                                <div class="dropdown-section-title">🎯 Risk Alerts</div>
+                                <div class="dropdown-item">
+                                    <div class="dropdown-item-icon custom">⚠️</div>
+                                    <div class="dropdown-item-text">
+                                        <div class="dropdown-item-title">Geopolitical Risk Monitor</div>
+                                        <div class="dropdown-item-desc">AI-powered tracking of sanctions, embargoes, and trade restriction changes worldwide</div>
+                                        <div class="dropdown-item-meta">
+                                            <span class="dropdown-item-source">AI Engine</span>
+                                            <span class="dropdown-item-time">Continuous</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="dropdown-item">
+                                    <div class="dropdown-item-icon custom">🌪️</div>
+                                    <div class="dropdown-item-text">
+                                        <div class="dropdown-item-title">Weather Disruption Predictor</div>
+                                        <div class="dropdown-item-desc">7-day advance warning for hurricanes, floods, and extreme weather affecting logistics hubs</div>
+                                        <div class="dropdown-item-meta">
+                                            <span class="dropdown-item-source">Weather AI</span>
+                                            <span class="dropdown-item-time">Updated hourly</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="dropdown-footer">
+                            <a href="intelligence.html">Open Intelligence Hub →</a>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Resources Dropdown -->
+                <div class="nav-item">
+                    <a href="resources.html">
+                        Resources
+                        <span class="dropdown-arrow">▾</span>
+                    </a>
+                    <div class="dropdown-menu">
+                        <div class="dropdown-header">
+                            <div class="dropdown-title">Resource Library</div>
+                            <div class="dropdown-subtitle">Learn & stay informed</div>
+                        </div>
+                        <div class="dropdown-content">
+                            <div class="dropdown-section">
+                                <div class="dropdown-section-title">📚 Documentation</div>
+                                <div class="dropdown-item">
+                                    <div class="dropdown-item-icon custom">📖</div>
+                                    <div class="dropdown-item-text">
+                                        <div class="dropdown-item-title">API Documentation</div>
+                                        <div class="dropdown-item-desc">Complete REST API reference, SDK downloads, and integration examples</div>
+                                        <div class="dropdown-item-meta">
+                                            <span class="dropdown-item-source">Official Docs</span>
+                                            <span class="dropdown-item-time">v3.2</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="dropdown-item">
+                                    <div class="dropdown-item-icon custom">🎓</div>
+                                    <div class="dropdown-item-text">
+                                        <div class="dropdown-item-title">Tutorials & Guides</div>
+                                        <div class="dropdown-item-desc">Step-by-step guides for implementation, from setup to advanced customization</div>
+                                        <div class="dropdown-item-meta">
+                                            <span class="dropdown-item-source">Learning Portal</span>
+                                            <span class="dropdown-item-time">50+ tutorials</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="dropdown-section">
+                                <div class="dropdown-section-title">📰 External Insights</div>
+                                <div class="dropdown-item">
+                                    <div class="dropdown-item-icon wsj">📋</div>
+                                    <div class="dropdown-item-text">
+                                        <div class="dropdown-item-title">WSJ CEO Interviews</div>
+                                        <div class="dropdown-item-desc">Fortune 500 leaders discuss supply chain transformation strategies and lessons learned</div>
+                                        <div class="dropdown-item-meta">
+                                            <span class="dropdown-item-source">WSJ Magazine</span>
+                                            <span class="dropdown-item-time">Weekly</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="dropdown-item">
+                                    <div class="dropdown-item-icon rss">📻</div>
+                                    <div class="dropdown-item-text">
+                                        <div class="dropdown-item-title">Industry Podcasts RSS</div>
+                                        <div class="dropdown-item-desc">Curated podcast episodes on logistics innovation, AI in supply chain, and sustainability</div>
+                                        <div class="dropdown-item-meta">
+                                            <span class="dropdown-item-source">RSS Aggregator</span>
+                                            <span class="dropdown-item-time">Daily updates</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="dropdown-item">
+                                    <div class="dropdown-item-icon bloomberg">🎥</div>
+                                    <div class="dropdown-item-text">
+                                        <div class="dropdown-item-title">Bloomberg Video Analysis</div>
+                                        <div class="dropdown-item-desc">Video deep-dives into global trade dynamics, automation trends, and market shifts</div>
+                                        <div class="dropdown-item-meta">
+                                            <span class="dropdown-item-source">Bloomberg Video</span>
+                                            <span class="dropdown-item-time">Daily</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="dropdown-section">
+                                <div class="dropdown-section-title">📊 Research & Reports</div>
+                                <div class="dropdown-item">
+                                    <div class="dropdown-item-icon custom">📑</div>
+                                    <div class="dropdown-item-text">
+                                        <div class="dropdown-item-title">Annual Industry Report 2025</div>
+                                        <div class="dropdown-item-desc">Comprehensive analysis of $50T global supply chain market with AI adoption metrics</div>
+                                        <div class="dropdown-item-meta">
+                                            <span class="dropdown-item-source">Research Team</span>
+                                            <span class="dropdown-item-time">Published Jan 2025</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="dropdown-item">
+                                    <div class="dropdown-item-icon custom">📈</div>
+                                    <div class="dropdown-item-text">
+                                        <div class="dropdown-item-title">Gartner Magic Quadrant</div>
+                                        <div class="dropdown-item-desc">Our platform's positioning in Gartner's Supply Chain Planning Solutions quadrant</div>
+                                        <div class="dropdown-item-meta">
+                                            <span class="dropdown-item-source">Gartner</span>
+                                            <span class="dropdown-item-time">Q4 2024</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="dropdown-footer">
+                            <a href="resources.html">Browse All Resources →</a>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Simple Links -->
+                <div class="nav-item">
+                    <a href="product.html">Product</a>
+                </div>
+                <div class="nav-item">
+                    <a href="customers.html">Customers</a>
+                </div>
+                <div class="nav-item">
+                    <a href="about.html">About</a>
+                </div>
+            </div>
+            
+            <!-- Action Buttons -->
+            <div class="nav-right">
+                <!-- Theme Toggle -->
+                <button class="theme-toggle" id="themeToggle" title="Toggle dark/light mode">
+                    <span class="icon-moon">🌙</span>
+                    <span class="icon-sun">☀️</span>
+                </button>
+                
+                <!-- Login Button -->
+                <button class="btn-login" onclick="showLoginModal()">
+                    👤 Login
+                </button>
+                
+                <!-- Get Started CTA -->
+                <button class="btn-get-started" onclick="window.location.href='dashboard.html'">
+                    🚀 Get Started
+                </button>
+            </div>
+        </nav>
+
+        <!-- Hero Section -->
+        <section class="hero">
+            <div class="hero-badge">
+                ✨ Next-Gen AI Platform v3.0 Now Live
+            </div>
+            
+            <h1>AI-Powered Supply Chain<br>Risk Intelligence Platform</h1>
+            
+            <p class="hero-subtitle">
+                Go beyond traditional CRM AI. Our enterprise-grade platform combines 
+                predictive analytics, real-time market intelligence, and autonomous 
+                AI agents to transform supply chain risk management. Trusted by 
+                Fortune 500 companies worldwide.
+            </p>
+            
+            <div class="hero-actions">
+                <button class="btn-primary" onclick="window.location.href='dashboard.html'">
+                    🚀 Launch Dashboard
+                </button>
+                <button class="btn-secondary" onclick="window.location.href='intelligence.html'">
+                    🧠 Explore AI Features
+                </button>
+                <button class="btn-secondary" onclick="window.location.href='agents.html'">
+                    🤖 Meet AI Agents
+                </button>
+            </div>
+            
+            <!-- Stats Bar -->
+            <div class="stats-bar">
+                <div class="stat-item">
+                    <div class="stat-value">$50T+</div>
+                    <div class="stat-label">Global SC Market Monitored</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-value">99.7%</div>
+                    <div class="stat-label">Prediction Accuracy</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-value">10M+</div>
+                    <div class="stat-label">Data Points Processed Daily</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-value">500+</div>
+                    <div class="stat-label">Enterprise Clients Worldwide</div>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <script>
+        // ===== THEME TOGGLE FUNCTIONALITY =====
+        const themeToggle = document.getElementById('themeToggle');
+        const htmlElement = document.documentElement;
+        
+        // Check for saved theme preference or default to dark
+        const savedTheme = localStorage.getItem('theme') || 'dark';
+        htmlElement.setAttribute('data-theme', savedTheme);
+        
+        themeToggle.addEventListener('click', () => {
+            const currentTheme = htmlElement.getAttribute('data-theme');
+            const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+            
+            htmlElement.setAttribute('data-theme', newTheme);
+            localStorage.setItem('theme', newTheme);
+            
+            // Add a smooth transition effect
+            document.body.style.transition = 'background 0.3s ease, color 0.3s ease';
+        });
+        
+        // ===== SEARCH FUNCTIONALITY =====
+        const searchInput = document.getElementById('searchInput');
+        const searchResults = document.getElementById('searchResults');
+        
+        searchInput.addEventListener('focus', () => {
+            if (searchInput.value.length > 0) {
+                searchResults.classList.add('active');
+            }
+        });
+        
+        searchInput.addEventListener('input', () => {
+            if (searchInput.value.length > 0) {
+                searchResults.classList.add('active');
+                // Here you would implement actual search logic
+                // For demo, showing static results
+            } else {
+                searchResults.classList.remove('active');
+            }
+        });
+        
+        document.addEventListener('click', (e) => {
+            if (!e.target.closest('.search-container')) {
+                searchResults.classList.remove('active');
+            }
+        });
+        
+        // ===== LOGIN MODAL (Placeholder) =====
+        function showLoginModal() {
+            alert('Login modal would open here. This will connect to your authentication system.\n\nFeatures:\n• SSO/SAML integration\n• Multi-factor authentication\n• Role-based access control\n• Session management');
+        }
+        
+        // ===== SMOOTH SCROLL FOR ANCHOR LINKS =====
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+        
+        // ===== KEYBOARD SHORTCUTS =====
+        document.addEventListener('keydown', (e) => {
+            // Ctrl/Cmd + K to focus search
+            if ((e.ctrlKey || e.metaKey) && e.key === 'k') {
+                e.preventDefault();
+                searchInput.focus();
+            }
+            
+            // Escape to close search results
+            if (e.key === 'Escape') {
+                searchResults.classList.remove('active');
+                searchInput.blur();
+            }
+        });
+        
+        // ===== MOBILE MENU TOGGLE (for future enhancement) =====
+        // This would toggle a hamburger menu on mobile devices
+        function toggleMobileMenu() {
+            const navCenter = document.querySelector('.nav-center');
+            navCenter.style.display = navCenter.style.display === 'flex' ? 'none' : 'flex';
+        }
+    </script>
+</body>
+</html>
