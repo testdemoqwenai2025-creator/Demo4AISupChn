@@ -1,0 +1,602 @@
+     1→     1→'use client'
+     2→     2→
+     3→     3→import React, { useState } from 'react'
+     4→     4→import {
+     5→     5→  Command, LayoutDashboard, Users, Brain, TrendingUp,
+     6→     6→  ShieldCheck, AlertTriangle, CheckCircle2, Clock, MapPin,
+     7→     7→  Factory, Package, Truck, Globe, ArrowUpRight, ArrowDownRight,
+     8→     8→  Eye, Activity, Zap, Target, FileText, BarChart3
+     9→     9→} from 'lucide-react'
+    10→    10→import { Navbar } from '@/components/navbar'
+    11→    11→import { PageDecorations } from '@/components/page-decorations'
+    12→    12→import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
+    13→    13→import { Button } from '@/components/ui/button'
+    14→    14→import { Badge } from '@/components/ui/badge'
+    15→    15→import { Progress } from '@/components/ui/progress'
+    16→    16→import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
+    17→    17→import {
+    18→    18→  Table, TableBody, TableCell, TableHead, TableHeader, TableRow
+    19→    19→} from '@/components/ui/table'
+    20→    20→
+    21→    21→// Mock Supplier Data
+    22→    22→const supplierData = [
+    23→    23→  { id: 'SUP-001', name: 'TechComp Industries Ltd', region: 'APAC', country: 'Vietnam', riskScore: 72, tier: 1, status: 'Active', lastAudit: '2024-01-15' },
+    24→    24→  { id: 'SUP-002', name: 'EuroParts Manufacturing GmbH', region: 'EMEA', country: 'Germany', riskScore: 28, tier: 1, status: 'Active', lastAudit: '2024-02-20' },
+    25→    25→  { id: 'SUP-003', name: 'AsiaLogistics Solutions Pte', region: 'APAC', country: 'Singapore', riskScore: 45, tier: 2, status: 'Under Review', lastAudit: '2023-11-10' },
+    26→    26→  { id: 'SUP-004', name: 'Global Components Inc', region: 'Americas', country: 'USA', riskScore: 18, tier: 1, status: 'Active', lastAudit: '2024-03-01' },
+    27→    27→  { id: 'SUP-005', name: 'Shenzhen Electronics Co', region: 'APAC', country: 'China', riskScore: 85, tier: 2, status: 'Critical Review', lastAudit: '2023-09-22' },
+    28→    28→  { id: 'SUP-006', name: 'Nordic Materials AB', region: 'EMEA', country: 'Sweden', riskScore: 12, tier: 1, status: 'Active', lastAudit: '2024-02-28' },
+    29→    29→  { id: 'SUP-007', name: 'Brazil Steel Works SA', region: 'LATAM', country: 'Brazil', riskScore: 56, tier: 2, status: 'Active', lastAudit: '2023-12-15' },
+    30→    30→  { id: 'SUP-008', name: 'India Tech Services Pvt', region: 'APAC', country: 'India', riskScore: 38, tier: 2, status: 'Active', lastAudit: '2024-01-08' },
+    31→    31→]
+    32→    32→
+    33→    33→// Compliance Tracking Data
+    34→    34→const complianceData = [
+    35→    35→  { framework: 'UFLPA', fullName: 'Uyghur Forced Labor Prevention Act', score: 87, status: 'Compliant', lastUpdate: '2 hours ago', items: 142, passed: 138 },
+    36→    36→  { framework: 'EUDR', fullName: 'EU Deforestation Regulation', score: 92, status: 'Compliant', lastUpdate: '1 day ago', items: 89, passed: 82 },
+    37→    37→  { framework: 'CSDDD', fullName: 'Corporate Sustainability Due Diligence', score: 74, status: 'In Progress', lastUpdate: '5 hours ago', items: 156, passed: 115 },
+    38→    38→  { framework: 'GDPR', fullName: 'General Data Protection Regulation', score: 98, status: 'Compliant', lastUpdate: '3 days ago', items: 67, passed: 66 },
+    39→    39→  { framework: 'SOX', fullName: 'Sarbanes-Oxley Act', score: 95, status: 'Compliant', lastUpdate: '1 week ago', items: 45, passed: 43 },
+    40→    40→  { framework: 'REACH', fullName: 'Registration Evaluation Authorization', score: 81, status: 'Compliant', lastUpdate: '4 hours ago', items: 234, passed: 190 },
+    41→    41→]
+    42→    42→
+    43→    43→// Risk Intelligence Items
+    44→    44→const riskIntelData = [
+    45→    45→  { type: 'Geopolitical', severity: 'high', title: 'Trade tensions escalating in South China Sea', impact: '12 suppliers affected', time: '30 min ago', trend: 'up' },
+    46→    46→  { type: 'Financial', severity: 'medium', title: 'Currency volatility in emerging markets', impact: '8 suppliers at risk', time: '2 hours ago', trend: 'stable' },
+    47→    47→  { type: 'Environmental', severity: 'high', title: 'Drought conditions in Southeast Asia', impact: 'Manufacturing delays expected', time: '4 hours ago', trend: 'up' },
+    48→    48→  { type: 'Cyber', severity: 'critical', title: 'Supply chain cyber attack pattern detected', impact: 'Immediate action required', time: '1 hour ago', trend: 'up' },
+    49→    49→  { type: 'Regulatory', severity: 'medium', title: 'New EU import restrictions proposed', impact: '25 products affected', time: '6 hours ago', trend: 'stable' },
+    50→    50→  { type: 'Operational', severity: 'low', title: 'Port congestion improving at Rotterdam', impact: 'Shipping times normalizing', time: '8 hours ago', trend: 'down' },
+    51→    51→]
+    52→    52→
+    53→    53→// Forecasting Data
+    54→    54→const forecastData = [
+    55→    55→  { category: 'Electronics Components', current: 12450, forecast: 13200, confidence: 89, trend: 'up' },
+    56→    56→  { category: 'Raw Materials', current: 8900, forecast: 8500, confidence: 76, trend: 'down' },
+    57→    57→  { category: 'Packaging', current: 3200, forecast: 3450, confidence: 92, trend: 'up' },
+    58→    58→  { category: 'Logistics Services', current: 5600, forecast: 6100, confidence: 84, trend: 'up' },
+    59→    59→  { category: 'Contract Manufacturing', current: 15800, forecast: 16200, confidence: 94, trend: 'up' },
+    60→    60→]
+    61→    61→
+    62→    62→// Dashboard KPIs
+    63→    63→const dashboardKPIs = [
+    64→    64→  { label: 'Total Suppliers Monitored', value: '1,247', change: '+23', icon: Users, color: 'text-cyan-500', bg: 'bg-cyan-500/10' },
+    65→    65→  { label: 'Avg Risk Score', value: '42.3', change: '-3.2', icon: ShieldCheck, color: 'text-emerald-500', bg: 'bg-emerald-500/10' },
+    66→    66→  { label: 'Active Alerts', value: '18', change: '+5', icon: AlertTriangle, color: 'text-amber-500', bg: 'bg-amber-500/10' },
+    67→    67→  { label: 'Compliance Rate', value: '94.7%', change: '+1.2%', icon: CheckCircle2, color: 'text-violet-500', bg: 'bg-violet-500/10' },
+    68→    68→]
+    69→    69→
+    70→    70→export default function CommandCenterPage() {
+    71→    71→  const [activeTab, setActiveTab] = useState('dashboard')
+    72→    72→
+    73→    73→  const getRiskColor = (score: number) => {
+    74→    74→    if (score >= 70) return 'text-rose-500 bg-rose-500/10'
+    75→    75→    if (score >= 50) return 'text-amber-500 bg-amber-500/10'
+    76→    76→    if (score >= 30) return 'text-cyan-500 bg-cyan-500/10'
+    77→    77→    return 'text-emerald-500 bg-emerald-500/10'
+    78→    78→  }
+    79→    79→
+    80→    80→  const getRiskBadge = (score: number) => {
+    81→    81→    if (score >= 70) return <Badge variant="destructive">High Risk</Badge>
+    82→    82→    if (score >= 50) return <Badge className="bg-amber-500 text-white hover:bg-amber-600">Medium</Badge>
+    83→    83→    if (score >= 30) return <Badge variant="secondary">Low</Badge>
+    84→    84→    return <Badge className="bg-emerald-500 text-white hover:bg-emerald-600">Minimal</Badge>
+    85→    85→  }
+    86→    86→
+    87→    87→  const getSeverityColor = (severity: string) => {
+    88→    88→    switch (severity) {
+    89→    89→      case 'critical': return 'border-rose-500/30 bg-rose-500/5'
+    90→    90→      case 'high': return 'border-amber-500/30 bg-amber-500/5'
+    91→    91→      case 'medium': return 'border-cyan-500/30 bg-cyan-500/5'
+    92→    92→      default: return 'border-emerald-500/30 bg-emerald-500/5'
+    93→    93→    }
+    94→    94→  }
+    95→    95→
+    96→    96→  const getSeverityBadge = (severity: string) => {
+    97→    97→    switch (severity) {
+    98→    98→      case 'critical': return <Badge variant="destructive">Critical</Badge>
+    99→    99→      case 'high': return <Badge className="bg-amber-500 text-white hover:bg-amber-600">High</Badge>
+   100→   100→      case 'medium': return <Badge variant="outline">Medium</Badge>
+   101→   101→      default: return <Badge variant="secondary">Low</Badge>
+   102→   102→    }
+   103→   103→  }
+   104→   104→
+   105→   105→  return (
+   106→   106→    <div className="min-h-screen bg-background relative">
+   107→   107→      <PageDecorations theme="analytics" />
+   108→   108→      <Navbar />
+   109→   109→
+   110→   110→      <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 relative z-10">
+   111→   111→        {/* Header */}
+   112→   112→        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-8">
+   113→   113→          <div>
+   114→   114→            <h1 className="text-3xl font-bold flex items-center gap-3">
+   115→   115→              <Command className="h-8 w-8 text-primary" />
+   116→   116→              Command Center
+   117→   117→            </h1>
+   118→   118→            <p className="text-muted-foreground mt-2">
+   119→   119→              Real-time supply chain operations & risk management hub
+   120→   120→            </p>
+   121→   121→          </div>
+   122→   122→          <div className="flex items-center gap-3">
+   123→   123→            <Badge variant="outline" className="gap-1 pulse-dot">
+   124→   124→              <Eye className="h-3 w-3" />
+   125→   125→              Live Monitoring
+   126→   126→            </Badge>
+   127→   127→            <Button size="sm" className="gap-2">
+   128→   128→              <Zap className="h-4 w-4" />
+   129→   129→              Run Analysis
+   130→   130→            </Button>
+   131→   131→          </div>
+   132→   132→        </div>
+   133→   133→
+   134→   134→        {/* Main Tabs Interface */}
+   135→   135→        <Tabs value={activeTab} onValueChange={setActiveTab} className="space-y-6">
+   136→   136→          <TabsList className="grid w-full grid-cols-5 lg:w-auto lg:inline-grid">
+   137→   137→            <TabsTrigger value="dashboard" className="gap-2">
+   138→   138→              <LayoutDashboard className="h-4 w-4" />
+   139→   139→              <span className="hidden sm:inline">Dashboard</span>
+   140→   140→            </TabsTrigger>
+   141→   141→            <TabsTrigger value="suppliers" className="gap-2">
+   142→   142→              <Users className="h-4 w-4" />
+   143→   143→              <span className="hidden sm:inline">Suppliers</span>
+   144→   144→            </TabsTrigger>
+   145→   145→            <TabsTrigger value="intel" className="gap-2">
+   146→   146→              <Brain className="h-4 w-4" />
+   147→   147→              <span className="hidden sm:inline">Risk Intel</span>
+   148→   148→            </TabsTrigger>
+   149→   149→            <TabsTrigger value="forecasting" className="gap-2">
+   150→   150→              <TrendingUp className="h-4 w-4" />
+   151→   151→              <span className="hidden sm:inline">Forecasting</span>
+   152→   152→            </TabsTrigger>
+   153→   153→            <TabsTrigger value="compliance" className="gap-2">
+   154→   154→              <ShieldCheck className="h-4 w-4" />
+   155→   155→              <span className="hidden sm:inline">Compliance</span>
+   156→   156→            </TabsTrigger>
+   157→   157→          </TabsList>
+   158→   158→
+   159→   159→          {/* Dashboard Tab */}
+   160→   160→          <TabsContent value="dashboard" className="space-y-6">
+   161→   161→            {/* KPI Cards */}
+   162→   162→            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+   163→   163→              {dashboardKPIs.map((kpi, i) => (
+   164→   164→                <Card key={i} className="glass group hover:scale-[1.02] transition-transform cursor-pointer">
+   165→   165→                  <CardContent className="p-5">
+   166→   166→                    <div className="flex items-start justify-between mb-3">
+   167→   167→                      <div className={`w-10 h-10 rounded-lg ${kpi.bg} flex items-center justify-center`}>
+   168→   168→                        <kpi.icon className={`h-5 w-5 ${kpi.color}`} />
+   169→   169→                      </div>
+   170→   170→                      <Badge variant={kpi.change.startsWith('+') ? 'default' : 'secondary'} className="gap-1 text-xs">
+   171→   171→                        {kpi.change.startsWith('+') ? <ArrowUpRight className="h-3 w-3" /> : <ArrowDownRight className="h-3 w-3" />}
+   172→   172→                        {kpi.change}
+   173→   173→                      </Badge>
+   174→   174→                    </div>
+   175→   175→                    <div className="text-2xl font-bold">{kpi.value}</div>
+   176→   176→                    <div className="text-sm text-muted-foreground mt-1">{kpi.label}</div>
+   177→   177→                  </CardContent>
+   178→   178→                </Card>
+   179→   179→              ))}
+   180→   180→            </div>
+   181→   181→
+   182→   182→            {/* Quick Stats Grid */}
+   183→   183→            <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+   184→   184→              {/* Regional Distribution */}
+   185→   185→              <Card className="glass">
+   186→   186→                <CardHeader>
+   187→   187→                  <CardTitle className="flex items-center gap-2 text-base">
+   188→   188→                    <Globe className="h-5 w-5 text-primary" />
+   189→   189→                    Regional Distribution
+   190→   190→                  </CardTitle>
+   191→   191→                </CardHeader>
+   192→   192→                <CardContent className="space-y-4">
+   193→   193→                  {[
+   194→   194→                    { region: 'APAC', count: 487, percentage: 39, color: 'from-cyan-500 to-blue-500' },
+   195→   195→                    { region: 'EMEA', count: 342, percentage: 27, color: 'from-violet-500 to-purple-500' },
+   196→   196→                    { region: 'Americas', count: 298, percentage: 24, color: 'from-emerald-500 to-green-500' },
+   197→   197→                    { region: 'LATAM', count: 120, percentage: 10, color: 'from-amber-500 to-orange-500' },
+   198→   198→                  ].map((item, i) => (
+   199→   199→                    <div key={i} className="space-y-2">
+   200→   200→                      <div className="flex items-center justify-between text-sm">
+   201→   201→                        <span className="font-medium">{item.region}</span>
+   202→   202→                        <span className="text-muted-foreground">{item.count} suppliers ({item.percentage}%)</span>
+   203→   203→                      </div>
+   204→   204→                      <div className="h-2 bg-muted rounded-full overflow-hidden">
+   205→   205→                        <div className={`h-full rounded-full bg-gradient-to-r ${item.color}`} style={{ width: `${item.percentage}%` }} />
+   206→   206→                      </div>
+   207→   207→                    </div>
+   208→   208→                  ))}
+   209→   209→                </CardContent>
+   210→   210→              </Card>
+   211→   211→
+   212→   212→              {/* Risk Overview */}
+   213→   213→              <Card className="glass">
+   214→   214→                <CardHeader>
+   215→   215→                  <CardTitle className="flex items-center gap-2 text-base">
+   216→   216→                    <Activity className="h-5 w-5 text-primary" />
+   217→   217→                    Risk Overview
+   218→   218→                  </CardTitle>
+   219→   219→                </CardHeader>
+   220→   220→                <CardContent className="space-y-4">
+   221→   221→                  {[
+   222→   222→                    { level: 'Critical Risk', count: 23, color: 'bg-rose-500' },
+   223→   223→                    { level: 'High Risk', count: 89, color: 'bg-amber-500' },
+   224→   224→                    { level: 'Medium Risk', count: 245, color: 'bg-cyan-500' },
+   225→   225→                    { level: 'Low Risk', count: 890, color: 'bg-emerald-500' },
+   226→   226→                  ].map((item, i) => (
+   227→   227→                    <div key={i} className="flex items-center justify-between p-3 rounded-lg bg-muted/50">
+   228→   228→                      <div className="flex items-center gap-3">
+   229→   229→                        <div className={`w-3 h-3 rounded-full ${item.color}`} />
+   230→   230→                        <span className="text-sm font-medium">{item.level}</span>
+   231→   231→                      </div>
+   232→   232→                      <Badge variant="outline">{item.count}</Badge>
+   233→   233→                    </div>
+   234→   234→                  ))}
+   235→   235→                </CardContent>
+   236→   236→              </Card>
+   237→   237→
+   238→   238→              {/* Recent Activity */}
+   239→   239→              <Card className="glass">
+   240→   240→                <CardHeader>
+   241→   241→                  <CardTitle className="flex items-center gap-2 text-base">
+   242→   242→                    <Clock className="h-5 w-5 text-primary" />
+   243→   243→                    Recent Activity
+   244→   244→                  </CardTitle>
+   245→   245→                </CardHeader>
+   246→   246→                <CardContent className="space-y-3">
+   247→   247→                  {[
+   248→   248→                    { action: 'New supplier onboarded', detail: 'Nordic Materials AB', time: '10 min ago', type: 'success' },
+   249→   249→                    { action: 'Risk alert triggered', detail: 'Shenzhen Electronics Co', time: '25 min ago', type: 'warning' },
+   250→   250→                    { action: 'Compliance audit completed', detail: 'EuroParts GmbH - UFLPA', time: '1 hour ago', type: 'success' },
+   251→   251→                    { action: 'Forecast updated', detail: 'Q2 Demand Analysis', time: '2 hours ago', type: 'info' },
+   252→   252→                    { action: 'Supplier review due', detail: 'Brazil Steel Works SA', time: '3 hours ago', type: 'warning' },
+   253→   253→                  ].map((activity, i) => (
+   254→   254→                    <div key={i} className={`flex items-start gap-3 p-3 rounded-lg border ${
+   255→   255→                      activity.type === 'success' ? 'border-emerald-500/20 bg-emerald-500/5' :
+   256→   256→                      activity.type === 'warning' ? 'border-amber-500/20 bg-amber-500/5' :
+   257→   257→                      'border-cyan-500/20 bg-cyan-500/5'
+   258→   258→                    }`}>
+   259→   259→                      <div className={`w-2 h-2 rounded-full mt-2 ${
+   260→   260→                        activity.type === 'success' ? 'bg-emerald-500' :
+   261→   261→                        activity.type === 'warning' ? 'bg-amber-500' : 'bg-cyan-500'
+   262→   262→                      }`} />
+   263→   263→                      <div className="flex-1 min-w-0">
+   264→   264→                        <div className="text-sm font-medium">{activity.action}</div>
+   265→   265→                        <div className="text-xs text-muted-foreground truncate">{activity.detail}</div>
+   266→   266→                      </div>
+   267→   267→                      <span className="text-xs text-muted-foreground whitespace-nowrap">{activity.time}</span>
+   268→   268→                    </div>
+   269→   269→                  ))}
+   270→   270→                </CardContent>
+   271→   271→              </Card>
+   272→   272→            </div>
+   273→   273→          </TabsContent>
+   274→   274→
+   275→   275→          {/* Suppliers Tab */}
+   276→   276→          <TabsContent value="suppliers" className="space-y-6">
+   277→   277→            <Card className="glass">
+   278→   278→              <CardHeader>
+   279→   279→                <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+   280→   280→                  <CardTitle className="flex items-center gap-2">
+   281→   281→                    <Users className="h-5 w-5 text-primary" />
+   282→   282→                    Supplier Registry
+   283→   283→                    <Badge variant="secondary" className="ml-2">{supplierData.length} suppliers</Badge>
+   284→   284→                  </CardTitle>
+   285→   285→                  <div className="flex items-center gap-2">
+   286→   286→                    <Button variant="outline" size="sm" className="gap-1">
+   287→   287→                      <FileText className="h-4 w-4" /> Export
+   288→   288→                    </Button>
+   289→   289→                    <Button size="sm" className="gap-1">
+   290→   290→                      <Users className="h-4 w-4" /> Add Supplier
+   291→   291→                    </Button>
+   292→   292→                  </div>
+   293→   293→                </div>
+   294→   294→              </CardHeader>
+   295→   295→              <CardContent>
+   296→   296→                <div className="overflow-x-auto">
+   297→   297→                  <Table>
+   298→   298→                    <TableHeader>
+   299→   299→                      <TableRow>
+   300→   300→                        <TableHead>Supplier ID</TableHead>
+   301→   301→                        <TableHead>Company Name</TableHead>
+   302→   302→                        <TableHead>Region</TableHead>
+   303→   303→                        <TableHead>Country</TableHead>
+   304→   304→                        <TableHead>Risk Score</TableHead>
+   305→   305→                        <TableHead>Tier</TableHead>
+   306→   306→                        <TableHead>Status</TableHead>
+   307→   307→                        <TableHead>Last Audit</TableHead>
+   308→   308→                      </TableRow>
+   309→   309→                    </TableHeader>
+   310→   310→                    <TableBody>
+   311→   311→                      {supplierData.map((supplier) => (
+   312→   312→                        <TableRow key={supplier.id} className="group hover:bg-primary/5">
+   313→   313→                          <TableCell className="font-mono text-sm">{supplier.id}</TableCell>
+   314→   314→                          <TableCell className="font-medium">{supplier.name}</TableCell>
+   315→   315→                          <TableCell>
+   316→   316→                            <Badge variant="outline" className="text-xs">{supplier.region}</Badge>
+   317→   317→                          </TableCell>
+   318→   318→                          <TableCell>
+   319→   319→                            <span className="flex items-center gap-1 text-sm">
+   320→   320→                              <MapPin className="h-3 w-3 text-muted-foreground" />
+   321→   321→                              {supplier.country}
+   322→   322→                            </span>
+   323→   323→                          </TableCell>
+   324→   324→                          <TableCell>
+   325→   325→                            <div className="flex items-center gap-2">
+   326→   326→                              <span className={`font-bold ${supplier.riskScore >= 70 ? 'text-rose-500' : supplier.riskScore >= 50 ? 'text-amber-500' : 'text-emerald-500'}`}>
+   327→   327→                                {supplier.riskScore}
+   328→   328→                              </span>
+   329→   329→                              <div className="w-16 h-1.5 bg-muted rounded-full overflow-hidden">
+   330→   330→                                <div
+   331→   331→                                  className={`h-full rounded-full ${
+   332→   332→                                    supplier.riskScore >= 70 ? 'bg-rose-500' :
+   333→   333→                                    supplier.riskScore >= 50 ? 'bg-amber-500' :
+   334→   334→                                    supplier.riskScore >= 30 ? 'bg-cyan-500' : 'bg-emerald-500'
+   335→   335→                                  }`}
+   336→   336→                                  style={{ width: `${supplier.riskScore}%` }}
+   337→   337→                                />
+   338→   338→                              </div>
+   339→   339→                            </div>
+   340→   340→                          </TableCell>
+   341→   341→                          <TableCell>
+   342→   342→                            <Badge variant={supplier.tier === 1 ? 'default' : 'secondary'} className="text-xs">
+   343→   343→                              Tier {supplier.tier}
+   344→   344→                            </Badge>
+   345→   345→                          </TableCell>
+   346→   346→                          <TableCell>
+   347→   347→                            {getRiskBadge(supplier.riskScore)}
+   348→   348→                          </TableCell>
+   349→   349→                          <TableCell className="text-sm text-muted-foreground">{supplier.lastAudit}</TableCell>
+   350→   350→                        </TableRow>
+   351→   351→                      ))}
+   352→   352→                    </TableBody>
+   353→   353→                  </Table>
+   354→   354→                </div>
+   355→   355→              </CardContent>
+   356→   356→            </Card>
+   357→   357→          </TabsContent>
+   358→   358→
+   359→   359→          {/* Risk Intelligence Tab */}
+   360→   360→          <TabsContent value="intel" className="space-y-6">
+   361→   361→            <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+   362→   362→              <Card className="glass lg:col-span-2">
+   363→   363→                <CardHeader>
+   364→   364→                  <CardTitle className="flex items-center gap-2">
+   365→   365→                    <Brain className="h-5 w-5 text-primary" />
+   366→   366→                    Intelligence Feed
+   367→   367→                    <Badge variant="outline" className="gap-1 ml-2 animate-pulse">
+   368→   368→                      <Eye className="h-3 w-3" /> Live
+   369→   369→                    </Badge>
+   370→   370→                  </CardTitle>
+   371→   371→                </CardHeader>
+   372→   372→                <CardContent className="space-y-3">
+   373→   373→                  {riskIntelData.map((item, i) => (
+   374→   374→                    <div key={i} className={`flex items-start gap-4 p-4 rounded-xl border transition-all hover:scale-[1.01] ${getSeverityColor(item.severity)}`}>
+   375→   375→                      <div className={`w-2 h-2 rounded-full mt-2 ${
+   376→   376→                        item.severity === 'critical' ? 'bg-rose-500' :
+   377→   377→                        item.severity === 'high' ? 'bg-amber-500' :
+   378→   378→                        item.severity === 'medium' ? 'bg-cyan-500' : 'bg-emerald-500'
+   379→   379→                      }`} />
+   380→   380→                      <div className="flex-1 min-w-0">
+   381→   381→                        <div className="flex items-center gap-2 mb-1">
+   382→   382→                          {getSeverityBadge(item.severity)}
+   383→   383→                          <Badge variant="outline" className="text-xs">{item.type}</Badge>
+   384→   384→                        </div>
+   385→   385→                        <div className="font-medium text-sm">{item.title}</div>
+   386→   386→                        <div className="text-sm text-muted-foreground mt-1">{item.impact}</div>
+   387→   387→                      </div>
+   388→   388→                      <div className="text-right whitespace-nowrap">
+   389→   389→                        <div className="text-xs text-muted-foreground">{item.time}</div>
+   390→   390→                        {item.trend === 'up' && <ArrowUpRight className="h-4 w-4 text-rose-500 mx-auto mt-1" />}
+   391→   391→                        {item.trend === 'down' && <ArrowDownRight className="h-4 w-4 text-emerald-500 mx-auto mt-1" />}
+   392→   392→                      </div>
+   393→   393→                    </div>
+   394→   394→                  ))}
+   395→   395→                </CardContent>
+   396→   396→              </Card>
+   397→   397→
+   398→   398→              <Card className="glass">
+   399→   399→                <CardHeader>
+   400→   400→                  <CardTitle className="flex items-center gap-2 text-base">
+   401→   401→                    <Target className="h-5 w-5 text-primary" />
+   402→   402→                    Threat Categories
+   403→   403→                  </CardTitle>
+   404→   404→                </CardHeader>
+   405→   405→                <CardContent className="space-y-4">
+   406→   406→                  {[
+   407→   407→                    { category: 'Geopolitical', count: 47, trend: '+12%', icon: Globe, color: 'text-red-500' },
+   408→   408→                    { category: 'Financial', count: 32, trend: '-5%', icon: BarChart3, color: 'text-amber-500' },
+   409→   409→                    { category: 'Environmental', count: 28, trend: '+8%', icon: Factory, color: 'text-green-500' },
+   410→   410→                    { category: 'Cyber Security', count: 19, trend: '+24%', icon: ShieldCheck, color: 'text-purple-500' },
+   411→   411→                    { category: 'Regulatory', count: 35, trend: '+3%', icon: FileText, color: 'text-blue-500' },
+   412→   412→                    { category: 'Operational', count: 41, trend: '-2%', icon: Truck, color: 'text-cyan-500' },
+   413→   413→                  ].map((cat, i) => (
+   414→   414→                    <div key={i} className="flex items-center justify-between p-3 rounded-lg bg-muted/50 hover:bg-muted transition-colors">
+   415→   415→                      <div className="flex items-center gap-3">
+   416→   416→                        <cat.icon className={`h-4 w-4 ${cat.color}`} />
+   417→   417→                        <span className="text-sm font-medium">{cat.category}</span>
+   418→   418→                      </div>
+   419→   419→                      <div className="text-right">
+   420→   420→                        <div className="font-bold text-sm">{cat.count}</div>
+   421→   421→                        <div className={`text-xs ${cat.trend.startsWith('+') ? 'text-rose-500' : 'text-emerald-500'}`}>{cat.trend}</div>
+   422→   422→                      </div>
+   423→   423→                    </div>
+   424→   424→                  ))}
+   425→   425→                </CardContent>
+   426→   426→              </Card>
+   427→   427→            </div>
+   428→   428→          </TabsContent>
+   429→   429→
+   430→   430→          {/* Forecasting Tab */}
+   431→   431→          <TabsContent value="forecasting" className="space-y-6">
+   432→   432→            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+   433→   433→              <Card className="glass">
+   434→   434→                <CardHeader>
+   435→   435→                  <CardTitle className="flex items-center gap-2">
+   436→   436→                    <TrendingUp className="h-5 w-5 text-primary" />
+   437→   437→                    Demand Forecast Summary
+   438→   438→                  </CardTitle>
+   439→   439→                </CardHeader>
+   440→   440→                <CardContent className="space-y-4">
+   441→   441→                  {forecastData.map((item, i) => (
+   442→   442→                    <div key={i} className="p-4 rounded-xl border bg-card space-y-3">
+   443→   443→                      <div className="flex items-center justify-between">
+   444→   444→                        <span className="font-medium text-sm">{item.category}</span>
+   445→   445→                        <div className="flex items-center gap-2">
+   446→   446→                          {item.trend === 'up' ? <ArrowUpRight className="h-4 w-4 text-emerald-500" /> : <ArrowDownRight className="h-4 w-4 text-rose-500" />}
+   447→   447→                          <Badge variant="outline" className="text-xs">{Math.round(((item.forecast - item.current) / item.current) * 100)}%</Badge>
+   448→   448→                        </div>
+   449→   449→                      </div>
+   450→   450→                      <div className="grid grid-cols-2 gap-4">
+   451→   451→                        <div>
+   452→   452→                          <div className="text-xs text-muted-foreground">Current</div>
+   453→   453→                          <div className="text-lg font-bold">{item.current.toLocaleString()}</div>
+   454→   454→                        </div>
+   455→   455→                        <div>
+   456→   456→                          <div className="text-xs text-muted-foreground">Forecast</div>
+   457→   457→                          <div className="text-lg font-bold text-primary">{item.forecast.toLocaleString()}</div>
+   458→   458→                        </div>
+   459→   459→                      </div>
+   460→   460→                      <div className="space-y-1">
+   461→   461→                        <div className="flex justify-between text-xs">
+   462→   462→                          <span>AI Confidence</span>
+   463→   463→                          <span className="font-medium">{item.confidence}%</span>
+   464→   464→                        </div>
+   465→   465→                        <Progress value={item.confidence} className="h-1.5" />
+   466→   466→                      </div>
+   467→   467→                    </div>
+   468→   468→                  ))}
+   469→   469→                </CardContent>
+   470→   470→              </Card>
+   471→   471→
+   472→   472→              <Card className="glass">
+   473→   473→                <CardHeader>
+   474→   474→                  <CardTitle className="flex items-center gap-2">
+   475→   475→                    <Zap className="h-5 w-5 text-primary" />
+   476→   476→                    AI Model Performance
+   477→   477→                  </CardTitle>
+   478→   478→                </CardHeader>
+   479→   479→                <CardContent className="space-y-6">
+   480→   480→                  {[
+   481→   481→                    { metric: 'Prediction Accuracy', value: 94.2, unit: '%' },
+   482→   482→                    { metric: 'False Positive Rate', value: 3.8, unit: '%' },
+   483→   483→                    { metric: 'Mean Absolute Error', value: 4.2, unit: '%' },
+   484→   484→                    { metric: 'Model Latency', value: 127, unit: 'ms' },
+   485→   485→                    { metric: 'Data Coverage', value: 98.7, unit: '%' },
+   486→   486→                  ].map((metric, i) => (
+   487→   487→                    <div key={i} className="space-y-2">
+   488→   488→                      <div className="flex justify-between text-sm">
+   489→   489→                        <span>{metric.metric}</span>
+   490→   490→                        <span className="font-bold text-primary">{metric.value}{metric.unit}</span>
+   491→   491→                      </div>
+   492→   492→                      <Progress value={typeof metric.value === 'number' && metric.unit === '%' ? metric.value : Math.max(0, 100 - metric.value)} className="h-2" />
+   493→   493→                    </div>
+   494→   494→                  ))}
+   495→   495→
+   496→   496→                  <div className="pt-4 border-t">
+   497→   497→                    <div className="p-4 rounded-lg bg-gradient-to-r from-violet-500/10 to-cyan-500/10 border border-primary/20">
+   498→   498→                      <div className="flex items-center gap-2 mb-2">
+   499→   499→                        <Brain className="h-5 w-5 text-violet-500" />
+   500→   500→                        <span className="font-semibold text-sm">Model Status</span>
+   501→   501→                      </div>
+   502→   502→                      <div className="flex items-center gap-2">
+   503→   503→                        <div className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
+   504→   504→                        <span className="text-sm text-muted-foreground">All models running • Last trained: 2 hours ago</span>
+   505→   505→                      </div>
+   506→   506→                    </div>
+   507→   507→                  </div>
+   508→   508→                </CardContent>
+   509→   509→              </Card>
+   510→   510→            </div>
+   511→   511→          </TabsContent>
+   512→   512→
+   513→   513→          {/* Compliance Tab */}
+   514→   514→          <TabsContent value="compliance" className="space-y-6">
+   515→   515→            <Card className="glass">
+   516→   516→              <CardHeader>
+   517→   517→                <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+   518→   518→                  <CardTitle className="flex items-center gap-2">
+   519→   519→                    <ShieldCheck className="h-5 w-5 text-primary" />
+   520→   520→                    Compliance Framework Tracker
+   521→   521→                    <Badge variant="secondary" className="ml-2">{complianceData.length} frameworks</Badge>
+   522→   522→                  </CardTitle>
+   523→   523→                  <Button variant="outline" size="sm" className="gap-1">
+   524→   524→                    <FileText className="h-4 w-4" /> Generate Report
+   525→   525→                  </Button>
+   526→   526→                </div>
+   527→   527→              </CardHeader>
+   528→   528→              <CardContent>
+   529→   529→                <div className="space-y-4">
+   530→   530→                  {complianceData.map((framework, i) => (
+   531→   531→                    <div key={i} className="p-5 rounded-xl border bg-card space-y-4 hover:border-primary/30 transition-colors">
+   532→   532→                      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+   533→   533→                        <div className="flex items-center gap-3">
+   534→   534→                          <div className={`w-12 h-12 rounded-xl flex items-center justify-center font-bold text-lg ${
+   535→   535→                            framework.score >= 90 ? 'bg-emerald-500/10 text-emerald-500' :
+   536→   536→                            framework.score >= 75 ? 'bg-cyan-500/10 text-cyan-500' :
+   537→   537→                            'bg-amber-500/10 text-amber-500'
+   538→   538→                          }`}>
+   539→   539→                            {framework.score}
+   540→   540→                          </div>
+   541→   541→                          <div>
+   542→   542→                            <div className="font-semibold flex items-center gap-2">
+   543→   543→                              {framework.framework}
+   544→   544→                              {framework.status === 'Compliant' ? (
+   545→   545→                                <CheckCircle2 className="h-4 w-4 text-emerald-500" />
+   546→   546→                              ) : (
+   547→   547→                                <Clock className="h-4 w-4 text-amber-500" />
+   548→   548→                              )}
+   549→   549→                            </div>
+   550→   550→                            <div className="text-sm text-muted-foreground">{framework.fullName}</div>
+   551→   551→                          </div>
+   552→   552→                        </div>
+   553→   553→                        <div className="flex items-center gap-3">
+   554→   554→                          <Badge variant={framework.status === 'Compliant' ? 'default' : 'secondary'}>
+   555→   555→                            {framework.status}
+   556→   556→                          </Badge>
+   557→   557→                          <span className="text-xs text-muted-foreground">{framework.lastUpdate}</span>
+   558→   558→                        </div>
+   559→   559→                      </div>
+   560→   560→
+   561→   561→                      <div className="space-y-2">
+   562→   562→                        <div className="flex justify-between text-sm">
+   563→   563→                          <span>Compliance Progress</span>
+   564→   564→                          <span className="font-medium">{framework.passed}/{framework.items} requirements met</span>
+   565→   565→                        </div>
+   566→   566→                        <div className="h-2.5 bg-muted rounded-full overflow-hidden">
+   567→   567→                          <div
+   568→   568→                            className={`h-full rounded-full transition-all ${
+   569→   569→                              framework.score >= 90 ? 'bg-gradient-to-r from-emerald-500 to-green-500' :
+   570→   570→                              framework.score >= 75 ? 'bg-gradient-to-r from-cyan-500 to-blue-500' :
+   571→   571→                              'bg-gradient-to-r from-amber-500 to-orange-500'
+   572→   572→                            }`}
+   573→   573→                            style={{ width: `${framework.score}%` }}
+   574→   574→                          />
+   575→   575→                        </div>
+   576→   576→                      </div>
+   577→   577→
+   578→   578→                      <div className="flex items-center gap-4 pt-2">
+   579→   579→                        <Button variant="ghost" size="sm" className="gap-1 text-xs">
+   580→   580→                          <Eye className="h-3 w-3" /> View Details
+   581→   581→                        </Button>
+   582→   582→                        <Button variant="ghost" size="sm" className="gap-1 text-xs">
+   583→   583→                          <FileText className="h-3 w-3" /> Documentation
+   584→   584→                        </Button>
+   585→   585→                        {framework.status !== 'Compliant' && (
+   586→   586→                          <Button size="sm" className="gap-1 text-xs">
+   587→   587→                            <Zap className="h-3 w-3" /> Remediate
+   588→   588→                          </Button>
+   589→   589→                        )}
+   590→   590→                      </div>
+   591→   591→                    </div>
+   592→   592→                  ))}
+   593→   593→                </div>
+   594→   594→              </CardContent>
+   595→   595→            </Card>
+   596→   596→          </TabsContent>
+   597→   597→        </Tabs>
+   598→   598→      </main>
+   599→   599→    </div>
+   600→   600→  )
+   601→   601→}
+   602→   602→
