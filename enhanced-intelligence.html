@@ -1,0 +1,1525 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Intelligence Engine | Advanced ML & XAI Platform</title>
+    <style>
+        /* ===== CSS RESET & BASE ===== */
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+        :root {
+            --primary: #1e40af;
+            --primary-light: #3b82f6;
+            --cyan: #06b6d4;
+            --emerald: #059669;
+            --purple: #7c3aed;
+            --rose: #e11d48;
+            --amber: #f59e0b;
+            --dark: #0f172a;
+            --dark-lighter: #1e293b;
+            --glass-bg: rgba(255,255,255,0.04);
+            --glass-border: rgba(255,255,255,0.08);
+            --text-primary: #f8fafc;
+            --text-secondary: #94a3b8;
+        }
+        html { scroll-behavior: smooth; }
+        body {
+            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+            background: var(--dark);
+            color: var(--text-primary);
+            line-height: 1.5;
+            min-height: 100vh;
+        }
+        a { color: inherit; text-decoration: none; }
+
+        /* ===== NAVIGATION ===== */
+        nav {
+            position: fixed;
+            top: 0; left: 0; right: 0;
+            z-index: 1000;
+            padding: 0.75rem 1.5rem;
+            background: rgba(15,23,42,0.92);
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid var(--glass-border);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 0.75rem;
+        }
+        .nav-brand {
+            display: flex;
+            align-items: center;
+            gap: 0.6rem;
+            font-size: 1.2rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, #3b82f6, #7c3aed, #06b6d4);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        .nav-brand-icon {
+            width: 36px; height: 36px;
+            background: linear-gradient(135deg, #1e40af, #7c3aed);
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+            -webkit-text-fill-color: white;
+        }
+        .nav-links {
+            display: flex;
+            gap: 0.35rem;
+            flex-wrap: wrap;
+        }
+        .nav-links a {
+            padding: 0.45rem 0.85rem;
+            border-radius: 8px;
+            font-size: 0.82rem;
+            font-weight: 500;
+            transition: all 0.25s ease;
+            color: var(--text-secondary);
+            border: 1px solid transparent;
+        }
+        .nav-links a:hover, .nav-links a.active {
+            background: rgba(59,130,246,0.12);
+            color: var(--text-primary);
+            border-color: rgba(59,130,246,0.25);
+        }
+        .nav-links a.active {
+            background: linear-gradient(135deg, rgba(30,64,175,0.25), rgba(124,58,237,0.25));
+            border-color: rgba(124,58,237,0.4);
+        }
+
+        /* ===== MAIN CONTAINER ===== */
+        .intel-container {
+            padding-top: 70px;
+            min-height: 100vh;
+        }
+
+        /* ===== HERO HEADER ===== */
+        .intel-hero {
+            background: linear-gradient(180deg, rgba(30,64,175,0.15) 0%, rgba(124,58,237,0.08) 50%, transparent 100%);
+            padding: 3rem 2rem;
+            text-align: center;
+            border-bottom: 1px solid var(--glass-border);
+            position: relative;
+            overflow: hidden;
+        }
+        .intel-hero::before {
+            content: '';
+            position: absolute;
+            top: 50%; left: 50%;
+            width: 600px; height: 600px;
+            transform: translate(-50%, -50%);
+            background: radial-gradient(circle, rgba(124,58,237,0.08) 0%, transparent 70%);
+            pointer-events: none;
+        }
+        .intel-hero h1 {
+            font-size: clamp(1.8rem, 4vw, 2.75rem);
+            font-weight: 800;
+            margin-bottom: 0.75rem;
+            background: linear-gradient(135deg, #fff, #93c5fd, #a78bfa);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            position: relative;
+        }
+        .intel-hero p {
+            font-size: 1.1rem;
+            color: var(--text-secondary);
+            max-width: 750px;
+            margin: 0 auto;
+            position: relative;
+        }
+        .hero-badges {
+            display: flex;
+            justify-content: center;
+            gap: 0.75rem;
+            margin-top: 1.5rem;
+            flex-wrap: wrap;
+            position: relative;
+        }
+        .hero-badge-item {
+            padding: 0.45rem 1rem;
+            background: var(--glass-bg);
+            backdrop-filter: blur(10px);
+            border: 1px solid var(--glass-border);
+            border-radius: 50px;
+            font-size: 0.82rem;
+            display: flex;
+            align-items: center;
+            gap: 0.35rem;
+        }
+        .badge-dot {
+            width: 8px; height: 8px;
+            border-radius: 50%;
+            animation: badgePulse 2s ease-in-out infinite;
+        }
+        @keyframes badgePulse {
+            0%, 100% { opacity: 1; transform: scale(1); }
+            50% { opacity: 0.6; transform: scale(1.2); }
+        }
+
+        /* ===== SECTION LAYOUTS ===== */
+        section { padding: 3rem 2rem; max-width: 1400px; margin: 0 auto; }
+        .section-header {
+            margin-bottom: 2rem;
+        }
+        .section-tag {
+            display: inline-block;
+            padding: 0.35rem 0.9rem;
+            background: rgba(6,182,212,0.12);
+            border: 1px solid rgba(6,182,212,0.25);
+            border-radius: 50px;
+            font-size: 0.78rem;
+            color: #67e8f9;
+            margin-bottom: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        .section-title {
+            font-size: clamp(1.4rem, 3vw, 2rem);
+            font-weight: 750;
+            background: linear-gradient(135deg, #fff, #94a3b8);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        .section-desc {
+            font-size: 0.95rem;
+            color: var(--text-secondary);
+            margin-top: 0.5rem;
+            max-width: 650px;
+        }
+
+        /* ===== CARDS ===== */
+        .card {
+            background: var(--glass-bg);
+            backdrop-filter: blur(16px);
+            border: 1px solid var(--glass-border);
+            border-radius: 18px;
+            overflow: hidden;
+            transition: all 0.3s ease;
+        }
+        .card:hover {
+            border-color: rgba(59,130,246,0.25);
+            box-shadow: 0 8px 32px rgba(0,0,0,0.2);
+        }
+        .card-header {
+            padding: 1rem 1.25rem;
+            border-bottom: 1px solid var(--glass-border);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .card-title {
+            font-size: 0.95rem;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        .card-body { padding: 1.25rem; }
+
+        /* ===== MODEL COMPARISON GRID ===== */
+        .model-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1.25rem;
+        }
+        .model-card {
+            background: var(--glass-bg);
+            backdrop-filter: blur(16px);
+            border: 1px solid var(--glass-border);
+            border-radius: 18px;
+            padding: 1.5rem;
+            transition: all 0.35s ease;
+            position: relative;
+            overflow: hidden;
+        }
+        .model-card::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; right: 0;
+            height: 4px;
+        }
+        .model-card.ours::before { background: linear-gradient(90deg, #059669, #06b6d4); }
+        .model-card.competitor::before { background: linear-gradient(90deg, #64748b, #94a3b8); }
+        .model-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 40px rgba(0,0,0,0.3);
+        }
+        .model-card.ours:hover { border-color: rgba(5,150,105,0.4); }
+        .model-badge {
+            display: inline-block;
+            padding: 0.2rem 0.65rem;
+            border-radius: 6px;
+            font-size: 0.72rem;
+            font-weight: 700;
+            margin-bottom: 0.85rem;
+        }
+        .badge-ours { background: rgba(5,150,105,0.15); color: #34d399; }
+        .badge-them { background: rgba(148,163,184,0.12); color: #94a3b8; }
+        .model-name {
+            font-size: 1.15rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+        }
+        .model-type {
+            font-size: 0.8rem;
+            color: var(--text-secondary);
+            margin-bottom: 1rem;
+        }
+        .model-metrics {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 0.6rem;
+        }
+        .metric-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0.55rem 0.65rem;
+            background: rgba(0,0,0,0.2);
+            border-radius: 8px;
+        }
+        .metric-label { font-size: 0.78rem; color: var(--text-secondary); }
+        .metric-value { font-size: 0.88rem; font-weight: 700; }
+        .metric-value.excellent { color: #34d399; }
+        .metric-value.good { color: #67e8f9; }
+        .metric-value.poor { color: #f87171; }
+        .metric-value.meh { color: #94a3b8; }
+
+        /* ===== SHAP VISUALIZATION ===== */
+        .shap-container {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1.5rem;
+        }
+        @media (max-width: 900px) { .shap-container { grid-template-columns: 1fr; } }
+        .shap-chart {
+            background: var(--glass-bg);
+            backdrop-filter: blur(16px);
+            border: 1px solid var(--glass-border);
+            border-radius: 18px;
+            padding: 1.5rem;
+        }
+        .chart-title {
+            font-size: 0.95rem;
+            font-weight: 700;
+            margin-bottom: 1.25rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        .feature-bar-container {
+            display: flex;
+            flex-direction: column;
+            gap: 0.7rem;
+        }
+        .feature-bar-row {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+        .feature-name {
+            width: 140px;
+            font-size: 0.78rem;
+            text-align: right;
+            flex-shrink: 0;
+            color: #cbd5e1;
+        }
+        .bar-track {
+            flex: 1;
+            height: 26px;
+            background: rgba(255,255,255,0.05);
+            border-radius: 13px;
+            overflow: hidden;
+            position: relative;
+        }
+        .bar-fill {
+            height: 100%;
+            border-radius: 13px;
+            display: flex;
+            align-items: center;
+            justify-content: flex-end;
+            padding-right: 0.6rem;
+            font-size: 0.72rem;
+            font-weight: 700;
+            transition: width 1s ease;
+        }
+        .bar-positive { background: linear-gradient(90deg, #059669, #10b981); color: white; }
+        .bar-negative { background: linear-gradient(90deg, #dc2626, #ef4444); color: white; direction: rtl; padding-left: 0.6rem; padding-right: 0; }
+        .bar-value {
+            font-size: 0.75rem;
+            font-weight: 700;
+            width: 50px;
+            text-align: left;
+            flex-shrink: 0;
+        }
+        .value-pos { color: #34d399; }
+        .value-neg { color: #f87171; }
+
+        /* RADAR CHART PLACEHOLDER */
+        .radar-placeholder {
+            width: 100%;
+            aspect-ratio: 1;
+            max-width: 320px;
+            margin: 0 auto;
+            position: relative;
+            background: 
+                conic-gradient(from 0deg, rgba(59,130,246,0.1) 0deg, rgba(59,130,246,0.1) 60deg, transparent 60deg),
+                conic-gradient(from 60deg, rgba(6,182,212,0.1) 0deg, rgba(6,182,212,0.1) 60deg, transparent 60deg),
+                conic-gradient(from 120deg, rgba(139,92,246,0.1) 0deg, rgba(139,92,246,0.1) 60deg, transparent 60deg),
+                conic-gradient(from 180deg, rgba(16,185,129,0.1) 0deg, rgba(16,185,129,0.1) 60deg, transparent 60deg),
+                conic-gradient(from 240deg, rgba(245,158,11,0.1) 0deg, rgba(245,158,11,0.1) 60deg, transparent 60deg),
+                conic-gradient(from 300deg, rgba(225,29,72,0.1) 0deg, rgba(225,29,72,0.1) 60deg, transparent 60deg);
+            border-radius: 50%;
+            border: 2px solid rgba(59,130,246,0.15);
+        }
+        .radar-center {
+            position: absolute;
+            top: 50%; left: 50%;
+            transform: translate(-50%, -50%);
+            text-align: center;
+        }
+        .radar-score {
+            font-size: 2.5rem;
+            font-weight: 800;
+            background: linear-gradient(135deg, #3b82f6, #06b6d4);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        .radar-label {
+            font-size: 0.8rem;
+            color: var(--text-secondary);
+        }
+        .radar-axis-labels {
+            position: absolute;
+            top: 0; left: 0; right: 0; bottom: 0;
+        }
+        .axis-label {
+            position: absolute;
+            font-size: 0.72rem;
+            font-weight: 600;
+            color: #93c5fd;
+            padding: 0.25rem 0.5rem;
+            background: rgba(15,23,42,0.8);
+            border-radius: 6px;
+        }
+        .axis-label:nth-child(1) { top: 5%; left: 50%; transform: translateX(-50%); }
+        .axis-label:nth-child(2) { top: 25%; right: 2%; }
+        .axis-label:nth-child(3) { bottom: 20%; right: 5%; }
+        .axis-label:nth-child(4) { bottom: 5%; left: 50%; transform: translateX(-50%); }
+        .axis-label:nth-child(5) { bottom: 20%; left: 5%; }
+        .axis-label:nth-child(6) { top: 25%; left: 2%; }
+
+        /* ===== XAI OUTPUT STRUCTURE ===== */
+        .xai-output {
+            background: var(--glass-bg);
+            backdrop-filter: blur(16px);
+            border: 1px solid var(--glass-border);
+            border-radius: 18px;
+            overflow: hidden;
+        }
+        .xai-header {
+            padding: 1rem 1.25rem;
+            background: linear-gradient(90deg, rgba(124,58,237,0.1), rgba(6,182,212,0.08));
+            border-bottom: 1px solid var(--glass-border);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .xai-prediction-box {
+            padding: 1.25rem;
+            border-bottom: 1px solid var(--glass-border);
+            display: flex;
+            align-items: center;
+            gap: 1.5rem;
+            flex-wrap: wrap;
+        }
+        .pred-main {
+            text-align: center;
+            padding: 1rem 1.5rem;
+            background: rgba(225,29,72,0.1);
+            border: 1px solid rgba(225,29,72,0.2);
+            border-radius: 14px;
+        }
+        .pred-label { font-size: 0.78rem; color: var(--text-secondary); margin-bottom: 0.3rem; }
+        .pred-score { font-size: 2rem; font-weight: 800; color: #f87171; }
+        .pred-level { font-size: 0.82rem; color: #fca5a5; font-weight: 600; }
+        .pred-details {
+            display: flex;
+            gap: 1.5rem;
+            flex-wrap: wrap;
+        }
+        .pred-detail-item {
+            text-align: center;
+        }
+        .pred-detail-val { font-size: 1.1rem; font-weight: 700; color: #67e8f9; }
+        .pred-detail-lbl { font-size: 0.72rem; color: var(--text-secondary); }
+
+        /* COUNTERFACTUAL SECTION */
+        .counterfactual-section {
+            padding: 1.25rem;
+        }
+        .cf-title {
+            font-size: 0.95rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        .cf-list {
+            display: flex;
+            flex-direction: column;
+            gap: 0.75rem;
+        }
+        .cf-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 0.85rem;
+            padding: 1rem;
+            background: rgba(0,0,0,0.2);
+            border-radius: 12px;
+            border-left: 3px solid #10b981;
+        }
+        .cf-icon {
+            width: 32px; height: 32px;
+            background: rgba(16,185,129,0.15);
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.9rem;
+            flex-shrink: 0;
+        }
+        .cf-content { flex: 1; }
+        .cf-action { font-size: 0.88rem; font-weight: 600; margin-bottom: 0.25rem; }
+        .cf-result { font-size: 0.82rem; color: var(--text-secondary); }
+        .cf-impact {
+            padding: 0.25rem 0.6rem;
+            background: rgba(16,185,129,0.15);
+            border-radius: 6px;
+            font-size: 0.75rem;
+            font-weight: 700;
+            color: #34d399;
+            white-space: nowrap;
+        }
+
+        /* SIMILAR CASES */
+        .similar-cases {
+            padding: 1.25rem;
+            border-top: 1px solid var(--glass-border);
+        }
+        .case-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 0.85rem;
+            margin-top: 1rem;
+        }
+        .case-card {
+            padding: 1rem;
+            background: rgba(0,0,0,0.2);
+            border-radius: 12px;
+            border: 1px solid rgba(255,255,255,0.04);
+            transition: all 0.25s ease;
+        }
+        .case-card:hover {
+            border-color: rgba(59,130,246,0.2);
+            background: rgba(0,0,0,0.3);
+        }
+        .case-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 0.5rem;
+        }
+        .case-name { font-size: 0.85rem; font-weight: 600; }
+        .case-similarity {
+            font-size: 0.72rem;
+            padding: 0.15rem 0.5rem;
+            background: rgba(6,182,212,0.15);
+            border-radius: 6px;
+            color: #67e8f9;
+        }
+        .case-outcome {
+            font-size: 0.8rem;
+            color: var(--text-secondary);
+        }
+        .case-outcome.positive { color: #34d399; }
+        .case-outcome.negative { color: #f87171; }
+
+        /* ===== AGENT COLLABORATION FLOW ===== */
+        .agent-flow {
+            background: var(--glass-bg);
+            backdrop-filter: blur(16px);
+            border: 1px solid var(--glass-border);
+            border-radius: 18px;
+            padding: 2rem;
+        }
+        .flow-diagram {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            flex-wrap: wrap;
+            margin-top: 1.5rem;
+        }
+        .flow-node {
+            padding: 0.85rem 1.25rem;
+            border-radius: 14px;
+            text-align: center;
+            font-size: 0.82rem;
+            font-weight: 600;
+            position: relative;
+            transition: all 0.3s ease;
+            cursor: default;
+        }
+        .flow-node:hover {
+            transform: scale(1.08);
+            z-index: 10;
+        }
+        .node-input { background: linear-gradient(135deg, rgba(6,182,212,0.2), rgba(6,182,212,0.1)); border: 1px solid rgba(6,182,212,0.3); color: #67e8f9; }
+        .node-agent { background: linear-gradient(135deg, rgba(124,58,237,0.2), rgba(124,58,237,0.1)); border: 1px solid rgba(124,58,237,0.3); color: #c4b5fd; }
+        .node-output { background: linear-gradient(135deg, rgba(16,185,129,0.2), rgba(16,185,129,0.1)); border: 1px solid rgba(16,185,129,0.3); color: #34d399; }
+        .node-human { background: linear-gradient(135deg, rgba(245,158,11,0.2), rgba(245,158,11,0.1)); border: 1px solid rgba(245,158,11,0.3); color: #fbbf24; }
+        .flow-arrow {
+            font-size: 1.2rem;
+            color: var(--text-secondary);
+            animation: arrowPulse 1.5s ease-in-out infinite;
+        }
+        @keyframes arrowPulse {
+            0%, 100% { opacity: 0.4; transform: translateX(0); }
+            50% { opacity: 1; transform: translateX(3px); }
+        }
+        .flow-stages {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+            margin-top: 2rem;
+        }
+        .stage-card {
+            padding: 1.15rem;
+            background: rgba(0,0,0,0.2);
+            border-radius: 14px;
+            border-left: 3px solid;
+        }
+        .stage-card:nth-child(1) { border-left-color: #06b6d4; }
+        .stage-card:nth-child(2) { border-left-color: #7c3aed; }
+        .stage-card:nth-child(3) { border-left-color: #f59e0b; }
+        .stage-card:nth-child(4) { border-left-color: #059669; }
+        .stage-num {
+            font-size: 0.72rem;
+            font-weight: 700;
+            color: var(--text-secondary);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 0.4rem;
+        }
+        .stage-title { font-size: 0.95rem; font-weight: 700; margin-bottom: 0.35rem; }
+        .stage-desc { font-size: 0.8rem; color: var(--text-secondary); line-height: 1.5; }
+
+        /* ===== NEURAL NETWORK ARCHITECTURE ===== */
+        .nn-architecture {
+            background: var(--glass-bg);
+            backdrop-filter: blur(16px);
+            border: 1px solid var(--glass-border);
+            border-radius: 18px;
+            padding: 2rem;
+        }
+        .nn-diagram {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.75rem;
+            flex-wrap: wrap;
+            margin-top: 1.5rem;
+            padding: 2rem;
+            background: rgba(0,0,0,0.2);
+            border-radius: 14px;
+        }
+        .nn-layer {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+            align-items: center;
+        }
+        .nn-neuron {
+            width: 28px; height: 28px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.6rem;
+            font-weight: 700;
+            transition: all 0.3s ease;
+        }
+        .nn-neuron:hover {
+            transform: scale(1.3);
+            box-shadow: 0 0 15px currentColor;
+        }
+        .layer-input .nn-neuron { background: rgba(6,182,212,0.3); border: 2px solid #06b6d4; color: #67e8f9; }
+        .layer-embed .nn-neuron { background: rgba(59,130,246,0.3); border: 2px solid #3b82f6; color: #93c5fd; }
+        .layer-attn .nn-neuron { background: rgba(124,58,237,0.3); border: 2px solid #7c3aed; color: #c4b5fd; }
+        .layer-ffn .nn-neuron { background: rgba(245,158,11,0.3); border: 2px solid #f59e0b; color: #fbbf24; }
+        .layer-output .nn-neuron { background: rgba(16,185,129,0.3); border: 2px solid #10b981; color: #34d399; }
+        .layer-label {
+            font-size: 0.72rem;
+            font-weight: 600;
+            color: var(--text-secondary);
+            margin-top: 0.5rem;
+            text-align: center;
+        }
+        .nn-connector {
+            font-size: 1.5rem;
+            color: rgba(148,163,184,0.4);
+        }
+        .nn-specs {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 0.85rem;
+            margin-top: 1.5rem;
+        }
+        .spec-item {
+            padding: 0.85rem;
+            background: rgba(0,0,0,0.2);
+            border-radius: 10px;
+            text-align: center;
+        }
+        .spec-value { font-size: 1.15rem; font-weight: 700; color: #67e8f9; }
+        .spec-label { font-size: 0.72rem; color: var(--text-secondary); margin-top: 0.2rem; }
+
+        /* ===== INFERENCE STATS ===== */
+        .inference-stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+            gap: 1.25rem;
+        }
+        .stat-card {
+            background: var(--glass-bg);
+            backdrop-filter: blur(16px);
+            border: 1px solid var(--glass-border);
+            border-radius: 18px;
+            padding: 1.5rem;
+            text-align: center;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+        .stat-card::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; right: 0;
+            height: 3px;
+        }
+        .stat-card:nth-child(1)::before { background: linear-gradient(90deg, #3b82f6, #06b6d4); }
+        .stat-card:nth-child(2)::before { background: linear-gradient(90deg, #10b981, #059669); }
+        .stat-card:nth-child(3)::before { background: linear-gradient(90deg, #a78bfa, #7c3aed); }
+        .stat-card:nth-child(4)::before { background: linear-gradient(90deg, #fbbf24, #f59e0b); }
+        .stat-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 12px 32px rgba(0,0,0,0.25);
+        }
+        .stat-icon {
+            font-size: 2rem;
+            margin-bottom: 0.75rem;
+        }
+        .stat-big {
+            font-size: 2.2rem;
+            font-weight: 800;
+            background: linear-gradient(135deg, #fff, #93c5fd);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        .stat-label {
+            font-size: 0.88rem;
+            color: var(--text-secondary);
+            margin-top: 0.3rem;
+        }
+        .stat-sub {
+            font-size: 0.75rem;
+            color: #34d399;
+            margin-top: 0.35rem;
+        }
+        .stat-chart-mini {
+            margin-top: 1rem;
+            height: 40px;
+            display: flex;
+            align-items: flex-end;
+            gap: 3px;
+        }
+        .mini-bar {
+            flex: 1;
+            background: linear-gradient(180deg, rgba(59,130,246,0.6), rgba(59,130,246,0.2));
+            border-radius: 2px 2px 0 0;
+            min-height: 5px;
+        }
+
+        /* ===== AUDIT TRAIL ===== */
+        .audit-trail {
+            background: var(--glass-bg);
+            backdrop-filter: blur(16px);
+            border: 1px solid var(--glass-border);
+            border-radius: 18px;
+            overflow: hidden;
+        }
+        .audit-timeline {
+            padding: 1.25rem;
+        }
+        .timeline-item {
+            display: flex;
+            gap: 1rem;
+            padding: 0.85rem 0;
+            border-bottom: 1px solid rgba(255,255,255,0.03);
+            position: relative;
+        }
+        .timeline-item:last-child { border-bottom: none; }
+        .timeline-marker {
+            width: 36px; height: 36px;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.85rem;
+            flex-shrink: 0;
+        }
+        .marker-model { background: rgba(124,58,237,0.15); }
+        .marker-data { background: rgba(6,182,212,0.15); }
+        .marker-feature { background: rgba(245,158,11,0.15); }
+        .marker-output { background: rgba(16,185,129,0.15); }
+        .timeline-content { flex: 1; }
+        .timeline-title { font-size: 0.88rem; font-weight: 600; margin-bottom: 0.2rem; }
+        .timeline-detail { font-size: 0.78rem; color: var(--text-secondary); }
+        .timeline-time {
+            font-size: 0.72rem;
+            color: var(--text-secondary);
+            white-space: nowrap;
+        }
+
+        /* ===== RESPONSIVE ===== */
+        @media (max-width: 768px) {
+            nav { padding: 0.5rem 0.75rem; }
+            .nav-links { justify-content: center; order: 3; width: 100%; }
+            section { padding: 2rem 1rem; }
+            .model-grid { grid-template-columns: 1fr; }
+            .feature-bar-row { flex-wrap: wrap; }
+            .feature-name { width: 100%; text-align: left; margin-bottom: 0.25rem; }
+            .flow-diagram { flex-direction: column; }
+            .flow-arrow { transform: rotate(90deg); }
+        }
+
+        /* ===== ANIMATIONS ===== */
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(15px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+    </style>
+</head>
+<body>
+
+<!-- ===== NAVIGATION ===== -->
+<nav>
+    <div class="nav-brand">
+        <div class="nav-brand-icon">🧠</div>
+        <span>AISupChain Pro</span>
+    </div>
+    <div class="nav-links">
+        <a href="/Demo4AISupChn/">🏠 Home</a>
+        <a href="/Demo4AISupChn/dashboard.html">📊 Dashboard</a>
+        <a href="/Demo4AISupChn/intelligence.html" class="active">🔬 Intelligence</a>
+        <a href="/Demo4AISupChn/agents.html">🤖 Agents</a>
+        <a href="/Demo4AISupChn/platform.html">⚙️ Platform</a>
+        <a href="/Demo4AISupChn/command-center.html">🎯 Command Center</a>
+        <a href="/Demo4AISupChn/about.html">ℹ️ About</a>
+        <a href="/Demo4AISupChn/customers.html">👥 Customers</a>
+    </div>
+</nav>
+
+<!-- ===== INTELLIGENCE CONTAINER ===== -->
+<div class="intel-container">
+
+    <!-- ===== HERO ===== -->
+    <div class="intel-hero">
+        <h1>🔬 AI Intelligence Engine</h1>
+        <p>Deep dive into our cutting-edge machine learning architecture, explainable AI (XAI) capabilities, and real-time inference systems that power enterprise supply chain intelligence.</p>
+        <div class="hero-badges">
+            <span class="hero-badge-item"><span class="badge-dot" style="background:#34d399;"></span> SHAP Explainability</span>
+            <span class="hero-badge-item"><span class="badge-dot" style="background:#67e8f9;"></span> Counterfactual Analysis</span>
+            <span class="hero-badge-item"><span class="badge-dot" style="background:#a78bfa;"></span> Neural Architecture Search</span>
+            <span class="hero-badge-item"><span class="badge-dot" style="background:#fbbf24;"></span> Real-time Inference &lt;200ms</span>
+            <span class="hero-badge-item"><span class="badge-dot" style="background:#fb7185;"></span> EU AI Act Compliant</span>
+        </div>
+    </div>
+
+    <!-- ===== MODEL PERFORMANCE COMPARISON ===== -->
+    <section id="models">
+        <div class="section-header">
+            <div class="section-tag">📊 Model Performance</div>
+            <h2 class="section-title">Our Models vs Industry Benchmarks</h2>
+            <p class="section-desc">Head-to-head comparison with Salesforce Einstein and other generic CRM AI solutions</p>
+        </div>
+        
+        <div class="model-grid">
+            <!-- Our Model -->
+            <div class="model-card ours">
+                <span class="model-badge badge-ours">✓ Our Platform</span>
+                <div class="model-name">SupplyChain-GPT v4.0</div>
+                <div class="model-type">Domain-Specific Transformer · 175B Parameters · Pre-trained on 50M+ SC Documents</div>
+                <div class="model-metrics">
+                    <div class="metric-row">
+                        <span class="metric-label">Accuracy</span>
+                        <span class="metric-value excellent">94.2%</span>
+                    </div>
+                    <div class="metric-row">
+                        <span class="metric-label">Precision</span>
+                        <span class="metric-value excellent">91.8%</span>
+                    </div>
+                    <div class="metric-row">
+                        <span class="metric-label">Recall</span>
+                        <span class="metric-value excellent">89.4%</span>
+                    </div>
+                    <div class="metric-row">
+                        <span class="metric-label">F1 Score</span>
+                        <span class="metric-value excellent">0.905</span>
+                    </div>
+                    <div class="metric-row">
+                        <span class="metric-label">Latency (P99)</span>
+                        <span class="metric-value excellent">&lt;200ms</span>
+                    </div>
+                    <div class="metric-row">
+                        <span class="metric-label">Explainability</span>
+                        <span class="metric-value excellent">Full XAI</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Salesforce Einstein -->
+            <div class="model-card competitor">
+                <span class="model-badge badge-them">Salesforce Einstein</span>
+                <div class="model-name">Einstein GPT (Generic)</div>
+                <div class="model-type">Fine-tuned GPT Wrapper · No Domain Training · Generic CRM Model</div>
+                <div class="model-metrics">
+                    <div class="metric-row">
+                        <span class="metric-label">Accuracy</span>
+                        <span class="metric-value poor">~73%</span>
+                    </div>
+                    <div class="metric-row">
+                        <span class="metric-label">Precision</span>
+                        <span class="metric-value meh">~68%</span>
+                    </div>
+                    <div class="metric-row">
+                        <span class="metric-label">Recall</span>
+                        <span class="metric-value meh">~61%</span>
+                    </div>
+                    <div class="metric-row">
+                        <span class="metric-label">F1 Score</span>
+                        <span class="metric-value meh">~0.645</span>
+                    </div>
+                    <div class="metric-row">
+                        <span class="metric-label">Latency (P99)</span>
+                        <span class="metric-value poor">&gt;2s</span>
+                    </div>
+                    <div class="metric-row">
+                        <span class="metric-label">Explainability</span>
+                        <span class="metric-value poor">Basic % only</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Our Secondary Model -->
+            <div class="model-card ours">
+                <span class="model-badge badge-ours">✓ Our Platform</span>
+                <div class="model-name">RiskNet-GraphNN</div>
+                <div class="model-type">Graph Neural Network · Knowledge Graph Powered · Multi-tier Analysis</div>
+                <div class="model-metrics">
+                    <div class="metric-row">
+                        <span class="metric-label">Accuracy</span>
+                        <span class="metric-value excellent">91.5%</span>
+                    </div>
+                    <div class="metric-row">
+                        <span class="metric-label">Precision</span>
+                        <span class="metric-value good">89.2%</span>
+                    </div>
+                    <div class="metric-row">
+                        <span class="metric-label">Recall</span>
+                        <span class="metric-value good">87.8%</span>
+                    </div>
+                    <div class="metric-row">
+                        <span class="metric-label">F1 Score</span>
+                        <span class="metric-value good">0.885</span>
+                    </div>
+                    <div class="metric-row">
+                        <span class="metric-label">Latency (P99)</span>
+                        <span class="metric-value good">&lt;350ms</span>
+                    </div>
+                    <div class="metric-row">
+                        <span class="metric-label">Coverage</span>
+                        <span class="metric-value excellent">10M+ nodes</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Traditional ML Baseline -->
+            <div class="model-card competitor">
+                <span class="model-badge badge-them">Traditional ML</span>
+                <div class="model-name">Random Forest / XGBoost</div>
+                <div class="model-type">Classical ML · Tabular Data Only · No NLP Capability</div>
+                <div class="model-metrics">
+                    <div class="metric-row">
+                        <span class="metric-label">Accuracy</span>
+                        <span class="metric-value meh">~68%</span>
+                    </div>
+                    <div class="metric-row">
+                        <span class="metric-label">Precision</span>
+                        <span class="metric-value meh">~65%</span>
+                    </div>
+                    <div class="metric-row">
+                        <span class="metric-label">Recall</span>
+                        <span class="metric-value poor">~58%</span>
+                    </div>
+                    <div class="metric-row">
+                        <span class="metric-label">F1 Score</span>
+                        <span class="metric-value meh">~0.615</span>
+                    </div>
+                    <div class="metric-row">
+                        <span class="metric-label">Latency (P99)</span>
+                        <span class="metric-value good">&lt;100ms</span>
+                    </div>
+                    <div class="metric-row">
+                        <span class="metric-label">NLP Support</span>
+                        <span class="metric-value poor">None</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ===== SHAP EXPLAINABILITY ===== -->
+    <section id="explainability">
+        <div class="section-header">
+            <div class="section-tag">🔍 XAI Suite</div>
+            <h2 class="section-title">SHAP Explainability Visualization</h2>
+            <p class="section-desc">Full transparency into how each prediction is made — every feature's contribution quantified</p>
+        </div>
+
+        <div class="shap-container">
+            <!-- Feature Importance Bars -->
+            <div class="shap-chart">
+                <div class="chart-title">📊 Feature Importance (SHAP Values)</div>
+                <div style="font-size:0.82rem;color:var(--text-secondary);margin-bottom:1rem;">
+                    Risk Prediction for Supplier: <strong style="color:#fff;">Foxconn Technology Group</strong> — Score: <strong style="color:#f87171;">78/100 (HIGH RISK)</strong>
+                </div>
+                <div class="feature-bar-container">
+                    <div class="feature-bar-row">
+                        <span class="feature-name">Geopolitical Exposure</span>
+                        <div class="bar-track"><div class="bar-fill bar-negative" style="width:92%;">+18.4</div></div>
+                        <span class="bar-value value-neg">+18.4</span>
+                    </div>
+                    <div class="feature-bar-row">
+                        <span class="feature-name">Financial Health Δ</span>
+                        <div class="bar-track"><div class="bar-fill bar-negative" style="width:72%;">+12.8</div></div>
+                        <span class="bar-value value-neg">+12.8</span>
+                    </div>
+                    <div class="feature-bar-row">
+                        <span class="feature-name">Concentration Risk</span>
+                        <div class="bar-track"><div class="bar-fill bar-negative" style="width:58%;">+9.2</div></div>
+                        <span class="bar-value value-neg">+9.2</span>
+                    </div>
+                    <div class="feature-bar-row">
+                        <span class="feature-name">Shipping Route Risk</span>
+                        <div class="bar-track"><div class="bar-fill bar-negative" style="width:45%;">+6.7</div></div>
+                        <span class="bar-value value-neg">+6.7</span>
+                    </div>
+                    <div class="feature-bar-row">
+                        <span class="feature-name">ESG Compliance Score</span>
+                        <div class="bar-track"><div class="bar-fill bar-negative" style="width:38%;">+5.1</div></div>
+                        <span class="bar-value value-neg">+5.1</span>
+                    </div>
+                    <div class="feature-bar-row">
+                        <span class="feature-name">Historical Performance</span>
+                        <div class="bar-track"><div class="bar-fill bar-positive" style="width:52%;">-8.3</div></div>
+                        <span class="bar-value value-pos">-8.3</span>
+                    </div>
+                    <div class="feature-bar-row">
+                        <span class="feature-name">Contract Stability</span>
+                        <div class="bar-track"><div class="bar-fill bar-positive" style="width:38%;">-5.6</div></div>
+                        <span class="bar-value value-pos">-5.6</span>
+                    </div>
+                    <div class="feature-bar-row">
+                        <span class="feature-name">Diversification Index</span>
+                        <div class="bar-track"><div class="bar-fill bar-positive" style="width:22%;">-3.1</div></div>
+                        <span class="bar-value value-pos">-3.1</span>
+                    </div>
+                </div>
+                <div style="margin-top:1rem;padding:0.75rem;background:rgba(124,58,237,0.08);border:1px solid rgba(124,58,237,0.2);border-radius:10px;font-size:0.8rem;color:#c4b5fd;">
+                    💡 <strong>Interpretation:</strong> Geopolitical exposure to Taiwan Strait tensions is the dominant risk driver (+18.4 points). Mitigating this through geographic diversification could reduce overall risk by ~23%.
+                </div>
+            </div>
+
+            <!-- Radar Chart -->
+            <div class="shap-chart">
+                <div class="chart-title">🎯 Multi-Dimensional Risk Profile</div>
+                <div class="radar-placeholder">
+                    <div class="radar-axis-labels">
+                        <span class="axis-label">Financial</span>
+                        <span class="axis-label">Operational</span>
+                        <span class="axis-label">Geopolitical</span>
+                        <span class="axis-label">Compliance</span>
+                        <span class="axis-label">Reputational</span>
+                        <span class="axis-label">Environmental</span>
+                    </div>
+                    <div class="radar-center">
+                        <div class="radar-score">78</div>
+                        <div class="radar-label">Overall Risk Score</div>
+                    </div>
+                </div>
+                <div style="display:flex;justify-content:center;gap:1.5rem;margin-top:1.25rem;flex-wrap:wrap;">
+                    <div style="text-align:center;">
+                        <div style="font-size:1.2rem;font-weight:700;color:#f87171;">92</div>
+                        <div style="font-size:0.72rem;color:var(--text-secondary);">Geopolitical</div>
+                    </div>
+                    <div style="text-align:center;">
+                        <div style="font-size:1.2rem;font-weight:700;color:#fbbf24;">74</div>
+                        <div style="font-size:0.72rem;color:var(--text-secondary);">Operational</div>
+                    </div>
+                    <div style="text-align:center;">
+                        <div style="font-size:1.2rem;font-weight:700;color:#fbbf24;">68</div>
+                        <div style="font-size:0.72rem;color:var(--text-secondary);">Financial</div>
+                    </div>
+                    <div style="text-align:center;">
+                        <div style="font-size:1.2rem;font-weight:700;color:#67e8f9;">55</div>
+                        <div style="font-size:0.72rem;color:var(--text-secondary);">Compliance</div>
+                    </div>
+                    <div style="text-align:center;">
+                        <div style="font-size:1.2rem;font-weight:700;color:#34d399;">41</div>
+                        <div style="font-size:0.72rem;color:var(--text-secondary);">Environmental</div>
+                    </div>
+                    <div style="text-align:center;">
+                        <div style="font-size:1.2rem;font-weight:700;color:#67e8f9;">48</div>
+                        <div style="font-size:0.72rem;color:var(--text-secondary);">Reputational</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ===== XAI OUTPUT STRUCTURE ===== -->
+    <section id="xai-output">
+        <div class="section-header">
+            <div class="section-tag">🧪 Full XAI Output</div>
+            <h2 class="section-title">Complete Explainable AI Decision Structure</h2>
+            <p class="section-desc">Every AI decision comes with full audit trail, counterfactual explanations, and similar case references</p>
+        </div>
+
+        <div class="xai-output">
+            <div class="xai-header">
+                <span class="card-title">📋 Prediction Output: Foxconn Risk Assessment</span>
+                <span style="font-size:0.78rem;color:var(--text-secondary;">Generated: Just now · Model: SupplyChain-GPT v4.0</span>
+            </div>
+
+            <!-- Prediction Box -->
+            <div class="xai-prediction-box">
+                <div class="pred-main">
+                    <div class="pred-label">RISK SCORE</div>
+                    <div class="pred-score">78</div>
+                    <div class="pred-level">⚠️ HIGH RISK</div>
+                </div>
+                <div class="pred-details">
+                    <div class="pred-detail-item">
+                        <div class="pred-detail-val">94.2%</div>
+                        <div class="pred-detail-lbl">Confidence</div>
+                    </div>
+                    <div class="pred-detail-item">
+                        <div class="pred-detail-val">142ms</div>
+                        <div class="pred-detail-lbl">Inference Time</div>
+                    </div>
+                    <div class="pred-detail-item">
+                        <div class="pred-detail-val">12,847</div>
+                        <div class="pred-detail-lbl">Features Analyzed</div>
+                    </div>
+                    <div class="pred-detail-item">
+                        <div class="pred-detail-vl">v4.0</div>
+                        <div class="pred-detail-lbl">Model Version</div>
+                    </div>
+                    <div class="pred-detail-item">
+                        <div class="pred-detail-val">✅</div>
+                        <div class="pred-detail-lbl">EU AI Act Ready</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Counterfactual Explanations -->
+            <div class="counterfactual-section">
+                <div class="cf-title">🔄 Counterfactual Explanations — "What Would Change This?"</div>
+                <div class="cf-list">
+                    <div class="cf-item">
+                        <div class="cf-icon">1️⃣</div>
+                        <div class="cf-content">
+                            <div class="cf-action">Add secondary supplier in Vietnam or India</div>
+                            <div class="cf-result">Reducing Taiwan concentration from 85% to below 40% would decrease risk score by approximately <strong>18-22 points</strong></div>
+                        </div>
+                        <span class="cf-impact">→ ~56-60</span>
+                    </div>
+                    <div class="cf-item">
+                        <div class="cf-icon">2️⃣</div>
+                        <div class="cf-content">
+                            <div class="cf-action">Increase safety stock to 8 weeks coverage</div>
+                            <div class="cf-result">Buffer stock increase would mitigate supply disruption impact, reducing operational risk component by <strong>~8 points</strong></div>
+                        </div>
+                        <span class="cf-impact">→ ~70</span>
+                    </div>
+                    <div class="cf-item">
+                        <div class="cf-icon">3️⃣</div>
+                        <div class="cf-content">
+                            <div class="cf-action">Activate alternative shipping route via Cape of Good Hope</div>
+                            <div class="cf-result">Bypassing Red Sea/Malacca dependency reduces logistics risk component by <strong>~7 points</strong></div>
+                        </div>
+                        <span class="cf-impact">→ ~71</span>
+                    </div>
+                    <div class="cf-item">
+                        <div class="cf-icon">4️⃣</div>
+                        <div class="cf-content">
+                            <div class="cf-action">Require enhanced financial covenant in contract renewal</div>
+                            <div class="cf-result">Stronger contractual protections would improve financial stability score by <strong>~5 points</strong></div>
+                        </div>
+                        <span class="cf-impact">→ ~73</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Similar Cases -->
+            <div class="similar-cases">
+                <div class="cf-title">📚 Similar Historical Cases (Retrieved from Knowledge Base)</div>
+                <div class="case-grid">
+                    <div class="case-card">
+                        <div class="case-header">
+                            <span class="case-name">TSMC Arizona Expansion</span>
+                            <span class="case-similarity">94% similar</span>
+                        </div>
+                        <div class="case-outcome positive">✅ Diversification reduced risk 31pts over 18 months</div>
+                    </div>
+                    <div class="case-card">
+                        <div class="case-header">
+                            <span class="case-name">Samsung Vietnam Shift</span>
+                            <span class="case-similarity">87% similar</span>
+                        </div>
+                        <div class="case-outcome positive">✅ Geographic hedge successful during China tensions</div>
+                    </div>
+                    <div class="case-card">
+                        <div class="case-header">
+                            <span class="case-name">Apple Supplier Crisis 2022</span>
+                            <span class="case-similarity">81% similar</span>
+                        </div>
+                        <div class="case-outcome negative">⚠️ No diversification led to $6B revenue impact</div>
+                    </div>
+                    <div class="case-card">
+                        <div class="case-header">
+                            <span class="case-name">Auto OEM Chip Shortage</span>
+                            <span class="case-similarity">76% similar</span>
+                        </div>
+                        <div class="case-outcome negative">⚠️ Single-source dependency caused 11-week shutdown</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ===== AGENT COLLABORATION FLOW ===== -->
+    <section id="agent-flow">
+        <div class="section-header">
+            <div class="section-tag">🤖 Multi-Agent System</div>
+            <h2 class="section-title">Agent Collaboration Workflow</h2>
+            <p class="section-desc">How our autonomous AI agents collaborate to deliver comprehensive intelligence</p>
+        </div>
+
+        <div class="agent-flow">
+            <div class="flow-diagram">
+                <div class="flow-node node-input">📥 Data Ingestion<br><small>(500+ sources)</small></div>
+                <span class="flow-arrow">→</span>
+                <div class="flow-node node-agent">🛡️ Sentinel<br><small>Detection</small></div>
+                <span class="flow-arrow">→</span>
+                <div class="flow-node node-agent">🔬 Analyst<br><small>Investigation</small></div>
+                <span class="flow-arrow">→</span>
+                <div class="flow-node node-agent">🎯 Orchestrator<br><small>Coordination</small></div>
+                <span class="flow-arrow">→</span>
+                <div class="flow-node node-human">👤 Human<br><small>Approval</small></div>
+                <span class="flow-arrow">→</span>
+                <div class="flow-node node-output">📤 Action<br><small>Execution</small></div>
+            </div>
+
+            <div class="flow-stages">
+                <div class="stage-card">
+                    <div class="stage-num">Stage 1</div>
+                    <div class="stage-title">🛡️ Sentinel Detection</div>
+                    <div class="stage-desc">Continuous monitoring of 500+ data feeds. Anomaly detection flags potential risks within milliseconds of data arrival.</div>
+                </div>
+                <div class="stage-card">
+                    <div class="stage-num">Stage 2</div>
+                    <div class="stage-title">🔬 Analyst Investigation</div>
+                    <div class="stage-desc">Deep analysis using domain models. Cross-references knowledge graph, runs SHAP explainability, generates counterfactual scenarios.</div>
+                </div>
+                <div class="stage-card">
+                    <div class="stage-num">Stage 3</div>
+                    <div class="stage-title">🎯 Orchestrator Coordination</div>
+                    <div class="stage-desc">Prioritizes findings, routes to appropriate stakeholders, coordinates multi-agent tasks, manages escalation workflows.</div>
+                </div>
+                <div class="stage-card">
+                    <div class="stage-num">Stage 4</div>
+                    <div class="stage-title">👤 Human-in-the-Loop</div>
+                    <div class="stage-desc">Critical decisions require human approval. Full context provided with AI recommendation confidence scores.</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ===== NEURAL NETWORK ARCHITECTURE ===== -->
+    <section id="architecture">
+        <div class="section-header">
+            <div class="section-tag">🧮 Technical Deep Dive</div>
+            <h2 class="section-title">Neural Network Architecture</h2>
+            <p class="section-desc">Our custom transformer architecture purpose-built for supply chain intelligence</p>
+        </div>
+
+        <div class="nn-architecture">
+            <div class="chart-title" style="justify-content:center;">SupplyChain-GPT v4.0 Architecture Overview</div>
+            
+            <div class="nn-diagram">
+                <!-- Input Layer -->
+                <div class="nn-layer layer-input">
+                    <div class="nn-neuron">T</div>
+                    <div class="nn-neuron">E</div>
+                    <div class="nn-neuron">X</div>
+                    <div class="nn-neuron">T</div>
+                    <div class="nn-neuron">...</div>
+                    <div class="layer-label">Input Tokens<br><small>Multi-modal</small></div>
+                </div>
+                
+                <span class="nn-connector">→</span>
+                
+                <!-- Embedding Layer -->
+                <div class="nn-layer layer-embed">
+                    <div class="nn-neuron">E₁</div>
+                    <div class="nn-neuron">E₂</div>
+                    <div class="nn-neuron">E₃</div>
+                    <div class="nn-neuron">E₄</div>
+                    <div class="nn-neuron">...</div>
+                    <div class="layer-label">Embedding<br><small>3072-dim</small></div>
+                </div>
+                
+                <span class="nn-connector">→</span>
+                
+                <!-- Attention Layers -->
+                <div class="nn-layer layer-attn">
+                    <div class="nn-neuron">Attn</div>
+                    <div class="nn-neuron">Attn</div>
+                    <div class="nn-neuron">Attn</div>
+                    <div class="nn-neuron">FFN</div>
+                    <div class="layer-label">Transformer<br><small>96 layers</small></div>
+                </div>
+                
+                <span class="nn-connector">→</span>
+                
+                <!-- FFN / Task Head -->
+                <div class="nn-layer layer-ffn">
+                    <div class="nn-neuron">FFN</div>
+                    <div class="nn-neuron">Norm</div>
+                    <div class="nn-neuron">Drop</div>
+                    <div class="layer-label">Task Head<br><small>Risk Classifier</small></div>
+                </div>
+                
+                <span class="nn-connector">→</span>
+                
+                <!-- Output Layer -->
+                <div class="nn-layer layer-output">
+                    <div class="nn-neuron">R</div>
+                    <div class="nn-neuron">Score</div>
+                    <div class="layer-label">Output<br><small>0-100 Risk</small></div>
+                </div>
+            </div>
+
+            <div class="nn-specs">
+                <div class="spec-item">
+                    <div class="spec-value">175B</div>
+                    <div class="spec-label">Parameters</div>
+                </div>
+                <div class="spec-item">
+                    <div class="spec-value">96</div>
+                    <div class="spec-label">Transformer Layers</div>
+                </div>
+                <div class="spec-item">
+                    <div class="spec-value">3072</div>
+                    <div class="spec-label">Hidden Dimension</div>
+                </div>
+                <div class="spec-item">
+                    <div class="spec-value">48</div>
+                    <div class="spec-label">Attention Heads</div>
+                </div>
+                <div class="spec-item">
+                    <div class="spec-value">128K</div>
+                    <div class="spec-label">Context Window</div>
+                </div>
+                <div class="spec-item">
+                    <div class="spec-value">50M+</div>
+                    <div class="spec-label">Training Docs</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ===== REAL-TIME INFERENCE STATS ===== -->
+    <section id="inference">
+        <div class="section-header">
+            <div class="section-tag">⚡ Live Performance</div>
+            <h2 class="section-title">Real-Time Inference Statistics</h2>
+            <p class="section-desc">Live metrics from our production inference cluster</p>
+        </div>
+
+        <div class="inference-stats">
+            <div class="stat-card">
+                <div class="stat-icon">⚡</div>
+                <div class="stat-big">142ms</div>
+                <div class="stat-label">Average Latency (P50)</div>
+                <div class="stat-sub">↓ 93% faster than Salesforce</div>
+                <div class="stat-chart-mini">
+                    <div class="mini-bar" style="height:60%;"></div>
+                    <div class="mini-bar" style="height:45%;"></div>
+                    <div class="mini-bar" style="height:70%;"></div>
+                    <div class="mini-bar" style="height:55%;"></div>
+                    <div class="mini-bar" style="height:40%;"></div>
+                    <div class="mini-bar" style="height:50%;"></div>
+                    <div class="mini-bar" style="height:35%;"></div>
+                    <div class="mini-bar" style="height:42%;"></div>
+                </div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon">📈</div>
+                <div class="stat-big">2.4M</div>
+                <div class="stat-label">Inferences/Second</div>
+                <div class="stat-sub">↑ 47K peak capacity</div>
+                <div class="stat-chart-mini">
+                    <div class="mini-bar" style="height:80%;"></div>
+                    <div class="mini-bar" style="height:85%;"></div>
+                    <div class="mini-bar" style="height:75%;"></div>
+                    <div class="mini-bar" style="height:90%;"></div>
+                    <div class="mini-bar" style="height:82%;"></div>
+                    <div class="mini-bar" style="height:88%;"></div>
+                    <div class="mini-bar" style="height:79%;"></div>
+                    <div class="mini-bar" style="height:84%;"></div>
+                </div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon">🎯</div>
+                <div class="stat-big">94.2%</div>
+                <div class="stat-label">Prediction Accuracy</div>
+                <div class="stat-sub">↑ +21% vs Salesforce</div>
+                <div class="stat-chart-mini">
+                    <div class="mini-bar" style="height:92%;"></div>
+                    <div class="mini-bar" style="height:93%;"></div>
+                    <div class="mini-bar" style="height:94%;"></div>
+                    <div class="mini-bar" style="height:94%;"></div>
+                    <div class="mini-bar" style="height:95%;"></div>
+                    <div class="mini-bar" style="height:94%;"></div>
+                    <div class="mini-bar" style="height:94%;"></div>
+                    <div class="mini-bar" style="height:94%;"></div>
+                </div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon">🔄</div>
+                <div class="stat-big">99.97%</div>
+                <div class="stat-label">System Uptime</div>
+                <div class="stat-sub">Enterprise SLA guaranteed</div>
+                <div class="stat-chart-mini">
+                    <div class="mini-bar" style="height:98%;"></div>
+                    <div class="mini-bar" style="height:99%;"></div>
+                    <div class="mini-bar" style="height:100%;"></div>
+                    <div class="mini-bar" style="height:100%;"></div>
+                    <div class="mini-bar" style="height:99%;"></div>
+                    <div class="mini-bar" style="height:100%;"></div>
+                    <div class="mini-bar" style="height:100%;"></div>
+                    <div class="mini-bar" style="height:100%;"></div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ===== AUDIT TRAIL ===== -->
+    <section id="audit">
+        <div class="section-header">
+            <div class="section-tag">📜 Regulatory Compliance</div>
+            <h2 class="section-title">Decision Audit Trail</h2>
+            <p class="section-desc">Complete, tamper-proof record of every AI decision for regulatory compliance</p>
+        </div>
+
+        <div class="audit-trail">
+            <div class="card-header">
+                <span class="card-title">📋 Audit Trail: Prediction ID #SC-2025-08472-FXC</span>
+                <span style="font-size:0.78rem;padding:0.2rem 0.6rem;background:rgba(52,211,153,0.12);color:#34d399;border-radius:6px;">EU AI Act Compliant</span>
+            </div>
+            <div class="audit-timeline">
+                <div class="timeline-item">
+                    <div class="timeline-marker marker-data">📥</div>
+                    <div class="timeline-content">
+                        <div class="timeline-title">Data Ingestion Started</div>
+                        <div class="timeline-detail">Received 847 data points from 23 sources including financial reports, news feeds, shipping manifests, customs data</div>
+                    </div>
+                    <div class="timeline-time">2025-01-15 14:23:01.142 UTC</div>
+                </div>
+                <div class="timeline-item">
+                    <div class="timeline-marker marker-feature">🔍</div>
+                    <div class="timeline-content">
+                        <div class="timeline-title">Feature Engineering Complete</div>
+                        <div class="timeline-detail">Extracted 12,847 features across 6 categories: Financial (2,341), Operational (3,892), Geopolitical (2,156), Compliance (1,847), ESG (1,523), Network (1,088)</div>
+                    </div>
+                    <div class="timeline-time">2025-01-15 14:23:01.287 UTC</div>
+                </div>
+                <div class="timeline-item">
+                    <div class="timeline-marker marker-model">🧠</div>
+                    <div class="timeline-content">
+                        <div class="timeline-title">Model Inference Executed</div>
+                        <div class="timeline-detail">SupplyChain-GPT v4.0 (SHA256: a3f8...c2d1) processed input → Raw output: 78.34 | Confidence: 0.942 | P-values computed</div>
+                    </div>
+                    <div class="timeline-time">2025-01-15 14:23:01.429 UTC</div>
+                </div>
+                <div class="timeline-item">
+                    <div class="timeline-marker marker-feature">📊</div>
+                    <div class="timeline-content">
+                        <div class="timeline-title">SHAP Analysis Completed</div>
+                        <div class="timeline-detail">Computed 847 SHAP values | Top feature: Geopolitical Exposure (+18.4) | Total explanation size: 24.3KB</div>
+                    </div>
+                    <div class="timeline-time">2025-01-15 14:23:02.156 UTC</div>
+                </div>
+                <div class="timeline-item">
+                    <div class="timeline-marker marker-feature">🔄</div>
+                    <div class="timeline-content">
+                        <div class="timeline-title">Counterfactual Generation Done</div>
+                        <div class="timeline-detail">Generated 4 actionable counterfactual scenarios | Best mitigation: Add VN/IN secondary supplier (-22 pts risk reduction)</div>
+                    </div>
+                    <div class="timeline-time">2025-01-15 14:23:02.891 UTC</div>
+                </div>
+                <div class="timeline-item">
+                    <div class="timeline-marker marker-output">📤</div>
+                    <div class="timeline-content">
+                        <div class="timeline-title">Result Published & Logged</div>
+                        <div class="timeline-detail">Final output stored in immutable ledger | Hash: 0x7f3a...9c2d | Blockchain verified | Ready for human review</div>
+                    </div>
+                    <div class="timeline-time">2025-01-15 14:23:03.004 UTC</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+</div>
+
+<!-- ===== FOOTER ===== -->
+<footer style="border-top:1px solid var(--glass-border);padding:1.5rem 2rem;text-align:center;color:var(--text-secondary);font-size:0.82rem;margin-top:3rem;">
+    <p>© 2025 AISupChain Pro | Enterprise Supply Chain Intelligence Platform | SOC 2 Type II Certified | ISO 27001 | GDPR Compliant | EU AI Act Ready</p>
+</footer>
+
+</body>
+</html>
