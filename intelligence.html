@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI/ML Engine - AI Supply Chain Risk Predictor</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, #f0fdf4 0%, #ffffff 50%, #ecfeff 100%);
+            color: #0a1628; line-height: 1.6;
+        }
+        nav {
+            position: sticky; top: 0; z-index: 100;
+            background: rgba(255,255,255,0.9); backdrop-filter: blur(20px);
+            border-bottom: 1px solid rgba(5,150,105,0.15); padding: 1rem 2rem;
+        }
+        .nav-container { max-width: 1400px; margin: 0 auto; display: flex; justify-content: space-between; align-items: center; }
+        .logo { font-size: 1.25rem; font-weight: bold; color: #059669; text-decoration: none; }
+        .nav-links { display: flex; gap: 2rem; align-items: center; }
+        .nav-links a {
+            color: #64748b; text-decoration: none; padding: 0.5rem 1rem;
+            border-radius: 0.5rem; transition: all 0.3s;
+        }
+        .nav-links a:hover, .nav-links a.active { background: rgba(5,150,105,0.1); color: #059669; }
+
+        .container { max-width: 1200px; margin: 2rem auto; padding: 0 2rem; }
+        h1 {
+            font-size: 3rem; margin-bottom: 1rem;
+            background: linear-gradient(135deg, #059669, #06b6d4);
+            -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+        }
+
+        .ai-grid {
+            display: grid; grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 2rem; margin-top: 2rem;
+        }
+        .ai-card {
+            background: rgba(255,255,255,0.7);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(5,150,105,0.15);
+            padding: 2rem; border-radius: 1rem;
+        }
+        .ai-card h3 { 
+            font-size: 1.25rem; margin-bottom: 1rem; 
+            color: #059669; display: flex; align-items: center; gap: 0.5rem;
+        }
+        
+        .model-stats {
+            display: grid; grid-template-columns: repeat(2, 1fr); gap: 1rem;
+            margin-top: 1rem; padding-top: 1rem; border-top: 1px solid rgba(5,150,105,0.1);
+        }
+        .model-stat {
+            text-align: center; padding: 0.75rem;
+            background: rgba(255,255,255,0.5); border-radius: 0.5rem;
+        }
+        .model-stat-value { font-size: 1.25rem; font-weight: bold; color: #059669; }
+        .model-stat-label { font-size: 0.75rem; color: #64748b; }
+
+        .capability-list { list-style: none; margin-top: 1rem; }
+        .capability-list li {
+            padding: 0.5rem 0; border-bottom: 1px solid rgba(5,150,105,0.1);
+            display: flex; align-items: center; gap: 0.5rem;
+        }
+        .capability-list li:last-child { border-bottom: none; }
+        
+        .highlight-box {
+            background: linear-gradient(135deg, rgba(5,150,105,0.1), rgba(6,182,212,0.1));
+            border: 1px solid rgba(5,150,105,0.2);
+            padding: 2rem; border-radius: 1rem; margin-top: 2rem;
+            text-align: center;
+        }
+        .accuracy-badge {
+            display: inline-block; padding: 1rem 2rem;
+            background: white; border-radius: 9999px;
+            font-size: 2rem; font-weight: bold;
+            background: linear-gradient(135deg, #059669, #06b6d4);
+            -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+            margin-bottom: 1rem;
+        }
+    </style>
+</head>
+<body>
+    <nav>
+        <div class="nav-container">
+            <a href="/Demo3AISupChn/" class="logo">🛡️ AI Supply Chain</a>
+            <div class="nav-links">
+                <a href="/Demo3AISupChn/">Home</a>
+                <a href="/Demo3AISupChn/dashboard.html">Dashboard</a>
+                <a href="/Demo3AISupChn/command-center.html">Command Center</a>
+                <a href="/Demo3AISupChn/platform.html">Platform</a>
+                <a href="/Demo3AISupChn/intelligence.html" class="active">AI/ML Engine</a>
+                <a href="/Demo3AISupChn/about.html">About</a>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container">
+        <h1>🧠 AI/ML Intelligence Engine</h1>
+        <p style="color: #64748b; font-size: 1.25rem; margin-bottom: 2rem;">
+            Advanced machine learning models powering predictive supply chain analytics
+        </p>
+
+        <div class="highlight-box">
+            <div class="accuracy-badge">94% Prediction Accuracy</div>
+            <p style="color: #64748b;">Our ensemble of ML models achieves industry-leading accuracy in risk prediction</p>
+        </div>
+
+        <div class="ai-grid">
+            <div class="ai-card">
+                <h3>🔮 Predictive Analytics Models</h3>
+                <ul class="capability-list">
+                    <li><span>📈</span> Demand forecasting (LSTM + Transformer)</li>
+                    <li><span>⚠️</span> Risk scoring (Gradient Boosting)</li>
+                    <li><span>🎯</span> Anomaly detection (Autoencoders)</li>
+                    <li><span>🔄</span> Pattern recognition (CNN + RNN)</li>
+                </ul>
+                <div class="model-stats">
+                    <div class="model-stat"><div class="model-stat-value">12</div><div class="model-stat-label">Models</div></div>
+                    <div class="model-stat"><div class="model-stat-value">50M+</div><div class="model-stat-label">Parameters</div></div>
+                    <div class="model-stat"><div class="model-stat-value">Daily</div><div class="model-stat-label">Retraining</div></div>
+                    <div class="model-stat"><div class="model-stat-value">&lt;100ms</div><div class="model-stat-label">Inference</div></div>
+                </div>
+            </div>
+
+            <div class="ai-card">
+                <h3>🌍 Global Data Processing</h3>
+                <ul class="capability-list">
+                    <li><span>📰</span> News & sentiment analysis (NLP)</li>
+                    <li><span>🌦️</span> Weather impact modeling</li>
+                    <li><span>🏛️</span> Geopolitical risk assessment</li>
+                    <li><span>💰</span> Financial market correlation</li>
+                </ul>
+                <div class="model-stats">
+                    <div class="model-stat"><div class="model-stat-value">190+</div><div class="model-stat-label">Countries</div></div>
+                    <div class="model-stat"><div class="model-stat-value">10K+</div><div class="model-stat-label">Data Sources</div></div>
+                    <div class="model-stat"><div class="model-stat-value">Real-time</div><div class="model-stat-label">Processing</div></div>
+                    <div class="model-stat"><div class="model-stat-value">24/7</div><div class="model-stat-label">Monitoring</div></div>
+                </div>
+            </div>
+
+            <div class="ai-card">
+                <h3>🔬 SHAP Explainability</h3>
+                <ul class="capability-list">
+                    <li><span>📊</span> Feature importance visualization</li>
+                    <li><span>🌳</span> Decision tree explanations</li>
+                    <li><span>📋</span> Model insight reports</li>
+                    <li><span>✅</span> Audit trail compliance</li>
+                </ul>
+                <div class="model-stats">
+                    <div class="model-stat"><div class="model-stat-value">SHAP</div><div class="model-stat-label">Framework</div></div>
+                    <div class="model-stat"><div class="model-stat-value">Full</div><div class="model-stat-label">Transparency</div></div>
+                    <div class="model-stat"><div class="model-stat-value">Auto</div><div class="model-stat-label">Reports</div></div>
+                    <div class="model-stat"><div class="model-stat-value">DRY</div><div class="model-stat-label">Compliant</div></div>
+                </div>
+            </div>
+
+            <div class="ai-card">
+                <h3>⚡ Real-Time Inference</h3>
+                <ul class="capability-list">
+                    <li><span>⚙️</span> Edge deployment support</li>
+                    <li><span>📱</span> Mobile API endpoints</li>
+                    <li><span>🔔</span> WebSocket streaming alerts</li>
+                    <li><span>📊</span> Batch processing mode</li>
+                </ul>
+                <div class="model-stats">
+                    <div class="model-stat"><div class="model-stat-value">&lt;5min</div><div class="model-stat-label">Alert Time</div></div>
+                    <div class="model-stat"><div class="model-stat-value">99.9%</div><div class="model-stat-label">Availability</div></div>
+                    <div class="model-stat"><div class="model-stat-value">Auto</div><div class="model-stat-label">Scaling</div></div>
+                    <div class="model-stat"><div class="model-stat-value">Low</div><div class="model-stat-label">Latency</div></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

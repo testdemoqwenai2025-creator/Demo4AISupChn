@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard - AI Supply Chain Risk Predictor</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, #f0fdf4 0%, #ffffff 50%, #ecfeff 100%);
+            color: #0a1628;
+            line-height: 1.6;
+        }
+        
+        nav {
+            position: sticky; top: 0; z-index: 100;
+            background: rgba(255,255,255,0.9);
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid rgba(5,150,105,0.15);
+            padding: 1rem 2rem;
+        }
+        .nav-container { max-width: 1400px; margin: 0 auto; display: flex; justify-content: space-between; align-items: center; }
+        .logo { font-size: 1.25rem; font-weight: bold; color: #059669; text-decoration: none; }
+        .nav-links { display: flex; gap: 2rem; align-items: center; }
+        .nav-links a {
+            color: #64748b; text-decoration: none; padding: 0.5rem 1rem;
+            border-radius: 0.5rem; transition: all 0.3s;
+        }
+        .nav-links a:hover, .nav-links a.active { background: rgba(5,150,105,0.1); color: #059669; }
+
+        .container { max-width: 1400px; margin: 2rem auto; padding: 0 2rem; }
+        h1 {
+            font-size: 2.5rem; margin-bottom: 1rem;
+            background: linear-gradient(135deg, #059669, #06b6d4);
+            -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+        }
+        
+        .stats-row {
+            display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem; margin-bottom: 2rem;
+        }
+        .stat-card {
+            background: rgba(255,255,255,0.7);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(5,150,105,0.15);
+            padding: 1.5rem; border-radius: 1rem;
+        }
+        .stat-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.75rem; }
+        .stat-label { color: #64748b; font-size: 0.875rem; }
+        .stat-value { font-size: 2rem; font-weight: bold; color: #059669; }
+        .stat-change { font-size: 0.875rem; padding: 0.25rem 0.5rem; border-radius: 0.25rem; }
+        .stat-change.positive { background: rgba(16,185,129,0.1); color: #10b981; }
+        .stat-change.negative { background: rgba(244,63,94,0.1); color: #f43f5e; }
+
+        .grid-2col { display: grid; grid-template-columns: repeat(auto-fit, minmax(400px, 1fr)); gap: 1.5rem; }
+        .card {
+            background: rgba(255,255,255,0.7);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(5,150,105,0.15);
+            padding: 1.5rem; border-radius: 1rem;
+        }
+        .card h3 { margin-bottom: 1rem; color: #059669; }
+
+        .risk-list { list-style: none; }
+        .risk-item {
+            display: flex; justify-content: space-between; align-items: center;
+            padding: 1rem; border-bottom: 1px solid rgba(5,150,105,0.1);
+        }
+        .risk-item:last-child { border-bottom: none; }
+        .risk-info h4 { font-size: 1rem; margin-bottom: 0.25rem; }
+        .risk-info p { font-size: 0.875rem; color: #64748b; }
+        .risk-level {
+            padding: 0.25rem 0.75rem; border-radius: 9999px;
+            font-size: 0.75rem; font-weight: 600;
+        }
+        .risk-high { background: rgba(244,63,94,0.1); color: #f43f5e; }
+        .risk-medium { background: rgba(245,158,11,0.1); color: #f59e0b; }
+        .risk-low { background: rgba(16,185,129,0.1); color: #10b981; }
+
+        .chart-placeholder {
+            height: 200px; background: linear-gradient(135deg, rgba(5,150,105,0.05), rgba(6,182,212,0.05));
+            border-radius: 0.5rem; display: flex; align-items: center; justify-content: center;
+            color: #64748b; margin-top: 1rem;
+        }
+    </style>
+</head>
+<body>
+    <nav>
+        <div class="nav-container">
+            <a href="/Demo3AISupChn/" class="logo">🛡️ AI Supply Chain</a>
+            <div class="nav-links">
+                <a href="/Demo3AISupChn/">Home</a>
+                <a href="/Demo3AISupChn/dashboard.html" class="active">Dashboard</a>
+                <a href="/Demo3AISupChn/command-center.html">Command Center</a>
+                <a href="/Demo3AISupChn/platform.html">Platform</a>
+                <a href="/Demo3AISupChn/intelligence.html">AI/ML Engine</a>
+                <a href="/Demo3AISupChn/about.html">About</a>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container">
+        <h1>📊 Risk Dashboard</h1>
+        <p style="color: #64748b; margin-bottom: 2rem;">Real-time supply chain risk monitoring and analytics</p>
+
+        <div class="stats-row">
+            <div class="stat-card">
+                <div class="stat-header">
+                    <span class="stat-label">Active Risks</span>
+                    <span class="stat-change positive">↓ 12% from yesterday</span>
+                </div>
+                <div class="stat-value">23</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-header">
+                    <span class="stat-label">Suppliers Monitored</span>
+                    <span class="stat-change positive">↑ 3 new this week</span>
+                </div>
+                <div class="stat-value">1,247</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-header">
+                    <span class="stat-label">Risk Score (Avg)</span>
+                    <span class="stat-change negative">↑ 5% increase</span>
+                </div>
+                <div class="stat-value">67</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-header">
+                    <span class="stat-label">Alerts Today</span>
+                    <span class="stat-change positive">↓ 28% resolved</span>
+                </div>
+                <div class="stat-value">8</div>
+            </div>
+        </div>
+
+        <div class="grid-2col">
+            <div class="card">
+                <h3>🚨 Active Risk Alerts</h3>
+                <ul class="risk-list">
+                    <li class="risk-item">
+                        <div class="risk-info">
+                            <h4>Taiwan Semiconductor Supply Disruption</h4>
+                            <p>Semiconductor shortage affecting 12 suppliers</p>
+                        </div>
+                        <span class="risk-level risk-high">HIGH</span>
+                    </li>
+                    <li class="risk-item">
+                        <div class="risk-info">
+                            <h4>Port of Shanghai Congestion</h4>
+                            <p>Shipping delays expected 3-5 days</p>
+                        </div>
+                        <span class="risk-level risk-medium">MEDIUM</span>
+                    </li>
+                    <li class="risk-item">
+                        <div class="risk-info">
+                            <h4>Rare Earth Export Restrictions</h4>
+                            <p>New China export controls on key materials</p>
+                        </div>
+                        <span class="risk-level risk-high">HIGH</span>
+                    </li>
+                    <li class="risk-item">
+                        <div class="risk-info">
+                            <h4>Currency Fluctuation - EUR/USD</h4>
+                            <p>Exchange rate volatility impacting costs</p>
+                        </div>
+                        <span class="risk-level risk-low">LOW</span>
+                    </li>
+                </ul>
+            </div>
+
+            <div class="card">
+                <h3>📈 Risk Trend Analysis</h3>
+                <div class="chart-placeholder">
+                    📉 Interactive charts would render here
+                </div>
+            </div>
+
+            <div class="card">
+                <h3>🌍 Geographic Risk Map</h3>
+                <div class="chart-placeholder">
+                    🗺️ World map with risk hotspots
+                </div>
+            </div>
+
+            <div class="card">
+                <h3>📦 Supplier Health Overview</h3>
+                <div class="chart-placeholder">
+                    📊 Supplier performance metrics
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
