@@ -1,0 +1,628 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Customers - AI Supply Chain Risk Predictor</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, #f0fdf4 0%, #ffffff 50%, #ecfeff 100%);
+            color: #0a1628;
+            line-height: 1.6;
+        }
+
+        /* Navigation */
+        nav {
+            position: sticky; top: 0; z-index: 100;
+            background: rgba(255,255,255,0.92);
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid rgba(5,150,105,0.15);
+            padding: 1rem 2rem;
+        }
+        .nav-container { max-width: 1400px; margin: 0 auto; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem; }
+        .logo { font-size: 1.25rem; font-weight: bold; color: #059669; text-decoration: none; }
+        .nav-links { display: flex; gap: 0.5rem; align-items: center; flex-wrap: wrap; }
+        .nav-links a {
+            color: #64748b; text-decoration: none; padding: 0.5rem 0.75rem;
+            border-radius: 0.5rem; transition: all 0.3s; font-size: 0.875rem;
+        }
+        .nav-links a:hover, .nav-links a.active { background: rgba(5,150,105,0.1); color: #059669; }
+
+        /* Hero Section */
+        .hero {
+            position: relative; overflow: hidden;
+            padding: 5rem 2rem; text-align: center;
+            border-bottom: 1px solid rgba(5,150,105,0.1);
+        }
+        .hero::before {
+            content: ''; position: absolute; top: 20%; left: 20%;
+            width: 400px; height: 400px; background: rgba(5,150,105,0.06);
+            border-radius: 50%; filter: blur(80px);
+        }
+        .hero::after {
+            content: ''; position: absolute; bottom: 20%; right: 20%;
+            width: 350px; height: 350px; background: rgba(6,182,212,0.06);
+            border-radius: 50%; filter: blur(80px);
+        }
+        .badge {
+            display: inline-flex; align-items: center; gap: 0.5rem;
+            background: rgba(5,150,105,0.1); border: 1px solid rgba(5,150,105,0.2);
+            padding: 0.5rem 1rem; border-radius: 9999px; margin-bottom: 2rem;
+            color: #059669; font-size: 0.875rem; font-weight: 500;
+        }
+        h1 {
+            font-size: 3rem; font-weight: bold; line-height: 1.2; margin-bottom: 1.5rem;
+            position: relative;
+        }
+        .gradient-text {
+            background: linear-gradient(135deg, #059669, #06b6d4);
+            -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+        }
+        .subtitle { font-size: 1.2rem; color: #64748b; max-width: 700px; margin: 0 auto 2rem; }
+
+        /* Glass Card */
+        .glass {
+            background: rgba(255,255,255,0.7);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(5,150,105,0.15);
+            border-radius: 1rem;
+            transition: transform 0.3s;
+        }
+        .glass:hover { transform: scale(1.01); }
+
+        /* Sections */
+        .section { padding: 5rem 2rem; max-width: 1200px; margin: 0 auto; }
+        .section-alt { padding: 5rem 2rem; background: rgba(248,250,252,0.7); }
+        .section-header { text-align: center; margin-bottom: 3rem; }
+        .section-header h2 { font-size: 2.25rem; margin-bottom: 1rem; color: #1e293b; }
+        .section-header p { color: #64748b; max-width: 600px; margin: 0 auto; font-size: 1.1rem; }
+
+        /* Stats Bar */
+        .stats-bar {
+            display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 1.25rem; margin-top: 2rem;
+        }
+        .stat-card {
+            background: rgba(255,255,255,0.6);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(5,150,105,0.12);
+            padding: 1.5rem; border-radius: 1rem; text-align: center;
+        }
+        .stat-icon { font-size: 2rem; margin-bottom: 0.5rem; }
+        .stat-value { font-size: 2rem; font-weight: bold; background: linear-gradient(135deg,#059669,#06b6d4);-webkit-background-clip:text;-webkit-text-fill-color:transparent; }
+        .stat-label { font-size: 0.85rem; color: #94a3b8; margin-top: 0.25rem; }
+
+        /* Client Logos */
+        .logo-grid {
+            display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+            gap: 1.5rem; align-items: center;
+        }
+        .logo-card {
+            padding: 2rem 1.5rem; text-align: center;
+            transition: all 0.3s; cursor: pointer;
+        }
+        .logo-card:hover { transform: translateY(-4px); border-color: rgba(5,150,105,0.3); background: white; }
+        .logo-placeholder {
+            width: 120px; height: 60px; margin: 0 auto;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 1.25rem; font-weight: 700; color: #94a3b8;
+            border: 2px dashed rgba(5,150,105,0.2); border-radius: 8px;
+            transition: all 0.3s;
+        }
+        .logo-card:hover .logo-placeholder {
+            border-color: rgba(5,150,105,0.4); color: #059669;
+        }
+        .logo-name { font-size: 0.78rem; color: #94a3b8; margin-top: 0.75rem; font-weight: 500; }
+
+        /* Testimonials */
+        .testimonial-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(340px, 1fr)); gap: 1.5rem; }
+        .testimonial-card { padding: 2rem; }
+        .quote-icon { font-size: 2.5rem; line-height: 1; margin-bottom: 1rem; opacity: 0.3; }
+        .testimonial-text { font-size: 0.95rem; color: #475569; line-height: 1.7; margin-bottom: 1.5rem; font-style: italic; }
+        .testimonial-author { display: flex; align-items: center; gap: 0.75rem; }
+        .author-avatar {
+            width: 48px; height: 48px; border-radius: 50%; display: flex;
+            align-items: center; justify-content: center; font-weight: 700; color: white; font-size: 1rem;
+        }
+        .author-info {}
+        .author-name { font-weight: 600; color: #1e293b; font-size: 0.95rem; }
+        .author-role { font-size: 0.82rem; color: #94a3b8; }
+        .stars { color: #f59e0b; font-size: 0.85rem; letter-spacing: 2px; margin-bottom: 0.75rem; }
+
+        /* Industry Verticals */
+        .industry-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 1.25rem; }
+        .industry-card { padding: 1.5rem; cursor: pointer; }
+        .industry-card:hover { transform: translateY(-3px); border-color: rgba(5,150,105,0.3); }
+        .industry-icon { font-size: 2rem; margin-bottom: 0.75rem; }
+        .industry-name { font-size: 1.1rem; font-weight: 600; color: #1e293b; margin-bottom: 0.35rem; }
+        .industry-desc { font-size: 0.85rem; color: #64748b; margin-bottom: 0.75rem; }
+        .industry-stats { display: flex; gap: 1rem; font-size: 0.8rem; }
+        .industry-stat { color: #059669; font-weight: 600; }
+
+        /* Case Studies */
+        .case-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(360px, 1fr)); gap: 1.5rem; }
+        .case-card { overflow: hidden; cursor: pointer; }
+        .case-image {
+            height: 180px; display: flex; align-items: center; justify-content: center;
+            font-size: 3rem; position: relative; overflow: hidden;
+        }
+        .case-image::before {
+            content: ''; position: absolute; inset: 0;
+            opacity: 0.1;
+        }
+        .case-body { padding: 1.5rem; }
+        .case-tag {
+            display: inline-block; padding: 0.2rem 0.6rem; border-radius: 4px;
+            font-size: 0.72rem; font-weight: 600; margin-bottom: 0.75rem;
+        }
+        .tag-manufacturing { background: rgba(59,130,246,0.12); color: #2563eb; }
+        .tag-retail { background: rgba(168,85,247,0.12); color: #9333ea; }
+        .tag-healthcare { background: rgba(236,72,153,0.12); color: #db2777; }
+        .tag-tech { background: rgba(5,150,105,0.12); color: #059669; }
+        .tag-auto { background: rgba(245,158,11,0.12); color: #d97706; }
+        .case-title { font-size: 1.15rem; font-weight: 700; color: #1e293b; margin-bottom: 0.5rem; }
+        .case-desc { font-size: 0.88rem; color: #64748b; line-height: 1.6; margin-bottom: 1rem; }
+        .case-metrics { display: flex; gap: 1rem; flex-wrap: wrap; }
+        .case-metric { font-size: 0.82rem; }
+        .metric-value { font-weight: 700; color: #059669; }
+        .metric-label { color: #94a3b8; }
+        .case-link {
+            display: inline-flex; align-items: center; gap: 0.35rem;
+            font-size: 0.85rem; font-weight: 600; color: #059669;
+            text-decoration: none; margin-top: 1rem; transition: gap 0.3s;
+        }
+        .case-link:hover { gap: 0.6rem; }
+
+        /* Success Stories */
+        .story-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; align-items: start; }
+        .story-main { padding: 2rem; }
+        .story-badge { font-size: 0.78rem; font-weight: 600; color: #059669; margin-bottom: 0.75rem; }
+        .story-title { font-size: 1.5rem; font-weight: 700; color: #1e293b; margin-bottom: 1rem; }
+        .story-text { font-size: 0.92rem; color: #475569; line-height: 1.7; margin-bottom: 1.25rem; }
+        .story-results { list-style: none; }
+        .story-results li {
+            display: flex; align-items: center; gap: 0.5rem;
+            padding: 0.35rem 0; font-size: 0.88rem; color: #334155;
+        }
+        .story-results li::before { content: "📈"; font-size: 0.85rem; }
+
+        /* CTA */
+        .cta-section { text-align: center; }
+        .cta-card { padding: 4rem 2rem; max-width: 800px; margin: 0 auto; }
+        .cta-icon { font-size: 3.5rem; margin-bottom: 1.5rem; }
+        .cta-card h2 { font-size: 2rem; margin-bottom: 1rem; color: #1e293b; }
+        .cta-card p { color: #64748b; margin-bottom: 2rem; max-width: 550px; margin-left: auto; margin-right: auto; }
+        .btn-group { display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap; }
+        .btn {
+            padding: 0.875rem 2rem; border-radius: 0.75rem; font-weight: 600;
+            text-decoration: none; transition: all 0.3s; cursor: pointer;
+            border: none; font-size: 1rem; display: inline-flex; align-items: center; gap: 0.5rem;
+        }
+        .btn-primary {
+            background: linear-gradient(135deg, #059669, #06b6d4); color: white;
+            box-shadow: 0 4px 12px rgba(5,150,105,0.3);
+        }
+        .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 8px 20px rgba(5,150,105,0.4); }
+        .btn-secondary {
+            background: white; color: #059669;
+            border: 2px solid #059669;
+        }
+        .btn-secondary:hover { background: rgba(5,150,105,0.05); }
+
+        @media (max-width: 1024px) {
+            .story-grid { grid-template-columns: 1fr; }
+            .nav-links { display: none; }
+        }
+        @media (max-width: 768px) {
+            h1 { font-size: 2rem; }
+            .section { padding: 3rem 1rem; }
+            .section-alt { padding: 3rem 1rem; }
+            .testimonial-grid { grid-template-columns: 1fr; }
+            .case-grid { grid-template-columns: 1fr; }
+            .logo-grid { grid-template-columns: repeat(3, 1fr); }
+        }
+    </style>
+</head>
+<body>
+    <nav>
+        <div class="nav-container">
+            <a href="/Demo4AISupChn/" class="logo">🛡️ AI Supply Chain</a>
+            <div class="nav-links">
+                <a href="/Demo4AISupChn/">Home</a>
+                <a href="/Demo4AISupChn/dashboard.html">Dashboard</a>
+                <a href="/Demo4AISupChn/command-center.html">Command Center</a>
+                <a href="/Demo4AISupChn/platform.html">Platform</a>
+                <a href="/Demo4AISupChn/intelligence.html">AI/ML Engine</a>
+                <a href="/Demo4AISupChn/resources.html">Resources</a>
+                <a href="/Demo4AISupChn/about.html">About</a>
+                <a href="/Demo4AISupChn/customers.html" class="active">Customers</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero -->
+    <section class="hero">
+        <div style="position:relative;">
+            <div class="badge">🏢 Trusted by Industry Leaders</div>
+            <h1>Customer Success<br><span class="gradient-text">Stories & Results</span></h1>
+            <p class="subtitle">
+                Join 500+ enterprises worldwide who trust our AI platform to protect their supply chains,
+                ensure compliance, and drive sustainable growth.
+            </p>
+
+            <!-- Stats -->
+            <div class="stats-bar">
+                <div class="stat-card"><div class="stat-icon">🏢</div><div class="stat-value">500+</div><div class="stat-label">Enterprise Customers</div></div>
+                <div class="stat-card"><div class="stat-icon">🌍</div><div class="stat-value">40+</div><div class="stat-label">Countries Served</div></div>
+                <div class="stat-card"><div class="stat-icon">⭐</div><div class="stat-value">98%</div><div class="stat-label">Retention Rate</div></div>
+                <div class="stat-card"><div class="stat-icon">💰</div><div class="stat-value">$2.4B+</div><div class="stat-label">Client Savings</div></div>
+                <div class="stat-card"><div class="stat-icon">📈</div><div class="stat-value">94%</div><div class="stat-label">NPS Score</div></div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Enterprise Client Logos -->
+    <section class="section" style="padding-top:3rem;padding-bottom:3rem;">
+        <div class="section-header" style="margin-bottom:2rem;">
+            <h2 style="font-size:1.75rem;">Trusted by Leading Enterprises Worldwide</h2>
+            <p>From Fortune 500 companies to fast-growing innovators</p>
+        </div>
+        <div class="logo-grid">
+            <div class="glass logo-card"><div class="logo-placeholder">TechCorp</div><div class="logo-name">Technology</div></div>
+            <div class="glass logo-card"><div class="logo-placeholder">GlobalMfg</div><div class="logo-name">Manufacturing</div></div>
+            <div class="glass logo-card"><div class="logo-placeholder">RetailCo</div><div class="logo-name">Retail</div></div>
+            <div class="glass logo-card"><div class="logo-placeholder">PharmaInc</div><div class="logo-name">Healthcare</div></div>
+            <div class="glass logo-card"><div class="logo-placeholder">AutoWorld</div><div class="logo-name">Automotive</div></div>
+            <div class="glass logo-card"><div class="logo-placeholder">FinGroup</div><div class="logo-name">Financial Services</div></div>
+            <div class="glass logo-card"><div class="logo-placeholder">EnergyPlus</div><div class="logo-name">Energy</div></div>
+            <div class="glass logo-card"><div class="logo-placeholder">LogiPro</div><div class="logo-name">Logistics</div></div>
+            <div class="glass logo-card"><div class="logo-placeholder">AeroSpace</div><div class="logo-name">Aerospace</div></div>
+            <div class="glass logo-card"><div class="logo-placeholder">FoodChain</div><div class="logo-name">Food & Beverage</div></div>
+            <div class="glass logo-card"><div class="logo-placeholder">ChemGlobal</div><div class="logo-name">Chemicals</div></div>
+            <div class="glass logo-card"><div class="logo-placeholder">TelcoNet</div><div class="logo-name">Telecommunications</div></div>
+        </div>
+    </section>
+
+    <!-- Customer Testimonials -->
+    <section class="section-alt">
+        <div class="section-header">
+            <h2>What Our Customers Say</h2>
+            <p>Hear from the leaders who transformed their supply chains with our platform</p>
+        </div>
+        <div class="testimonial-grid">
+            <div class="glass testimonial-card">
+                <div class="quote-icon">"</div>
+                <div class="stars">★★★★★</div>
+                <p class="testimonial-text">
+                    "The AI risk prediction accuracy is remarkable. We've reduced supply chain disruptions by 67% in just 18 months.
+                    The SHAP explainability feature gave our board complete confidence in every decision."
+                </p>
+                <div class="testimonial-author">
+                    <div class="author-avatar" style="background:linear-gradient(135deg,#3b82f6,#60a5fa);">SJ</div>
+                    <div class="author-info">
+                        <div class="author-name">Sarah Johnson</div>
+                        <div class="author-role">CPO, Global Manufacturing Corp</div>
+                    </div>
+                </div>
+            </div>
+            <div class="glass testimonial-card">
+                <div class="quote-icon">"</div>
+                <div class="stars">★★★★★</div>
+                <p class="testimonial-text">
+                    "UFLPA compliance used to take our team weeks of manual work. Now it's automated with real-time alerts.
+                    We passed our first audit with zero findings — something we never thought possible."
+                </p>
+                <div class="testimonial-author">
+                    <div class="author-avatar" style="background:linear-gradient(135deg,#8b5cf6,#a855f7);">MC</div>
+                    <div class="author-info">
+                        <div class="author-name">Michael Chen</div>
+                        <div class="author-role">VP Supply Chain, TechCorp Industries</div>
+                    </div>
+                </div>
+            </div>
+            <div class="glass testimonial-card">
+                <div class="quote-icon">"</div>
+                <div class="stars">★★★★★</div>
+                <p class="testimonial-text">
+                    "The demand forecasting alone paid for the platform in 3 months. Our inventory optimization improved by 34%,
+                    and we finally have visibility into Tier-2 and Tier-3 suppliers across 40 countries."
+                </p>
+                <div class="testimonial-author">
+                    <div class="author-avatar" style="background:linear-gradient(135deg,#10b981,#34d399);">EW</div>
+                    <div class="author-info">
+                        <div class="author-name">Emma Williams</div>
+                        <div class="author-role">Chief Operations Officer, RetailMax</div>
+                    </div>
+                </div>
+            </div>
+            <div class="glass testimonial-card">
+                <div class="quote-icon">"</div>
+                <div class="stars">★★★★★</div>
+                <p class="testimonial-text">
+                    "As a healthcare company, supply chain integrity is life-critical. This platform's EUDR and CSDDD modules
+                    gave us unprecedented compliance confidence. Our regulatory team calls it indispensable."
+                </p>
+                <div class="testimonial-author">
+                    <div class="author-avatar" style="background:linear-gradient(135deg,#f43f5e,#fb7185);">RP</div>
+                    <div class="author-info">
+                        <div class="author-name">Dr. Raj Patel</div>
+                        <div class="author-role">SVP Quality, PharmaHealth Inc</div>
+                    </div>
+                </div>
+            </div>
+            <div class="glass testimonial-card">
+                <div class="quote-icon">"</div>
+                <div class="stars">★★★★★</div>
+                <p class="testimonial-text">
+                    "We evaluated 12 vendors before choosing this platform. The combination of AI accuracy,
+                    ease of integration, and transparent pricing made it an easy decision for our CFO."
+                </p>
+                <div class="testimonial-author">
+                    <div class="author-avatar" style="background:linear-gradient(135deg,#f59e0b,#fbbf24);">LK</div>
+                    <div class="author-info">
+                        <div class="author-name">Lisa Kimura</div>
+                        <div class="author-role">CTO, AutoDrive Systems</div>
+                    </div>
+                </div>
+            </div>
+            <div class="glass testimonial-card">
+                <div class="quote-icon">"</div>
+                <div class="stars">★★★★★</div>
+                <p class="testimonial-text">
+                    "The autonomous AI agents are game-changing. They caught a potential disruption in Vietnam
+                    72 hours before anyone else knew about it. That early warning saved us $4.2M in expedited shipping costs."
+                </p>
+                <div class="testimonial-author">
+                    <div class="author-avatar" style="background:linear-gradient(135deg,#06b6d4,#22d3ee);">DT</div>
+                    <div class="author-info">
+                        <div class="author-name">David Thompson</div>
+                        <div class="author-role">Director of Procurement, LogiPro Global</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Industry Verticals Served -->
+    <section class="section">
+        <div class="section-header">
+            <h2>Industries We Serve</h2>
+            <p>Tailored solutions for every sector's unique supply chain challenges</p>
+        </div>
+        <div class="industry-grid">
+            <div class="glass industry-card">
+                <div class="industry-icon">🏭</div>
+                <div class="industry-name">Manufacturing</div>
+                <div class="industry-desc">Complex multi-tier supplier networks with JIT requirements</div>
+                <div class="industry-stats"><span class="industry-stat">145+ clients</span><span class="industry-stat">12K+ suppliers</span></div>
+            </div>
+            <div class="glass industry-card">
+                <div class="industry-icon">🛒</div>
+                <div class="industry-name">Retail & E-commerce</div>
+                <div class="industry-desc">Demand forecasting and seasonal inventory optimization</div>
+                <div class="industry-stats"><span class="industry-stat">89+ clients</span><span class="industry-stat">8K+ SKUs tracked</span></div>
+            </div>
+            <div class="glass industry-card">
+                <div class="industry-icon">💊</div>
+                <div class="industry-name">Healthcare & Life Sciences</div>
+                <div class="industry-desc">Cold chain monitoring and regulatory compliance (FDA, EMA)</div>
+                <div class="industry-stats"><span class="industry-stat">67+ clients</span><span class="industry-stat">99.97% traceability</span></div>
+            </div>
+            <div class="glass industry-card">
+                <div class="industry-icon">🚗</div>
+                <div class="industry-name">Automotive</div>
+                <div class="industry-desc">Just-in-sequence delivery and semiconductor risk management</div>
+                <div class="industry-stats"><span class="industry-stat">54+ clients</span><span class="industry-stat">Tier-N visibility</span></div>
+            </div>
+            <div class="glass industry-card">
+                <div class="industry-icon">💰</div>
+                <div class="industry-name">Financial Services</div>
+                <div class="industry-desc">Trade finance due diligence and ESG portfolio screening</div>
+                <div class="industry-stats"><span class="industry-stat">42+ clients</span><span class="industry-stat">$500B+ screened</span></div>
+            </div>
+            <div class="glass industry-card">
+                <div class="industry-icon">⚡</div>
+                <div class="industry-name">Energy & Utilities</div>
+                <div class="industry-desc">Critical infrastructure protection and commodity risk tracking</div>
+                <div class="industry-stats"><span class="industry-stat">38+ clients</span><span class="industry-stat">Real-time monitoring</span></div>
+            </div>
+            <div class="glass industry-card">
+                <div class="industry-icon">✈️</div>
+                <div class="industry-name">Aerospace & Defense</div>
+                <div class="industry-desc">ITAR compliance and long-lead-time component management</div>
+                <div class="industry-stats"><span class="industry-stat">28+ clients</span><span class="industry-stat">AS9100 aligned</span></div>
+            </div>
+            <div class="glass industry-card">
+                <div class="industry-icon">🍔</div>
+                <div class="industry-name">Food & Beverage</div>
+                <div class="industry-desc">Farm-to-fork traceability and food safety compliance (FSMA)</div>
+                <div class="industry-stats"><span class="industry-stat">52+ clients</span><span class="industry-stat">FSVP ready</span></div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Case Studies -->
+    <section class="section-alt">
+        <div class="section-header">
+            <h2>Featured Case Studies</h2>
+            <p>Dive deep into how leading organizations achieved transformational results</p>
+        </div>
+        <div class="case-grid">
+            <div class="glass case-card">
+                <div class="case-image" style="background:linear-gradient(135deg,rgba(59,130,246,0.1),rgba(37,99,235,0.05));">🏭</div>
+                <div class="case-body">
+                    <span class="case-tag tag-manufacturing">Manufacturing</span>
+                    <h3 class="case-title">Global Manufacturer Reduces Disruptions by 67%</h3>
+                    <p class="case-desc">How a Fortune 100 manufacturer leveraged AI predictions to transform their global supply chain resilience.</p>
+                    <div class="case-metrics">
+                        <span class="case-metric"><span class="metric-value">67%</span> <span class="metric-label">fewer disruptions</span></span>
+                        <span class="case-metric"><span class="metric-value">$23M</span> <span class="metric-label">annual savings</span></span>
+                        <span class="case-metric"><span class="metric-value">190+</span> <span class="metric-label">countries covered</span></span>
+                    </div>
+                    <a href="#" class="case-link">Read Full Case Study →</a>
+                </div>
+            </div>
+            <div class="glass case-card">
+                <div class="case-image" style="background:linear-gradient(135deg,rgba(168,85,247,0.1),rgba(147,51,234,0.05));">🛒</div>
+                <div class="case-body">
+                    <span class="case-tag tag-retail">Retail</span>
+                    <h3 class="case-title">Retail Giant Achieves 34% Inventory Optimization</h3>
+                    <p class="case-desc">AI-powered demand forecasting transforms inventory management for a top-10 global retailer.</p>
+                    <div class="case-metrics">
+                        <span class="case-metric"><span class="metric-value">34%</span> <span class="metric-label">inventory reduction</span></span>
+                        <span class="case-metric"><span class="metric-value">94%</span> <span class="metric-label">forecast accuracy</span></span>
+                        <span class="case-metric"><span class="metric-value">3 months</span> <span class="metric-label">to ROI positive</span></span>
+                    </div>
+                    <a href="#" class="case-link">Read Full Case Study →</a>
+                </div>
+            </div>
+            <div class="glass case-card">
+                <div class="case-image" style="background:linear-gradient(135deg,rgba(236,72,153,0.1),rgba(219,39,119,0.05));">💊</div>
+                <div class="case-body">
+                    <span class="case-tag tag-healthcare">Healthcare</span>
+                    <h3 class="case-title">Pharma Leader Passes UFLPA Audit with Zero Findings</h3>
+                    <p class="case-desc">Automated compliance engine ensures perfect audit results for major pharmaceutical company.</p>
+                    <div class="case-metrics">
+                        <span class="case-metric"><span class="metric-value">Zero</span> <span class="metric-label">audit findings</span></span>
+                        <span class="case-metric"><span class="metric-value">85%</span> <span class="metric-label">time saved</span></span>
+                        <span class="case-metric"><span class="metric-value">2,400+</span> <span class="metric-label">suppliers screened</span></span>
+                    </div>
+                    <a href="#" class="case-link">Read Full Case Study →</a>
+                </div>
+            </div>
+            <div class="glass case-card">
+                <div class="case-image" style="background:linear-gradient(135deg,rgba(245,158,11,0.1),rgba(217,119,6,0.05));">🚗</div>
+                <div class="case-body">
+                    <span class="case-tag tag-auto">Automotive</span>
+                    <h3 class="case-title">Auto OEM Prevents $4.2M Chip Shortage Loss</h3>
+                    <p class="case-desc">Early warning from AI agents enables proactive response to semiconductor supply crisis.</p>
+                    <div class="case-metrics">
+                        <span class="case-metric"><span class="metric-value">72hrs</span> <span class="metric-label">early warning</span></span>
+                        <span class="case-metric"><span class="metric-value">$4.2M</span> <span class="metric-label">costs avoided</span></span>
+                        <span class="case-metric"><span class="metric-value">0</span> <span class="metric-label">line stoppages</span></span>
+                    </div>
+                    <a href="#" class="case-link">Read Full Case Study →</a>
+                </div>
+            </div>
+            <div class="glass case-card">
+                <div class="case-image" style="background:linear-gradient(135deg,rgba(5,150,105,0.1),rgba(4,120,87,0.05));">💻</div>
+                <div class="case-body">
+                    <span class="case-tag tag-tech">Technology</span>
+                    <h3 class="case-title">Tech Company Achieves Full Multi-Tier Visibility</h3>
+                    <p class="case-desc">End-to-end supplier mapping reveals hidden risks across 5 tiers of supply chain.</p>
+                    <div class="case-metrics">
+                        <span class="case-metric"><span class="metric-value">5 tiers</span> <span class="metric-label">deep visibility</span></span>
+                        <span class="case-metric"><span class="metric-value">15K+</span> <span class="metric-label">suppliers mapped</span></span>
+                        <span class="case-metric"><span class="metric-value">23</span> <span class="metric-label">risks discovered</span></span>
+                    </div>
+                    <a href="#" class="case-link">Read Full Case Study →</a>
+                </div>
+            </div>
+            <div class="glass case-card">
+                <div class="case-image" style="background:linear-gradient(135deg,rgba(139,92,246,0.1),rgba(124,58,237,0.05));">🌿</div>
+                <div class="case-body">
+                    <span class="case-tag" style="background:rgba(16,185,129,0.12);color:#059669;">ESG</span>
+                    <h3 class="case-title">Consumer Brand Reaches Net-Zero Supply Chain Goal</h3>
+                    <p class="case-desc">Comprehensive carbon tracking and Scope 3 emissions reduction program delivers measurable sustainability results.</p>
+                    <div class="case-metrics">
+                        <span class="case-metric"><span class="metric-value">-42%</span> <span class="metric-label">carbon reduction</span></span>
+                        <span class="case-metric"><span class="metric-value">100%</span> <span class="metric-label">supplier coverage</span></span>
+                        <span class="case-metric"><span class="metric-value">CDP A-</span> <span class="metric-label">rating achieved</span></span>
+                    </div>
+                    <a href="#" class="case-link">Read Full Case Study →</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Featured Success Story -->
+    <section class="section">
+        <div class="story-grid">
+            <div class="glass story-main">
+                <div class="story-badge">🏆 FEATURED SUCCESS STORY</div>
+                <h2 class="story-title">How GlobalTech Transformed Their $12B Supply Chain</h2>
+                <p class="story-text">
+                    When GlobalTech, a Fortune 50 technology company, faced increasing supply chain disruptions
+                    and mounting regulatory pressure, they needed a solution that could handle complexity at scale.
+                    After evaluating 14 vendors, they chose our AI platform.
+                </p>
+                <p class="story-text">
+                    Within 6 months of deployment, they achieved full visibility into their 15,000+ supplier network
+                    across 45 countries. The AI prediction engine identified 23 potential disruptions before they occurred,
+                    saving an estimated $67M in avoided costs.
+                </p>
+                <ul class="story-results">
+                    <li>Reduced supply chain incidents by 73% year-over-year</li>
+                    <li>Achieved 100% UFLPA and EUDR compliance automation</li>
+                    <li>Cut average supplier onboarding time from 6 weeks to 4 days</li>
+                    <li>Generated $67M in quantified risk avoidance savings</li>
+                    <li>Earned "Best Supply Chain Innovation" award at SCM World 2025</li>
+                </ul>
+            </div>
+            <div>
+                <div class="glass" style="padding:2rem;margin-bottom:1.5rem;">
+                    <h3 style="font-size:1.1rem;margin-bottom:1.25rem;color:#1e293b;">Implementation Timeline</h3>
+                    <div style="display:flex;flex-direction:column;gap:1rem;">
+                        <div style="display:flex;gap:1rem;align-items:center;">
+                            <div style="width:40px;height:40px;border-radius:50%;background:linear-gradient(135deg,#059669,#06b6d4);color:white;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:0.85rem;">1</div>
+                            <div><div style="font-weight:600;font-size:0.9rem;">Discovery & Planning</div><div style="font-size:0.8rem;color:#94a3b8;">Weeks 1-2</div></div>
+                        </div>
+                        <div style="display:flex;gap:1rem;align-items:center;">
+                            <div style="width:40px;height:40px;border-radius:50%;background:linear-gradient(135deg,#059669,#06b6d4);color:white;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:0.85rem;">2</div>
+                            <div><div style="font-weight:600;font-size:0.9rem;">Data Integration</div><div style="font-size:0.8rem;color:#94a3b8;">Weeks 3-6</div></div>
+                        </div>
+                        <div style="display:flex;gap:1rem;align-items:center;">
+                            <div style="width:40px;height:40px;border-radius:50%;background:linear-gradient(135deg,#059669,#06b6d4);color:white;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:0.85rem;">3</div>
+                            <div><div style="font-weight:600;font-size:0.9rem;">AI Model Training</div><div style="font-size:0.8rem;color:#94a3b8;">Weeks 7-10</div></div>
+                        </div>
+                        <div style="display:flex;gap:1rem;align-items:center;">
+                            <div style="width:40px;height:40px;border-radius:50%;background:linear-gradient(135deg,#059669,#06b6d4);color:white;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:0.85rem;">4</div>
+                            <div><div style="font-weight:600;font-size:0.9rem;">Pilot Launch</div><div style="font-size:0.8rem;color:#94a3b8;">Weeks 11-14</div></div>
+                        </div>
+                        <div style="display:flex;gap:1rem;align-items:center;">
+                            <div style="width:40px;height:40px;border-radius:50%;background:linear-gradient(135deg,#059669,#06b6d4);color:white;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:0.85rem;">✓</div>
+                            <div><div style="font-weight:600;font-size:0.9rem;">Full Rollout</div><div style="font-size:0.8rem;color:#94a3b8;">Week 16+</div></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="glass" style="padding:2rem;">
+                    <h3 style="font-size:1.1rem;margin-bottom:1.25rem;color:#1e293b;">Key Metrics at 12 Months</h3>
+                    <div style="display:grid;grid-template-columns:1fr 1fr;gap:1rem;">
+                        <div style="text-align:center;padding:0.75rem;background:rgba(5,150,105,0.05);border-radius:8px;">
+                            <div style="font-size:1.5rem;font-weight:bold;color:#059669;">73%</div>
+                            <div style="font-size:0.78rem;color:#94a3b8;">Disruption Reduction</div>
+                        </div>
+                        <div style="text-align:center;padding:0.75rem;background:rgba(5,150,105,0.05);border-radius:8px;">
+                            <div style="font-size:1.5rem;font-weight:bold;color:#059669;">$67M</div>
+                            <div style="font-size:0.78rem;color:#94a3b8;">Cost Savings</div>
+                        </div>
+                        <div style="text-align:center;padding:0.75rem;background:rgba(5,150,105,0.05);border-radius:8px;">
+                            <div style="font-size:1.5rem;font-weight:bold;color:#059669;">15K+</div>
+                            <div style="font-size:0.78rem;color:#94a3b8;">Suppliers Monitored</div>
+                        </div>
+                        <div style="text-align:center;padding:0.75rem;background:rgba(5,150,105,0.05);border-radius:8px;">
+                            <div style="font-size:1.5rem;font-weight:bold;color:#059669;">45</div>
+                            <div style="font-size:0.78rem;color:#94a3b8;">Countries Covered</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA -->
+    <section class="section cta-section">
+        <div class="glass cta-card">
+            <div class="cta-icon">🤝</div>
+            <h2>Join Our Growing Family of Customers</h2>
+            <p>See why 500+ enterprises trust us to protect their most critical asset — their supply chain. Start your journey today with a personalized demo.</p>
+            <div class="btn-group">
+                <a href="#" class="btn btn-primary">Schedule Your Demo →</a>
+                <a href="#" class="btn btn-secondary">View All Case Studies</a>
+            </div>
+        </div>
+    </section>
+</body>
+</html>
