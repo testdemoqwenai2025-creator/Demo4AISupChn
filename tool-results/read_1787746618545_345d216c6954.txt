@@ -1,0 +1,574 @@
+     1→<!DOCTYPE html>
+     2→<html lang="en">
+     3→<head>
+     4→    <meta charset="UTF-8">
+     5→    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+     6→    <title>Command Center - AI Supply Chain Risk Predictor</title>
+     7→    <style>
+     8→        * { margin: 0; padding: 0; box-sizing: border-box; }
+     9→        body {
+    10→            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    11→            background: linear-gradient(135deg, #f0fdf4 0%, #ffffff 50%, #ecfeff 100%);
+    12→            color: #0a1628;
+    13→            line-height: 1.6;
+    14→        }
+    15→
+    16→        /* Navigation */
+    17→        nav {
+    18→            position: sticky; top: 0; z-index: 100;
+    19→            background: rgba(255,255,255,0.92);
+    20→            backdrop-filter: blur(20px);
+    21→            border-bottom: 1px solid rgba(5,150,105,0.15);
+    22→            padding: 1rem 2rem;
+    23→        }
+    24→        .nav-container { max-width: 1400px; margin: 0 auto; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem; }
+    25→        .logo { font-size: 1.25rem; font-weight: bold; color: #059669; text-decoration: none; }
+    26→        .nav-links { display: flex; gap: 0.5rem; align-items: center; flex-wrap: wrap; }
+    27→        .nav-links a {
+    28→            color: #64748b; text-decoration: none; padding: 0.5rem 0.75rem;
+    29→            border-radius: 0.5rem; transition: all 0.3s; font-size: 0.875rem;
+    30→        }
+    31→        .nav-links a:hover, .nav-links a.active { background: rgba(5,150,105,0.1); color: #059669; }
+    32→
+    33→        /* Main Content */
+    34→        main { max-width: 1400px; margin: 0 auto; padding: 2rem; }
+    35→
+    36→        /* Page Header */
+    37→        .page-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem; flex-wrap: wrap; gap: 1rem; }
+    38→        .page-header h1 { font-size: 2rem; color: #1e293b; display: flex; align-items: center; gap: 0.75rem; }
+    39→        .badge {
+    40→            display: inline-flex; align-items: center; gap: 0.35rem;
+    41→            padding: 0.25rem 0.75rem; border-radius: 9999px; font-size: 0.8rem; font-weight: 500;
+    42→        }
+    43→        .badge-primary { background: rgba(5,150,105,0.15); color: #059669; }
+    44→        .badge-warning { background: rgba(245,158,11,0.15); color: #d97706; }
+    45→        .badge-danger { background: rgba(239,68,68,0.15); color: #dc2626; }
+    46→        .badge-info { background: rgba(59,130,246,0.15); color: #2563eb; }
+    47→        .badge-outline { background: transparent; border: 1px solid rgba(5,150,105,0.3); color: #059669; }
+    48→
+    49→        /* Glass Card */
+    50→        .glass {
+    51→            background: rgba(255,255,255,0.7);
+    52→            backdrop-filter: blur(20px);
+    53→            border: 1px solid rgba(5,150,105,0.15);
+    54→            border-radius: 1rem;
+    55→            transition: transform 0.3s;
+    56→        }
+    57→        .glass:hover { transform: scale(1.01); }
+    58→
+    59→        /* KPI Cards */
+    60→        .kpi-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 1rem; margin-bottom: 2rem; }
+    61→        .kpi-card { padding: 1.25rem; }
+    62→        .kpi-header { display: flex; justify-content: space-between; align-items: start; margin-bottom: 0.75rem; }
+    63→        .kpi-icon {
+    64→            width: 40px; height: 40px; border-radius: 10px;
+    65→            display: flex; align-items: center; justify-content: center;
+    66→            font-size: 1.15rem;
+    67→        }
+    68→        .kpi-value { font-size: 1.75rem; font-weight: bold; color: #1e293b; }
+    69→        .kpi-label { font-size: 0.85rem; color: #94a3b8; margin-top: 0.25rem; }
+    70→
+    71→        /* Tabs */
+    72→        .tabs-container { margin-bottom: 2rem; }
+    73→        .tabs-list {
+    74→            display: flex; gap: 0.5rem; border-bottom: 2px solid rgba(5,150,105,0.1);
+    75→            padding-bottom: 0; margin-bottom: 1.5rem; overflow-x: auto;
+    76→        }
+    77→        .tab-trigger {
+    78→            padding: 0.75rem 1.25rem; border-radius: 8px 8px 0 0;
+    79→            background: none; border: none; cursor: pointer;
+    80→            font-size: 0.9rem; font-weight: 500; color: #64748b;
+    81→            transition: all 0.3s; white-space: nowrap;
+    82→        }
+    83→        .tab-trigger.active { color: #059669; background: rgba(5,150,105,0.08); border-bottom: 2px solid #059669; margin-bottom: -2px; }
+    84→        .tab-trigger:hover:not(.active) { background: rgba(5,150,105,0.05); }
+    85→
+    86→        /* Table */
+    87→        .table-container { overflow-x: auto; }
+    88→        table { width: 100%; border-collapse: collapse; font-size: 0.875rem; }
+    89→        thead th {
+    90→            text-align: left; padding: 0.875rem 1rem;
+    91→            background: rgba(5,150,105,0.05); color: #64748b;
+    92→            font-weight: 600; font-size: 0.8rem; text-transform: uppercase;
+    93→            letter-spacing: 0.05em; border-bottom: 1px solid rgba(5,150,105,0.1);
+    94→        }
+    95→        tbody td { padding: 0.875rem 1rem; border-bottom: 1px solid rgba(5,150,105,0.08); vertical-align: middle; }
+    96→        tbody tr:hover { background: rgba(5,150,105,0.03); }
+    97→        .supplier-name { font-weight: 600; color: #1e293b; }
+    98→        .risk-bar { width: 80px; height: 6px; border-radius: 3px; background: #e2e8f0; overflow: hidden; }
+    99→        .risk-fill { height: 100%; border-radius: 3px; }
+   100→        .risk-low { background: linear-gradient(90deg,#10b981,#34d399); }
+   101→        .risk-medium { background: linear-gradient(90deg,#f59e0b,#fbbf24); }
+   102→        .risk-high { background: linear-gradient(90deg,#f97316,#fb923c); }
+   103→        .risk-critical { background: linear-gradient(90deg,#ef4444,#f87171); }
+   104→
+   105→        /* Status Badges */
+   106→        .status { padding: 0.25rem 0.75rem; border-radius: 9999px; font-size: 0.75rem; font-weight: 600; }
+   107→        .status-active { background: rgba(16,185,129,0.12); color: #059669; }
+   108→        .status-review { background: rgba(245,158,11,0.12); color: #d97706; }
+   109→        .status-critical { background: rgba(239,68,68,0.12); color: #dc2626; }
+   110→
+   111→        /* Action Buttons */
+   112→        .btn-sm {
+   113→            padding: 0.375rem 0.75rem; border-radius: 6px; font-size: 0.8rem;
+   114→            font-weight: 500; cursor: pointer; transition: all 0.3s;
+   115→            border: 1px solid rgba(5,150,105,0.2); background: white; color: #059669;
+   116→            text-decoration: none; display: inline-flex; align-items: center; gap: 0.25rem;
+   117→        }
+   118→        .btn-sm:hover { background: rgba(5,150,105,0.08); }
+   119→        .btn-primary {
+   120→            padding: 0.75rem 1.5rem; border-radius: 0.75rem; font-weight: 600;
+   121→            background: linear-gradient(135deg, #059669, #06b6d4); color: white;
+   122→            border: none; cursor: pointer; text-decoration: none;
+   123→            display: inline-flex; align-items: center; gap: 0.5rem;
+   124→            box-shadow: 0 4px 12px rgba(5,150,105,0.3);
+   125→        }
+   126→        .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 8px 20px rgba(5,150,105,0.4); }
+   127→
+   128→        /* Two Column Layout */
+   129→        .two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; margin-bottom: 2rem; }
+   130→        .card-header { padding: 1.25rem; border-bottom: 1px solid rgba(5,150,105,0.1); }
+   131→        .card-header h3 { font-size: 1rem; font-weight: 600; color: #1e293b; display: flex; align-items: center; gap: 0.5rem; }
+   132→        .card-body { padding: 1.25rem; }
+   133→
+   134→        /* Alert List */
+   135→        .alert-list { list-style: none; }
+   136→        .alert-item {
+   137→            display: flex; align-items: start; gap: 0.75rem;
+   138→            padding: 1rem; border-radius: 10px; margin-bottom: 0.75rem;
+   139→            border: 1px solid; transition: all 0.3s;
+   140→        }
+   141→        .alert-item:hover { transform: translateX(4px); }
+   142→        .alert-critical { background: rgba(239,68,68,0.04); border-color: rgba(239,68,68,0.15); }
+   143→        .alert-warning { background: rgba(245,158,11,0.04); border-color: rgba(245,158,11,0.15); }
+   144→        .alert-info { background: rgba(59,130,246,0.04); border-color: rgba(59,130,246,0.15); }
+   145→        .alert-dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; margin-top: 6px; }
+   146→        .alert-dot.critical { background: #ef4444; }
+   147→        .alert-dot.warning { background: #f59e0b; }
+   148→        .alert-dot.info { background: #3b82f6; }
+   149→        .alert-title { font-weight: 600; font-size: 0.875rem; color: #1e293b; }
+   150→        .alert-meta { font-size: 0.8rem; color: #94a3b8; margin-top: 0.25rem; }
+   151→        .alert-time { font-size: 0.75rem; color: #94a3b8; white-space: nowrap; }
+   152→
+   153→        /* Quick Actions Grid */
+   154→        .actions-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 0.75rem; }
+   155→        .action-card {
+   156→            padding: 1.25rem; text-align: center; cursor: pointer;
+   157→            transition: all 0.3s;
+   158→        }
+   159→        .action-card:hover { transform: translateY(-3px); border-color: rgba(5,150,105,0.3); }
+   160→        .action-icon { font-size: 1.75rem; margin-bottom: 0.5rem; }
+   161→        .action-label { font-size: 0.85rem; font-weight: 500; color: #475569; }
+   162→
+   163→        /* Region Cards */
+   164→        .region-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 0.75rem; }
+   165→        .region-card { padding: 1rem; }
+   166→        .region-name { font-size: 0.85rem; font-weight: 600; display: flex; justify-content: space-between; margin-bottom: 0.5rem; }
+   167→        .region-count { font-size: 0.75rem; color: #94a3b8; }
+   168→        .progress-bar { height: 6px; border-radius: 3px; background: #e2e8f0; overflow: hidden; }
+   169→        .progress-fill { height: 100%; border-radius: 3px; }
+   170→
+   171→        /* Filter Bar */
+   172→        .filter-bar {
+   173→            display: flex; gap: 0.75rem; margin-bottom: 1rem;
+   174→            flex-wrap: wrap; align-items: center;
+   175→        }
+   176→        .search-box {
+   177→            flex: 1; min-width: 200px;
+   178→            padding: 0.625rem 1rem; border-radius: 8px;
+   179→            border: 1px solid rgba(5,150,105,0.2); background: white;
+   180→            font-size: 0.875rem; outline: none; transition: border-color 0.3s;
+   181→        }
+   182→        .search-box:focus { border-color: #059669; }
+   183→        .filter-select {
+   184→            padding: 0.625rem 1rem; border-radius: 8px;
+   185→            border: 1px solid rgba(5,150,105,0.2); background: white;
+   186→            font-size: 0.875rem; outline: none; cursor: pointer;
+   187→        }
+   188→
+   189→        @media (max-width: 1024px) {
+   190→            .two-col { grid-template-columns: 1fr; }
+   191→            .nav-links { display: none; }
+   192→        }
+   193→        @media (max-width: 768px) {
+   194→            main { padding: 1rem; }
+   195→            .page-header h1 { font-size: 1.5rem; }
+   196→            .kpi-grid { grid-template-columns: repeat(2, 1fr); }
+   197→        }
+   198→    </style>
+   199→</head>
+   200→<body>
+   201→    <nav>
+   202→        <div class="nav-container">
+   203→            <a href="/Demo4AISupChn/" class="logo">🛡️ AI Supply Chain</a>
+   204→            <div class="nav-links">
+   205→                <a href="/Demo4AISupChn/">Home</a>
+   206→                <a href="/Demo4AISupChn/dashboard.html">Dashboard</a>
+   207→                <a href="/Demo4AISupChn/command-center.html" class="active">Command Center</a>
+   208→                <a href="/Demo4AISupChn/platform.html">Platform</a>
+   209→                <a href="/Demo4AISupChn/intelligence.html">AI/ML Engine</a>
+   210→                <a href="/Demo4AISupChn/resources.html">Resources</a>
+   211→                <a href="/Demo4AISupChn/about.html">About</a>
+   212→                <a href="/Demo4AISupChn/events.html">Events</a>
+   213→                <a href="/Demo4AISupChn/industries.html">Industries</a>
+   214→                <a href="/Demo4AISupChn/product.html">Product</a>
+   215→                <a href="/Demo4AISupChn/support.html">Support</a>
+   216→                <a href="/Demo4AISupChn/agents.html">AI Agents</a>
+   217→                <a href="/Demo4AISupChn/customers.html">Customers</a>
+   218→            </div>
+   219→        </div>
+   220→    </nav>
+   221→
+   222→    <main>
+   223→        <!-- Page Header -->
+   224→        <div class="page-header">
+   225→            <h1>🎛️ Command Center</h1>
+   226→            <div style="display:flex;gap:0.75rem;flex-wrap:wrap;">
+   227→                <span class="badge badge-primary">📡 Live Monitoring</span>
+   228→                <span class="badge badge-danger">⚠️ 3 Critical Alerts</span>
+   229→                <a href="#" class="btn-primary">+ Add Supplier →</a>
+   230→            </div>
+   231→        </div>
+   232→
+   233→        <!-- KPI Cards -->
+   234→        <div class="kpi-grid">
+   235→            <div class="glass kpi-card">
+   236→                <div class="kpi-header">
+   237→                    <div class="kpi-icon" style="background:rgba(245,158,11,0.12)">⚠️</div>
+   238→                    <span class="badge badge-warning">↑ +5</span>
+   239→                </div>
+   240→                <div class="kpi-value">58</div>
+   241→                <div class="kpi-label">Overall Risk Score</div>
+   242→            </div>
+   243→            <div class="glass kpi-card">
+   244→                <div class="kpi-header">
+   245→                    <div class="kpi-icon" style="background:rgba(16,185,129,0.12)">🌍</div>
+   246→                    <span class="badge badge-primary">↑ +12</span>
+   247→                </div>
+   248→                <div class="kpi-value">1,190</div>
+   249→                <div class="kpi-label">Active Suppliers</div>
+   250→            </div>
+   251→            <div class="glass kpi-card">
+   252→                <div class="kpi-header">
+   253→                    <div class="kpi-icon" style="background:rgba(239,68,68,0.12)">📊</div>
+   254→                    <span class="badge badge-danger">↓ -8</span>
+   255→                </div>
+   256→                <div class="kpi-value">23</div>
+   257→                <div class="kpi-label">Open Alerts</div>
+   258→            </div>
+   259→            <div class="glass kpi-card">
+   260→                <div class="kpi-header">
+   261→                    <div class="kpi-icon" style="background:rgba(139,92,246,0.12)">🧠</div>
+   262→                    <span class="badge badge-primary">↑ +0.8%</span>
+   263→                </div>
+   264→                <div class="kpi-value">94.2%</div>
+   265→                <div class="kpi-label">AI Predictions</div>
+   266→            </div>
+   267→        </div>
+   268→
+   269→        <!-- Tabs -->
+   270→        <div class="tabs-container">
+   271→            <div class="tabs-list">
+   272→                <button class="tab-trigger active">📋 All Suppliers</button>
+   273→                <button class="tab-trigger">⚠️ At Risk</button>
+   274→                <button class="tab-trigger">✅ Compliant</button>
+   275→                <button class="tab-trigger">🔍 Under Review</button>
+   276→                <button class="tab-trigger">🏭 By Tier</button>
+   277→            </div>
+   278→
+   279→            <!-- Filter Bar -->
+   280→            <div class="filter-bar">
+   281→                <input type="text" class="search-box" placeholder="🔍 Search suppliers by name, ID, or region...">
+   282→                <select class="filter-select"><option>All Regions</option><option>APAC</option><option>EMEA</option><option>Americas</option></select>
+   283→                <select class="filter-select"><option>All Tiers</option><option>Tier 1</option><option>Tier 2</option><option>Tier 3</option></select>
+   284→                <select class="filter-select"><option>Risk Level</option><option>Critical (70+)</option><option>High (50-69)</option><option>Medium (30-49)</option><option>Low (&lt;30)</option></select>
+   285→            </div>
+   286→
+   287→            <!-- Supplier Table -->
+   288→            <div class="glass" style="overflow:hidden;">
+   289→                <div class="table-container">
+   290→                    <table>
+   291→                        <thead>
+   292→                            <tr>
+   293→                                <th>Supplier ID</th>
+   294→                                <th>Name</th>
+   295→                                <th>Region</th>
+   296→                                <th>Country</th>
+   297→                                <th>Risk Score</th>
+   298→                                <th>Tier</th>
+   299→                                <th>Status</th>
+   300→                                <th>Last Audit</th>
+   301→                                <th>Actions</th>
+   302→                            </tr>
+   303→                        </thead>
+   304→                        <tbody>
+   305→                            <tr>
+   306→                                <td><code>SUP-001</code></td>
+   307→                                <td class="supplier-name">TechComp Industries Ltd</td>
+   308→                                <td><span class="badge badge-info">APAC</span></td>
+   309→                                <td>🇻🇳 Vietnam</td>
+   310→                                <td>
+   311→                                    <div style="display:flex;align-items:center;gap:0.5rem;">
+   312→                                        <div class="risk-bar"><div class="risk-fill risk-high" style="width:72%"></div></div>
+   313→                                        <strong style="color:#f97316">72</strong>
+   314→                                    </div>
+   315→                                </td>
+   316→                                <td>Tier 1</td>
+   317→                                <td><span class="status status-active">✅ Active</span></td>
+   318→                                <td>2024-01-15</td>
+   319→                                <td><a href="#" class="btn-sm">View →</a></td>
+   320→                            </tr>
+   321→                            <tr>
+   322→                                <td><code>SUP-002</code></td>
+   323→                                <td class="supplier-name">EuroParts Manufacturing GmbH</td>
+   324→                                <td><span class="badge badge-info">EMEA</span></td>
+   325→                                <td>🇩🇪 Germany</td>
+   326→                                <td>
+   327→                                    <div style="display:flex;align-items:center;gap:0.5rem;">
+   328→                                        <div class="risk-bar"><div class="risk-fill risk-low" style="width:28%"></div></div>
+   329→                                        <strong style="color:#10b981">28</strong>
+   330→                                    </div>
+   331→                                </td>
+   332→                                <td>Tier 1</td>
+   333→                                <td><span class="status status-active">✅ Active</span></td>
+   334→                                <td>2024-02-20</td>
+   335→                                <td><a href="#" class="btn-sm">View →</a></td>
+   336→                            </tr>
+   337→                            <tr>
+   338→                                <td><code>SUP-003</code></td>
+   339→                                <td class="supplier-name">AsiaLogistics Solutions Pte</td>
+   340→                                <td><span class="badge badge-info">APAC</span></td>
+   341→                                <td>🇸🇬 Singapore</td>
+   342→                                <td>
+   343→                                    <div style="display:flex;align-items:center;gap:0.5rem;">
+   344→                                        <div class="risk-bar"><div class="risk-fill risk-medium" style="width:45%"></div></div>
+   345→                                        <strong style="color:#f59e0b">45</strong>
+   346→                                    </div>
+   347→                                </td>
+   348→                                <td>Tier 2</td>
+   349→                                <td><span class="status status-review">⏳ Review</span></td>
+   350→                                <td>2023-11-10</td>
+   351→                                <td><a href="#" class="btn-sm">View →</a></td>
+   352→                            </tr>
+   353→                            <tr>
+   354→                                <td><code>SUP-004</code></td>
+   355→                                <td class="supplier-name">Global Components Inc</td>
+   356→                                <td><span class="badge badge-info">Americas</span></td>
+   357→                                <td>🇺🇸 USA</td>
+   358→                                <td>
+   359→                                    <div style="display:flex;align-items:center;gap:0.5rem;">
+   360→                                        <div class="risk-bar"><div class="risk-fill risk-low" style="width:18%"></div></div>
+   361→                                        <strong style="color:#10b981">18</strong>
+   362→                                    </div>
+   363→                                </td>
+   364→                                <td>Tier 1</td>
+   365→                                <td><span class="status status-active">✅ Active</span></td>
+   366→                                <td>2024-03-01</td>
+   367→                                <td><a href="#" class="btn-sm">View →</a></td>
+   368→                            </tr>
+   369→                            <tr>
+   370→                                <td><code>SUP-005</code></td>
+   371→                                <td class="supplier-name">Shenzhen Electronics Co</td>
+   372→                                <td><span class="badge badge-info">APAC</span></td>
+   373→                                <td>🇨🇳 China</td>
+   374→                                <td>
+   375→                                    <div style="display:flex;align-items:center;gap:0.5rem;">
+   376→                                        <div class="risk-bar"><div class="risk-fill risk-critical" style="width:85%"></div></div>
+   377→                                        <strong style="color:#ef4444">85</strong>
+   378→                                    </div>
+   379→                                </td>
+   380→                                <td>Tier 2</td>
+   381→                                <td><span class="status status-critical">🔴 Critical</span></td>
+   382→                                <td>2023-09-22</td>
+   383→                                <td><a href="#" class="btn-sm">View →</a></td>
+   384→                            </tr>
+   385→                            <tr>
+   386→                                <td><code>SUP-006</code></td>
+   387→                                <td class="supplier-name">Mumbai Textiles Ltd</td>
+   388→                                <td><span class="badge badge-info">APAC</span></td>
+   389→                                <td>🇮🇳 India</td>
+   390→                                <td>
+   391→                                    <div style="display:flex;align-items:center;gap:0.5rem;">
+   392→                                        <div class="risk-bar"><div class="risk-fill risk-medium" style="width:52%"></div></div>
+   393→                                        <strong style="color:#f59e0b">52</strong>
+   394→                                    </div>
+   395→                                </td>
+   396→                                <td>Tier 2</td>
+   397→                                <td><span class="status status-review">⏳ Review</span></td>
+   398→                                <td>2024-01-08</td>
+   399→                                <td><a href="#" class="btn-sm">View →</a></td>
+   400→                            </tr>
+   401→                            <tr>
+   402→                                <td><code>SUP-007</code></td>
+   403→                                <td class="supplier-name">São Paulo Manufacturing</td>
+   404→                                <td><span class="badge badge-info">LATAM</span></td>
+   405→                                <td>🇧🇷 Brazil</td>
+   406→                                <td>
+   407→                                    <div style="display:flex;align-items:center;gap:0.5rem;">
+   408→                                        <div class="risk-bar"><div class="risk-fill risk-medium" style="width:38%"></div></div>
+   409→                                        <strong style="color:#f59e0b">38</strong>
+   410→                                    </div>
+   411→                                </td>
+   412→                                <td>Tier 1</td>
+   413→                                <td><span class="status status-active">✅ Active</span></td>
+   414→                                <td>2024-02-14</td>
+   415→                                <td><a href="#" class="btn-sm">View →</a></td>
+   416→                            </tr>
+   417→                            <tr>
+   418→                                <td><code>SUP-008</code></td>
+   419→                                <td class="supplier-name">Tokyo Precision Corp</td>
+   420→                                <td><span class="badge badge-info">APAC</span></td>
+   421→                                <td>🇯🇵 Japan</td>
+   422→                                <td>
+   423→                                    <div style="display:flex;align-items:center;gap:0.5rem;">
+   424→                                        <div class="risk-bar"><div class="risk-fill risk-low" style="width:12%"></div></div>
+   425→                                        <strong style="color:#10b981">12</strong>
+   426→                                    </div>
+   427→                                </td>
+   428→                                <td>Tier 1</td>
+   429→                                <td><span class="status status-active">✅ Active</span></td>
+   430→                                <td>2024-03-10</td>
+   431→                                <td><a href="#" class="btn-sm">View →</a></td>
+   432→                            </tr>
+   433→                        </tbody>
+   434→                    </table>
+   435→                </div>
+   436→            </div>
+   437→        </div>
+   438→
+   439→        <!-- Two Column Layout: Alerts & Regions -->
+   440→        <div class="two-col">
+   441→            <!-- Live Alerts -->
+   442→            <div class="glass" style="overflow:hidden;">
+   443→                <div class="card-header">
+   444→                    <h3>📡 Live Risk Alerts</h3>
+   445→                    <span class="badge badge-danger" style="animation:pulse 2s infinite;">● Real-time</span>
+   446→                </div>
+   447→                <div class="card-body">
+   448→                    <ul class="alert-list">
+   449→                        <li class="alert-item alert-critical">
+   450→                            <div class="alert-dot critical"></div>
+   451→                            <div style="flex:1;">
+   452→                                <div class="alert-title">Typhoon approaching Vietnam coast</div>
+   453→                                <div class="alert-meta">TechComp Industries Ltd • APAC</div>
+   454→                            </div>
+   455→                            <div class="alert-time">2 min ago</div>
+   456→                        </li>
+   457→                        <li class="alert-item alert-warning">
+   458→                            <div class="alert-dot warning"></div>
+   459→                            <div style="flex:1;">
+   460→                                <div class="alert-title">Currency fluctuation detected - EUR/USD</div>
+   461→                                <div class="alert-meta">EuroParts Manufacturing GmbH • EMEA</div>
+   462→                            </div>
+   463→                            <div class="alert-time">15 min ago</div>
+   464→                        </li>
+   465→                        <li class="alert-item alert-info">
+   466→                            <div class="alert-dot info"></div>
+   467→                            <div style="flex:1;">
+   468→                                <div class="alert-title">New compliance regulation announced</div>
+   469→                                <div class="alert-meta">Global Components Inc • Americas</div>
+   470→                            </div>
+   471→                            <div class="alert-time">1 hour ago</div>
+   472→                        </li>
+   473→                        <li class="alert-item alert-warning">
+   474→                            <div class="alert-dot warning"></div>
+   475→                            <div style="flex:1;">
+   476→                                <div class="alert-title">Port congestion at Singapore</div>
+   477→                                <div class="alert-meta">AsiaLogistics Solutions Pte • APAC</div>
+   478→                            </div>
+   479→                            <div class="alert-time">2 hours ago</div>
+   480→                        </li>
+   481→                        <li class="alert-item alert-critical">
+   482→                            <div class="alert-dot critical"></div>
+   483→                            <div style="flex:1;">
+   484→                                <div class="alert-title">UFLPA violation flag - Shenzhen Electronics</div>
+   485→                                <div class="alert-meta">Shenzhen Electronics Co • APAC</div>
+   486→                            </div>
+   487→                            <div class="alert-time">3 hours ago</div>
+   488→                        </li>
+   489→                    </ul>
+   490→                </div>
+   491→            </div>
+   492→
+   493→            <!-- Regional Overview -->
+   494→            <div class="glass" style="overflow:hidden;">
+   495→                <div class="card-header">
+   496→                    <h3>🌍 Regional Overview</h3>
+   497→                    <span class="badge badge-primary">4 Regions</span>
+   498→                </div>
+   499→                <div class="card-body">
+   500→                    <div class="region-grid">
+   501→                        <div class="region-card glass" style="border:none;background:rgba(5,150,105,0.03);">
+   502→                            <div class="region-name">
+   503→                                <span>🌏 APAC</span>
+   504→                                <span class="region-count">340 suppliers</span>
+   505→                            </div>
+   506→                            <div class="progress-bar"><div class="progress-fill" style="width:62%;background:linear-gradient(90deg,#f97316,#fb923c);"></div></div>
+   507→                            <div style="font-size:0.8rem;color:#f97316;margin-top:0.35rem;font-weight:600;">Risk Index: 62</div>
+   508→                        </div>
+   509→                        <div class="region-card glass" style="border:none;background:rgba(5,150,105,0.03);">
+   510→                            <div class="region-name">
+   511→                                <span>🌍 EMEA</span>
+   512→                                <span class="region-count">280 suppliers</span>
+   513→                            </div>
+   514→                            <div class="progress-bar"><div class="progress-fill" style="width:48%;background:linear-gradient(90deg,#f59e0b,#fbbf24);"></div></div>
+   515→                            <div style="font-size:0.8rem;color:#f59e0b;margin-top:0.35rem;font-weight:600;">Risk Index: 48</div>
+   516→                        </div>
+   517→                        <div class="region-card glass" style="border:none;background:rgba(5,150,105,0.03);">
+   518→                            <div class="region-name">
+   519→                                <span>🌎 Americas</span>
+   520→                                <span class="region-count">420 suppliers</span>
+   521→                            </div>
+   522→                            <div class="progress-bar"><div class="progress-fill" style="width:35%;background:linear-gradient(90deg,#10b981,#34d399);"></div></div>
+   523→                            <div style="font-size:0.8rem;color:#10b981;margin-top:0.35rem;font-weight:600;">Risk Index: 35</div>
+   524→                        </div>
+   525→                        <div class="region-card glass" style="border:none;background:rgba(5,150,105,0.03);">
+   526→                            <div class="region-name">
+   527→                                <span>🗺️ LATAM</span>
+   528→                                <span class="region-count">150 suppliers</span>
+   529→                            </div>
+   530→                            <div class="progress-bar"><div class="progress-fill" style="width:55%;background:linear-gradient(90deg,#f59e0b,#fbbf24);"></div></div>
+   531→                            <div style="font-size:0.8rem;color:#f59e0b;margin-top:0.35rem;font-weight:600;">Risk Index: 55</div>
+   532→                        </div>
+   533→                    </div>
+   534→
+   535→                    <div style="margin-top:1.5rem;padding-top:1.25rem;border-top:1px solid rgba(5,150,105,0.1);">
+   536→                        <h4 style="font-size:0.85rem;color:#64748b;margin-bottom:0.75rem;">Quick Actions</h4>
+   537→                        <div class="actions-grid">
+   538→                            <div class="glass action-card" style="border:none;"><div class="action-icon">📊</div><div class="action-label">Run Report</div></div>
+   539→                            <div class="glass action-card" style="border:none;"><div class="action-icon">🔔</div><div class="action-label">Set Alert</div></div>
+   540→                            <div class="glass action-card" style="border:none;"><div class="action-icon">📋</div><div class="action-label">Audit Log</div></div>
+   541→                            <div class="glass action-card" style="border:none;"><div class="action-icon">📤</div><div class="action-label">Export Data</div></div>
+   542→                        </div>
+   543→                    </div>
+   544→                </div>
+   545→            </div>
+   546→        </div>
+   547→
+   548→        <!-- Bottom Stats Row -->
+   549→        <div class="kpi-grid">
+   550→            <div class="glass kpi-card" style="text-align:center;">
+   551→                <div style="font-size:1.5rem;margin-bottom:0.5rem;">📦</div>
+   552→                <div class="kpi-value">847</div>
+   553→                <div class="kpi-label">Total Suppliers Monitored</div>
+   554→            </div>
+   555→            <div class="glass kpi-card" style="text-align:center;">
+   556→                <div style="font-size:1.5rem;margin-bottom:0.5rem;">✅</div>
+   557→                <div class="kpi-value">78%</div>
+   558→                <div class="kpi-label">Compliance Rate</div>
+   559→            </div>
+   560→            <div class="glass kpi-card" style="text-align:center;">
+   561→                <div style="font-size:1.5rem;margin-bottom:0.5rem;">⚡</div>
+   562→                <div class="kpi-value">&lt;5min</div>
+   563→                <div class="kpi-label">Avg Response Time</div>
+   564→            </div>
+   565→            <div class="glass kpi-card" style="text-align:center;">
+   566→                <div style="font-size:1.5rem;margin-bottom:0.5rem;">🔄</div>
+   567→                <div class="kpi-value">Daily</div>
+   568→                <div class="kpi-label">Auto-Refresh Cycle</div>
+   569→            </div>
+   570→        </div>
+   571→    </main>
+   572→</body>
+   573→</html>
+   574→
