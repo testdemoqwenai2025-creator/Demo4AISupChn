@@ -1,0 +1,2002 @@
+     1→'use client'
+     2→
+     3→import React, { useState, useEffect, useRef, useCallback } from 'react'
+     4→import { 
+     5→  Shield, Activity, Brain, AlertTriangle, CheckCircle2, 
+     6→  Search, Filter, TrendingUp, TrendingDown, Minus, Eye, MessageSquare,
+     7→  BarChart3, Zap, Globe, Lock, Bot, Users, Target,
+     8→  ArrowRight, Play, Pause, RefreshCw, Download, Settings, Bell,
+     9→  ChevronRight, ChevronDown, ChevronUp, Star, Clock, MapPin, Building2,
+    10→  Package, Truck, Factory, Database, Cpu, Mail, Phone,
+    11→  Send, X, Plus, Edit3, Save, Calendar, FileText, Scale,
+    12→  Gavel, ClipboardCheck, Fingerprint, ShieldCheck, AlertCircle,
+    13→  Info, ExternalLink, Maximize2, HelpCircle, UserCheck,
+    14→  Building, CreditCard, DollarSign, Percent, Hash,
+    15→  Link2, BadgeCheck, Award, Tag, Printer, XCircle,
+    16→  Leaf, Recycle, Thermometer, Droplets,
+    17→  LayoutDashboard, DatabaseZap, ShieldAlert, CalendarCheck,
+    18→  FileBarChart, MessageCircle, AtSign, Globe2,
+    19→  TreePine, ScrollText, ClipboardList,
+    20→  LockClosed, UnlockClosed,
+    21→  Menu, PanelLeftClose, PanelLeftOpen,
+    22→  ChevronLeft, MoreVertical,
+    23→  Sparkles, Wand2, ThumbsUp, ThumbsDown,
+    24→  Sun, Moon, Monitor, Smartphone,
+    25→  Languages, Navigation, Compass,
+    26→  Home, Store, Warehouse, School, Hospital,
+    27→  Mountain, Waves, CloudRain, Umbrella,
+    28→  Dumbbell, Bike, Skateboarding,
+    29→  Music, Disc, Radio, Tv, Gamepad2,
+    30→  Coffee, UtensilsCrossed, Pizza, Burger,
+    31→  Baby, Group, User, UserCircle,
+    32→  IdCard, HandMetal, WaveHand,
+    33→  RotateCw, RotateCcw,
+    34→  Expand, Shrink, Fullscreen,
+    35→  Grid3x3, AppWindow, Browser,
+    36→  FileJson, FileSpreadsheet, FileImage,
+    37→  Share, QrCode, ScanBarcode,
+    38→  Camera, Webcam, Aperture,
+    39→  ImagePlus, Crop, Filters,
+    40→  Adjustments, SlidersHorizontal,
+    41→  ToggleLeft, ToggleRight,
+    42→  Mic, ScreenRecord,
+    43→  Circle as CirclePlay,
+    44→  SkipBack, SkipForward,
+    45→  Repeat, Shuffle,
+    46→  Volume1, Volume2, VolumeX,
+    47→  Subtitles, Cast, Airplay,
+    48→  Headphones, Speaker,
+    49→  ZoomIn, ZoomOut,
+    50→  GripVertical, Move, Pin, Unpin,
+    51→  Archive, Inbox, Import,
+    52→  FileInput, FileOutput,
+    53→  AlertOctagon, Bug, Virus, ShieldOff,
+    54→  Ban, StopCircle, XOctagon,
+    55→  Timer, Hourglass,
+    56→  Sunrise, Sunset, CloudSun,
+    57→  Snowflake, Flame,
+    58→  BatteryFull, BatteryMedium, BatteryLow,
+    59→  Signal, SignalHigh, SignalLow, SignalZero,
+    60→  Wifi, WifiOff, Bluetooth, Usb, HardDrive,
+    61→  Tablet, Watch,
+    62→  MicOff, VideoOff, CameraOff,
+    63→  MousePointer, Touchpad, Keyboard,
+    64→  PenTool, Highlighter, Eraser,
+    65→  Palette, Brush, Bucket,
+    66→  Scissors, Ruler,
+    67→  Type, AlignLeft, AlignCenter, AlignRight,
+    68→  Bold, Italic, Underline,
+    69→  ListOrdered, ListChecks, Indent, Outdent,
+    70→  Quote, Code2, Heading1, Heading2,
+    71→  Separator, Slash,
+    72→  Equal, Calculator,
+    73→  Binary, Hexagon, Pentagon, Octagon,
+    74→  Triangle,
+    75→  PartyPopper, Gift,
+    76→  Medal, Trophy, Crown, Gem,
+    77→  Heart, HeartOff,
+    78→  Smile, Frown, Meh, Laugh,
+    79→  Angry, Sad, Surprised,
+    80→  LightMode, DarkMode,
+    81→  WorldIcon, MapIcon,
+    82→  Footprints, Route,
+    83→  Signpost, TrafficCone,
+    84→  Office, Landmark,
+    85→  Trees, Flower, Flower2,
+    86→  Tent, Campfire,
+    87→  Bicycle, SkiLift, Parachute,
+    88→  Drink, Croissant, IceCream, Candy, Lollipop,
+    89→  PersonIcon,
+    90→  Passkey,
+    91→  Salute,
+    92→  ClickIcon,
+    93→  Move3d, FlipHorizontal2, FlipVertical2,
+    94→  ExitFullscreen, PictureInPicture2,
+    95→  SplitSquareHorizontal, SplitSquareVertical,
+    96→  Rows, Columns,
+    97→  Grid2x2, Grid4x4,
+    98→  AppWindowSidebar,
+    99→  Chrome, Safari,
+   100→  FileVideo, FileAudio, FileArchive,
+   101→  Zip, Rar, Tar,
+   102→  DownloadCloud, UploadCloud,
+   103→  SocialShare,
+   104→  ScanFace,
+   105→  CameraIcon,
+   106→  CameraRotate,
+   107→  RecordIcon,
+   108→  PauseIcon,
+   109→  StopIcon,
+   110→  PlayIcon,
+   111→  PrevIcon,
+   112→  NextIcon,
+   113→  Repeat1,
+   114→  VolumeLow,
+   115→  Captions,
+   116→  Chromecast,
+   117→  BluetoothStreaming,
+   118→  HeadsetIcon,
+   119→  SpeakerIcon,
+   120→} from 'lucide-react'
+   121→import { Button } from '@/components/ui/button'
+   122→import { Card, CardContent, CardDescription, CardHeader, CardTitle, CardFooter } from '@/components/ui/card'
+   123→import { Badge } from '@/components/ui/badge'
+   124→import { Progress } from '@/components/ui/progress'
+   125→import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
+   126→import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog'
+   127→import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
+   128→import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table'
+   129→import { Input } from '@/components/ui/input'
+   130→import { Textarea } from '@/components/ui/textarea'
+   131→import { Label } from '@/components/ui/label'
+   132→import { Switch } from '@/components/ui/switch'
+   133→import { Slider } from '@/components/ui/slider'
+   134→import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip'
+   135→import { Toaster } from '@/components/ui/toaster'
+   136→import {
+   137→  AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip as RechartsTooltip,
+   138→  ResponsiveContainer, LineChart, Line, BarChart, Bar,
+   139→  RadarChart, Radar, PolarGrid, PolarAngleAxis, PolarRadiusAxis,
+   140→  Legend, ComposedChart
+   141→} from 'recharts'
+   142→
+   143→// ============== TYPES ==============
+   144→interface Supplier {
+   145→  id: string; companyName: string; registrationNumber: string; legalEntityName: string;
+   146→  dunsNumber: string; taxId: string; address: string; city: string;
+   147→  stateProvince: string; postalCode: string; country: string; region: string;
+   148→  tier: string; category: string; subcategory: string; products: string[];
+   149→  certifications: string[]; esgScore: number; uflpaStatus: string; eudrStatus: string;
+   150→  csdddStatus: string; soxCompliant: boolean; gdprCompliant: boolean; reachCompliant: boolean;
+   151→  financialRating: string; revenue: number; employeeCount: number; foundedYear: number;
+   152→  deliveryPerformance: number; qualityMetrics: number; costCompetitiveness: number;
+   153→  innovationScore: number; riskLevel: 'low' | 'medium' | 'high' | 'critical'; riskScore: number;
+   154→  primaryContactName: string; primaryContactEmail: string; primaryContactPhone: string;
+   155→  secondaryContactName: string; secondaryContactEmail: string; website: string;
+   156→  lastAuditDate: string; nextAuditDate: string; contractExpiry: string;
+   157→  paymentTerms: string; currency: string; leadTimeDays: number; moq: number;
+   158→  capacityUtilization: number; businessContinuityPlan: boolean; insuranceCoverage: string;
+   159→  sustainabilityCertifications: string[]; carbonFootprint: number; waterUsage: number;
+   160→  wasteReduction: number; diversityInclusion: number; dataPrivacyCertified: boolean;
+   161→  cybersecurityRating: string; lastUpdated: string; notes: string; tags: string[];
+   162→  status: 'active' | 'inactive' | 'under-review' | 'suspended';
+   163→}
+   164→
+   165→interface RiskAlert {
+   166→  id: string; type: 'geopolitical' | 'financial' | 'operational' | 'compliance' | 'environmental' | 'cybersecurity';
+   167→  severity: 'info' | 'warning' | 'critical'; title: string; description: string;
+   168→  supplier: string; region: string; timestamp: string; status: 'active' | 'investigating' | 'resolved' | 'dismissed';
+   169→  impact: string; probability: number; mitigation: string;
+   170→  shapValues?: { feature: string; value: number; color: string }[];
+   171→}
+   172→
+   173→interface ChatMessage { id: string; role: 'user' | 'assistant'; content: string; timestamp: Date; portal: string; }
+   174→
+   175→interface ComplianceItem {
+   176→  framework: string; status: 'compliant' | 'partial' | 'non-compliant' | 'pending-review' | 'exempt';
+   177→  score: number; lastAssessed: string; nextReview: string;
+   178→  requirements: { name: string; status: boolean; description: string; evidence?: string }[];
+   179→  documents: { name: string; type: string; uploaded: string; verified: boolean }[];
+   180→  findings: { severity: string; description: string; remediation: string; deadline: string }[];
+   181→  owner: string; notes: string;
+   182→}
+   183→
+   184→// ============== MOCK DATA ==============
+   185→const suppliersData: Supplier[] = [
+   186→  {
+   187→    id: 'SUP-001', companyName: 'TechComponents Global Ltd.', registrationNumber: 'TCG-2024-88421',
+   188→    legalEntityName: 'TechComponents Global Limited', dunsNumber: '36-123-4567', taxId: 'GB123456789012',
+   189→    address: '100 Innovation Drive', city: 'Cambridge', stateProvince: 'Cambridgeshire',
+   190→    postalCode: 'CB1 2AZ', country: 'United Kingdom', region: 'Europe', tier: 'Tier 1',
+   191→    category: 'Electronics Manufacturing', subcategory: 'Semiconductor Components',
+   192→    products: ['Microcontrollers', 'Memory Chips', 'Sensors', 'Power Management ICs'],
+   193→    certifications: ['ISO 9001', 'ISO 14001', 'ISO 27001', 'AS9100D', 'IATF 16949'],
+   194→    esgScore: 87, uflpaStatus: 'Compliant', eudrStatus: 'N/A - Non-Forestry', csdddStatus: 'Compliant',
+   195→    soxCompliant: true, gdprCompliant: true, reachCompliant: true, financialRating: 'AA',
+   196→    revenue: 2450000000, employeeCount: 12500, foundedYear: 1987, deliveryPerformance: 96.8,
+   197→    qualityMetrics: 99.2, costCompetitiveness: 82, innovationScore: 91, riskLevel: 'low', riskScore: 12,
+   198→    primaryContactName: 'Sarah Mitchell', primaryContactEmail: 's.mitchell@techcomponents.com',
+   199→    primaryContactPhone: '+44 1223 5550101', secondaryContactName: 'James Chen',
+   200→    secondaryContactEmail: 'j.chen@techcomponents.com', website: 'https://www.techcomponents.com',
+   201→    lastAuditDate: '2024-11-15', nextAuditDate: '2025-05-15', contractExpiry: '2026-12-31',
+   202→    paymentTerms: 'Net 60', currency: 'GBP', leadTimeDays: 14, moq: 5000, capacityUtilization: 78,
+   203→    businessContinuityPlan: true, insuranceCoverage: '$50M Comprehensive Liability',
+   204→    sustainabilityCertifications: ['EcoVadis Platinum', 'Science Based Targets'],
+   205→    carbonFootprint: 12400, waterUsage: 89000, wasteReduction: 34, diversityInclusion: 78,
+   206→    dataPrivacyCertified: true, cybersecurityRating: 'A+', lastUpdated: '2025-01-20',
+   207→    notes: 'Strategic partner since 2019. Excellent track record. Expanding capacity in 2025.',
+   208→    tags: ['strategic', 'electronics', 'semiconductors', 'ESG-leader'], status: 'active'
+   209→  },
+   210→  {
+   211→    id: 'SUP-002', companyName: 'Pacific Precision Industries', registrationNumber: 'PPI-TW-99234',
+   212→    legalEntityName: 'Pacific Precision Industries Co., Ltd.', dunsNumber: '88-456-7890',
+   213→    taxId: 'TW987654321098', address: 'No. 88, Sec. 1, Hsin Tai Wu Road', city: 'Hsinchu',
+   214→    stateProvince: 'Hsinchu County', postalCode: '300', country: 'Taiwan', region: 'Asia Pacific',
+   215→    tier: 'Tier 1', category: 'Precision Manufacturing', subcategory: 'Optical Components',
+   216→    products: ['Lens Assemblies', 'Prisms', 'Filters', 'Optical Sensors'],
+   217→    certifications: ['ISO 9001', 'ISO 14001', 'ISO 45001'], esgScore: 76,
+   218→    uflpaStatus: 'Under Review', eudrStatus: 'N/A - Non-Forestry', csdddStatus: 'Pending Assessment',
+   219→    soxCompliant: false, gdprCompliant: false, reachCompliant: false, financialRating: 'A+',
+   220→    revenue: 1800000000, employeeCount: 8900, foundedYear: 1995, deliveryPerformance: 94.2,
+   221→    qualityMetrics: 97.8, costCompetitiveness: 88, innovationScore: 85, riskLevel: 'medium', riskScore: 35,
+   222→    primaryContactName: 'Wei-Lin Huang', primaryContactEmail: 'wl.huang@pacificprecision.tw',
+   223→    primaryContactPhone: '+886 3 567 8901', secondaryContactName: 'Mei Lin Tsai',
+   224→    secondaryContactEmail: 'ml.tsai@pacificprecision.tw', website: 'https://www.pacificprecision.com.tw',
+   225→    lastAuditDate: '2024-08-22', nextAuditDate: '2025-02-22', contractExpiry: '2025-09-30',
+   226→    paymentTerms: 'Net 45', currency: 'TWD', leadTimeDays: 21, moq: 10000, capacityUtilization: 85,
+   227→    businessContinuityPlan: true, insuranceCoverage: '$30M Product Liability',
+   228→    sustainabilityCertifications: ['EcoVadis Gold'], carbonFootprint: 18900, waterUsage: 145000,
+   229→    wasteReduction: 28, diversityInclusion: 65, dataPrivacyCertified: false, cybersecurityRating: 'B+',
+   230→    lastUpdated: '2025-01-18', notes: 'UFLPA review in progress due to Xinjiang-sourced raw materials claim.',
+   231→    tags: ['optics', 'taiwan', 'precision', 'UFLPA-watch'], status: 'under-review'
+   232→  },
+   233→  {
+   234→    id: 'SUP-003', companyName: 'EuroChem Solutions GmbH', registrationNumber: 'HRB-DE-45678',
+   235→    legalEntityName: 'EuroChem Solutions GmbH', dunsNumber: '52-789-0123', taxId: 'DE234567890123',
+   236→    address: 'Industriestraße 42', city: 'Ludwigshafen', stateProvince: 'Rhineland-Palatinate',
+   237→    postalCode: '67063', country: 'Germany', region: 'Europe', tier: 'Tier 2',
+   238→    category: 'Chemicals', subcategory: 'Specialty Chemicals',
+   239→    products: ['Polymer Additives', 'Coating Agents', 'Adhesives', 'Sealants'],
+   240→    certifications: ['ISO 9001', 'ISO 14001', 'REACH Registered', 'ISO 45001'],
+   241→    esgScore: 82, uflpaStatus: 'Compliant', eudrStatus: 'Compliant', csdddStatus: 'Compliant',
+   242→    soxCompliant: true, gdprCompliant: true, reachCompliant: true, financialRating: 'A',
+   243→    revenue: 980000000, employeeCount: 4200, foundedYear: 1962, deliveryPerformance: 92.5,
+   244→    qualityMetrics: 98.5, costCompetitiveness: 75, innovationScore: 79, riskLevel: 'low', riskScore: 18,
+   245→    primaryContactName: 'Dr. Klaus Weber', primaryContactEmail: 'k.weber@eurochem.de',
+   246→    primaryContactPhone: '+49 621 5550345', secondaryContactName: 'Anna Schmidt',
+   247→    secondaryContactEmail: 'a.schmidt@eurochem.de', website: 'https://www.eurochem-solutions.de',
+   248→    lastAuditDate: '2024-10-05', nextAuditDate: '2025-04-05', contractExpiry: '2027-06-30',
+   249→    paymentTerms: 'Net 30', currency: 'EUR', leadTimeDays: 10, moq: 2000, capacityUtilization: 72,
+   250→    businessContinuityPlan: true, insuranceCoverage: '$75M Environmental + Liability',
+   251→    sustainabilityCertifications: ['EcoVadis Platinum', 'EU Ecolabel', 'Blue Angel'],
+   252→    carbonFootprint: 28000, waterUsage: 210000, wasteReduction: 45, diversityInclusion: 82,
+   253→    dataPrivacyCertified: true, cybersecurityRating: 'A', lastUpdated: '2025-01-22',
+   254→    notes: 'Strong ESG performer. Leading REACH compliance.', tags: ['chemicals', 'germany', 'ESG-leader'], status: 'active'
+   255→  },
+   256→  {
+   257→    id: 'SUP-004', companyName: 'Shanghai Advanced Materials Co.', registrationNumber: 'SHAM-CN-11223',
+   258→    legalEntityName: 'Shanghai Advanced Materials Co., Ltd.', dunsNumber: '91-234-5678',
+   259→    taxId: 'CN91234567890123', address: '888 Zhangjiang High-Tech Park Road', city: 'Shanghai',
+   260→    stateProvince: 'Shanghai Municipality', postalCode: '201203', country: 'China', region: 'Asia Pacific',
+   261→    tier: 'Tier 1', category: 'Advanced Materials', subcategory: 'Composite Materials',
+   262→    products: ['Carbon Fiber Prepregs', 'Ceramic Matrix Composites', 'Metal Matrix Composites'],
+   263→    certifications: ['ISO 9001', 'ISO 14001', 'AS9100D'], esgScore: 68,
+   264→    uflpaStatus: 'High Risk', eudrStatus: 'N/A - Non-Forestry', csdddStatus: 'Non-Compliant',
+   265→    soxCompliant: false, gdprCompliant: false, reachCompliant: false, financialRating: 'BBB+',
+   266→    revenue: 3200000000, employeeCount: 18500, foundedYear: 2003, deliveryPerformance: 89.5,
+   267→    qualityMetrics: 95.2, costCompetitiveness: 94, innovationScore: 88, riskLevel: 'high', riskScore: 62,
+   268→    primaryContactName: 'Li Wei Zhang', primaryContactEmail: 'lw.zhang@shamaterials.cn',
+   269→    primaryContactPhone: '+86 21 5550 7890', secondaryContactName: 'Ying Liu',
+   270→    secondaryContactEmail: 'ying.liu@shamaterials.cn', website: 'http://www.shamaterials.cn',
+   271→    lastAuditDate: '2024-06-18', nextAuditDate: '2025-01-18', contractExpiry: '2025-12-31',
+   272→    paymentTerms: 'Net 90', currency: 'CNY', leadTimeDays: 35, moq: 25000, capacityUtilization: 92,
+   273→    businessContinuityPlan: false, insuranceCoverage: '$20M Basic Liability',
+   274→    sustainabilityCertifications: [], carbonFootprint: 45000, waterUsage: 380000,
+   275→    wasteReduction: 15, diversityInclusion: 45, dataPrivacyCertified: false, cybersecurityRating: 'C',
+   276→    lastUpdated: '2025-01-15', notes: 'CRITICAL: UFLPA high-risk. CSDDD non-compliant. Alternative sourcing required.',
+   277→    tags: ['materials', 'china', 'HIGH-RISK', 'UFLPA-critical'], status: 'under-review'
+   278→  },
+   279→  {
+   280→    id: 'SUP-005', companyName: 'Americas Logistics Partners LLC', registrationNumber: 'ALP-US-55667',
+   281→    legalEntityName: 'Americas Logistics Partners, LLC', dunsNumber: '12-345-6789',
+   282→    taxId: 'US987654321098', address: '1500 Logistics Way, Suite 400', city: 'Chicago',
+   283→    stateProvince: 'Illinois', postalCode: '60601', country: 'United States', region: 'North America',
+   284→    tier: 'Tier 2', category: 'Logistics & Distribution', subcategory: 'Freight Forwarding',
+   285→    products: ['Ocean Freight', 'Air Freight', 'Warehousing', 'Last-Mile Delivery'],
+   286→    certifications: ['ISO 9001', 'ISO 14001', 'C-TPAT', 'AEO Certified'],
+   287→    esgScore: 74, uflpaStatus: 'Compliant', eudrStatus: 'N/A - Non-Forestry',
+   288→    csdddStatus: 'Partial Compliance', soxCompliant: true, gdprCompliant: true, reachCompliant: false,
+   289→    financialRating: 'A-', revenue: 1500000000, employeeCount: 7800, foundedYear: 2001,
+   290→    deliveryPerformance: 93.8, qualityMetrics: 96.5, costCompetitiveness: 80, innovationScore: 72,
+   291→    riskLevel: 'low', riskScore: 22, primaryContactName: 'Michael Rodriguez',
+   292→    primaryContactEmail: 'm.rodriguez@americaslogistics.com', primaryContactPhone: '+1 312 555 0199',
+   293→    secondaryContactName: 'Jennifer Adams', secondaryContactEmail: 'j.adams@americaslogistics.com',
+   294→    website: 'https://www.americaslogistics.com', lastAuditDate: '2024-09-10',
+   295→    nextAuditDate: '2025-03-10', contractExpiry: '2026-06-30', paymentTerms: 'Net 45', currency: 'USD',
+   296→    leadTimeDays: 3, moq: 1, capacityUtilization: 68, businessContinuityPlan: true,
+   297→    insuranceCoverage: '$100M Cargo + Liability', sustainabilityCertifications: ['Smartway Partner', 'EcoVadis Silver'],
+   298→    carbonFootprint: 52000, waterUsage: 12000, wasteReduction: 22, diversityInclusion: 85,
+   299→    dataPrivacyCertified: true, cybersecurityRating: 'A-', lastUpdated: '2025-01-21',
+   300→    notes: 'Reliable logistics partner. Fleet electrification underway.', tags: ['logistics', 'usa', 'freight'], status: 'active'
+   301→  },
+   302→  {
+   303→    id: 'SUP-006', companyName: 'Nordic Renewable Energy AB', registrationNumber: 'NRE-SE-77889',
+   304→    legalEntityName: 'Nordic Renewable Energy AB', dunsNumber: '65-678-9012', taxId: 'SE556789012345',
+   305→    address: 'Storgatan 15', city: 'Stockholm', stateProvince: 'Stockholm County',
+   306→    postalCode: '111 43', country: 'Sweden', region: 'Europe', tier: 'Tier 2',
+   307→    category: 'Renewable Energy', subcategory: 'Wind Turbine Components',
+   308→    products: ['Rotor Blades', 'Gearboxes', 'Generators', 'Control Systems'],
+   309→    certifications: ['ISO 9001', 'ISO 14001', 'ISO 45001', 'ISO 50001'],
+   310→    esgScore: 94, uflpaStatus: 'Compliant', eudrStatus: 'Compliant', csdddStatus: 'Compliant',
+   311→    soxCompliant: true, gdprCompliant: true, reachCompliant: true, financialRating: 'AA-',
+   312→    revenue: 420000000, employeeCount: 2300, foundedYear: 2008, deliveryPerformance: 91.2,
+   313→    qualityMetrics: 97.5, costCompetitiveness: 70, innovationScore: 95, riskLevel: 'low', riskScore: 8,
+   314→    primaryContactName: 'Erik Lindqvist', primaryContactEmail: 'e.lindqvist@nordicrenewable.se',
+   315→    primaryContactPhone: '+46 8 555 1234', secondaryContactName: 'Sofia Andersson',
+   316→    secondaryContactEmail: 's.andersson@nordicrenewable.se', website: 'https://www.nordicrenewable.se',
+   317→    lastAuditDate: '2024-12-01', nextAuditDate: '2025-06-01', contractExpiry: '2028-12-31',
+   318→    paymentTerms: 'Net 60', currency: 'SEK', leadTimeDays: 28, moq: 50, capacityUtilization: 88,
+   319→    businessContinuityPlan: true, insuranceCoverage: '$40M Product + Environmental',
+   320→    sustainabilityCertifications: ['EcoVadis Platinum', 'B Corp Certified', 'Climate Neutral'],
+   321→    carbonFootprint: 8500, waterUsage: 25000, wasteReduction: 58, diversityInclusion: 91,
+   322→    dataPrivacyCertified: true, cybersecurityRating: 'A+', lastUpdated: '2025-01-24',
+   323→    notes: 'Industry-leading ESG performance. Carbon neutral operations.', tags: ['renewable', 'sweden', 'ESG-champion'], status: 'active'
+   324→  },
+   325→  {
+   326→    id: 'SUP-007', companyName: 'IndiaTech Manufacturing Pvt. Ltd.', registrationNumber: 'ITM-IN-33445',
+   327→    legalEntityName: 'IndiaTech Manufacturing Pvt. Ltd.', dunsNumber: '74-890-1234',
+   328→    taxId: 'IN345678901234', address: 'PEEC Phase II, Plot No. 45', city: 'Pune',
+   329→    stateProvince: 'Maharashtra', postalCode: '411057', country: 'India', region: 'Asia Pacific',
+   330→    tier: 'Tier 2', category: 'Electronics Assembly', subcategory: 'PCBA Manufacturing',
+   331→    products: ['PCB Assembly', 'Box Build', 'Cable Harnesses', 'Testing Services'],
+   332→    certifications: ['ISO 9001', 'ISO 14001', 'IPC-A-610 Class 3'], esgScore: 71,
+   333→    uflpaStatus: 'Compliant', eudrStatus: 'N/A - Non-Forestry', csdddStatus: 'Pending Assessment',
+   334→    soxCompliant: false, gdprCompliant: false, reachCompliant: false, financialRating: 'BBB',
+   335→    revenue: 650000000, employeeCount: 5500, foundedYear: 2010, deliveryPerformance: 88.5,
+   336→    qualityMetrics: 94.8, costCompetitiveness: 91, innovationScore: 76, riskLevel: 'medium', riskScore: 38,
+   337→    primaryContactName: 'Rajesh Kumar', primaryContactEmail: 'r.kumar@indiatech.in',
+   338→    primaryContactPhone: '+91 20 555 6789', secondaryContactName: 'Priya Sharma',
+   339→    secondaryContactEmail: 'p.sharma@indiatech.in', website: 'https://www.indiatech.co.in',
+   340→    lastAuditDate: '2024-07-20', nextAuditDate: '2025-01-20', contractExpiry: '2025-08-31',
+   341→    paymentTerms: 'Net 60', currency: 'INR', leadTimeDays: 18, moq: 5000, capacityUtilization: 82,
+   342→    businessContinuityPlan: true, insuranceCoverage: '$25M Product Liability',
+   343→    sustainabilityCertifications: ['EcoVadis Bronze'], carbonFootprint: 22000, waterUsage: 175000,
+   344→    wasteReduction: 20, diversityInclusion: 72, dataPrivacyCertified: false, cybersecurityRating: 'B',
+   345→    lastUpdated: '2025-01-17', notes: 'Cost-effective assembly partner. Quality improving steadily.',
+   346→    tags: ['assembly', 'india', 'cost-effective'], status: 'active'
+   347→  },
+   348→  {
+   349→    id: 'SUP-008', companyName: 'BrazilAgro Commodities SA', registrationNumber: 'BAG-BR-66778',
+   350→    legalEntityName: 'BrazilAgro Commodities SA', dunsNumber: '38-901-2345',
+   351→    taxId: 'BR45678901234567', address: 'Avenida Paulista, 1106', city: 'São Paulo',
+   352→    stateProvince: 'São Paulo State', postalCode: '01310-100', country: 'Brazil', region: 'Latin America',
+   353→    tier: 'Tier 2', category: 'Agriculture & Forestry', subcategory: 'Soy & Palm Oil',
+   354→    products: ['Soybeans', 'Palm Oil', 'Coffee Beans', 'Sugar'],
+   355→    certifications: ['ISO 9001', 'RSPO', 'RTRS', 'Rainforest Alliance'],
+   356→    esgScore: 64, uflpaStatus: 'Compliant', eudrStatus: 'Under Review', csdddStatus: 'Non-Compliant',
+   357→    soxCompliant: false, gdprCompliant: false, reachCompliant: false, financialRating: 'BB+',
+   358→    revenue: 2800000000, employeeCount: 12500, foundedYear: 1955, deliveryPerformance: 85.2,
+   359→    qualityMetrics: 92.5, costCompetitiveness: 86, innovationScore: 58, riskLevel: 'high', riskScore: 55,
+   360→    primaryContactName: 'Carlos Silva', primaryContactEmail: 'c.silva@brazilagro.br',
+   361→    primaryContactPhone: '+55 11 5555 0123', secondaryContactName: 'Maria Oliveira',
+   362→    secondaryContactEmail: 'm.oliveira@brazilagro.br', website: 'https://www.brazilagro.com.br',
+   363→    lastAuditDate: '2024-05-12', nextAuditDate: '2024-11-12', contractExpiry: '2025-06-30',
+   364→    paymentTerms: 'Net 90', currency: 'BRL', leadTimeDays: 45, moq: 100000, capacityUtilization: 95,
+   365→    businessContinuityPlan: false, insuranceCoverage: '$35M Agricultural + Liability',
+   366→    sustainabilityCertifications: ['RSPO Certified', 'RTRS Member'], carbonFootprint: 78000,
+   367→    waterUsage: 1200000, wasteReduction: 12, diversityInclusion: 68, dataPrivacyCertified: false,
+   368→    cybersecurityRating: 'C-', lastUpdated: '2025-01-14', notes: 'EUDR under review due to deforestation concerns.',
+   369→    tags: ['agriculture', 'brazil', 'EUDR-watch'], status: 'under-review'
+   370→  }
+   371→]
+   372→
+   373→const alertsData: RiskAlert[] = [
+   374→  {
+   375→    id: 'ALT-001', type: 'compliance', severity: 'critical',
+   376→    title: 'UFLPA Entity List Match Detected',
+   377→    description: 'Shanghai Advanced Materials flagged for potential UFLPA Entity List connection.',
+   378→    supplier: 'Shanghai Advanced Materials Co.', region: 'Asia Pacific',
+   379→    timestamp: '2025-01-24T14:32:00Z', status: 'active',
+   380→    impact: 'Supply disruption, customs detention', probability: 85,
+   381→    mitigation: 'Engage third-party audit for traceability verification within 14 days',
+   382→    shapValues: [
+   383→      { feature: 'Geographic Risk Score', value: 0.35, color: '#ef4444' },
+   384→      { feature: 'Entity Connection Strength', value: 0.28, color: '#f97316' },
+   385→      { feature: 'Raw Material Origin', value: 0.22, color: '#eab308' },
+   386→      { feature: 'Transparency Score', value: 0.12, color: '#22c55e' },
+   387→      { feature: 'Historical Compliance', value: 0.03, color: '#3b82f6' }
+   388→    ]
+   389→  },
+   390→  {
+   391→    id: 'ALT-002', type: 'environmental', severity: 'warning',
+   392→    title: 'EUDR Deforestation Risk Identified',
+   393→    description: 'BrazilAgro soy sourcing area shows satellite-detected deforestation activity.',
+   394→    supplier: 'BrazilAgro Commodities SA', region: 'Latin America',
+   395→    timestamp: '2025-01-24T11:15:00Z', status: 'active',
+   396→    impact: 'EU market access restriction, fines up to 4% EU turnover', probability: 72,
+   397→    mitigation: 'Request geolocation data. Engage satellite monitoring service.',
+   398→    shapValues: [
+   399→      { feature: 'Satellite Detection Confidence', value: 0.42, color: '#ef4444' },
+   400→      { feature: 'Proximity to Protected Area', value: 0.25, color: '#f97316' },
+   401→      { feature: 'Supplier Traceability Score', value: 0.18, color: '#eab308' },
+   402→      { feature: 'Certification Coverage', value: 0.10, color: '#22c55e' },
+   403→      { feature: 'Historical Incidents', value: 0.05, color: '#3b82f6' }
+   404→    ]
+   405→  },
+   406→  {
+   407→    id: 'ALT-003', type: 'financial', severity: 'warning',
+   408→    title: 'Credit Rating Downgrade Warning',
+   409→    description: 'VietnamTextile credit outlook revised negative by Moody\'s.',
+   410→    supplier: 'VietnamTextile Group JSC', region: 'Asia Pacific',
+   411→    timestamp: '2025-01-23T16:45:00Z', status: 'investigating',
+   412→    impact: 'Payment default risk, supply disruption', probability: 45,
+   413→    mitigation: 'Reduce exposure 30%. Require letter of credit.'
+   414→  },
+   415→  {
+   416→    id: 'ALT-004', type: 'cybersecurity', severity: 'critical',
+   417→    title: 'Critical Vulnerability in Supplier Portal',
+   418→    description: 'SQL injection vulnerability detected in Shanghai Advanced portal.',
+   419→    supplier: 'Shanghai Advanced Materials Co.', region: 'Asia Pacific',
+   420→    timestamp: '2025-01-24T09:20:00Z', status: 'active',
+   421→    impact: 'Data breach risk, GDPR notification required', probability: 78,
+   422→    mitigation: 'Immediate portal suspension. Mandate security assessment.'
+   423→  }
+   424→]
+   425→
+   426→const riskTrendData = [
+   427→  { month: 'Aug', overallRisk: 42, geopolitical: 35, financial: 48, operational: 38, compliance: 52, environmental: 28 },
+   428→  { month: 'Sep', overallRisk: 45, geopolitical: 40, financial: 45, operational: 42, compliance: 55, environmental: 30 },
+   429→  { month: 'Oct', overallRisk: 48, geopolitical: 45, financial: 42, operational: 45, compliance: 58, environmental: 32 },
+   430→  { month: 'Nov', overallRisk: 52, geopolitical: 52, financial: 48, operational: 48, compliance: 62, environmental: 35 },
+   431→  { month: 'Dec', overallRisk: 55, geopolitical: 58, financial: 50, operational: 50, compliance: 65, environmental: 38 },
+   432→  { month: 'Jan', overallRisk: 58, geopolitical: 62, financial: 52, operational: 52, compliance: 68, environmental: 42 }
+   433→]
+   434→
+   435→const demandForecastData = [
+   436→  { month: 'Feb', actual: 12500, forecast: 12200, lower: 11000, upper: 13400, confidence: 92 },
+   437→  { month: 'Mar', actual: 13200, forecast: 13000, lower: 11700, upper: 14300, confidence: 89 },
+   438→  { month: 'Apr', actual: null, forecast: 14500, lower: 13050, upper: 15950, confidence: 87 },
+   439→  { month: 'May', actual: null, forecast: 15200, lower: 13680, upper: 16720, confidence: 84 },
+   440→  { month: 'Jun', actual: null, forecast: 14800, lower: 13320, upper: 16280, confidence: 81 },
+   441→  { month: 'Jul', actual: null, forecast: 16000, lower: 14400, upper: 17600, confidence: 78 }
+   442→]
+   443→
+   444→const riskByRegionData = [
+   445→  { region: 'Asia Pacific', highRisk: 28, mediumRisk: 35, lowRisk: 37 },
+   446→  { region: 'Europe', highRisk: 12, mediumRisk: 25, lowRisk: 63 },
+   447→  { region: 'North America', highRisk: 8, mediumRisk: 22, lowRisk: 70 },
+   448→  { region: 'Latin America', highRisk: 22, mediumRisk: 38, lowRisk: 40 }
+   449→]
+   450→
+   451→const complianceData: ComplianceItem[] = [
+   452→  {
+   453→    framework: 'UFLPA (Forced Labor Prevention)', status: 'partial', score: 72,
+   454→    lastAssessed: '2025-01-20', nextReview: '2025-04-20', owner: 'Compliance Team',
+   455→    notes: '2 suppliers under review. Enhanced due diligence ongoing.',
+   456→    requirements: [
+   457→      { name: 'Supply Chain Mapping', status: true, description: 'Complete Tier 1-3 visibility achieved', evidence: 'Supplier map v3.2' },
+   458→      { name: 'Forced Labor Screening', status: true, description: 'All suppliers screened against entity list', evidence: 'Screening report Jan 2025' },
+   459→      { name: 'Traceability Documentation', status: false, description: 'Raw material origin documentation pending for 3 suppliers' },
+   460→      { name: 'CBP Submission Readiness', status: true, description: 'Templates and processes established' },
+   461→      { name: 'Auditor Qualification', status: true, description: 'Third-party auditors certified and engaged' }
+   462→    ],
+   463→    documents: [
+   464→      { name: 'UFLPA Policy Document', type: 'PDF', uploaded: '2024-12-01', verified: true },
+   465→      { name: 'Supplier Due Diligence Report', type: 'XLSX', uploaded: '2025-01-15', verified: true },
+   466→      { name: 'Entity List Screening Results', type: 'PDF', uploaded: '2025-01-20', verified: false }
+   467→    ],
+   468→    findings: [
+   469→      { severity: 'HIGH', description: 'Shanghai Advanced Materials - High risk classification', remediation: 'Alternative sourcing by Q2 2025', deadline: '2025-03-31' },
+   470→      { severity: 'MEDIUM', description: 'Pacific Precision - Under review status', remediation: 'Complete enhanced diligence by Feb 28', deadline: '2025-02-28' }
+   471→    ]
+   472→  },
+   473→  {
+   474→    framework: 'EUDR (Deforestation-Free Products)', status: 'partial', score: 65,
+   475→    lastAssessed: '2025-01-18', nextReview: '2025-04-18', owner: 'Sustainability Team',
+   476→    notes: 'Forestry/agriculture suppliers require geolocation data submission.',
+   477→    requirements: [
+   478→      { name: 'Product Classification', status: true, description: 'All relevant products identified', evidence: 'Product scope document' },
+   479→      { name: 'Geolocation Data Collection', status: false, description: 'Waiting on BrazilAgro plot coordinates' },
+   480→      { name: 'Satellite Monitoring Setup', status: true, description: 'Contracted with monitoring provider' },
+   481→      { name: 'Due Diligence Statement', status: false, description: 'Draft pending final supplier data' },
+   482→      { name: 'Penalty Risk Assessment', status: true, description: 'Financial impact analysis completed' }
+   483→    ],
+   484→    documents: [
+   485→      { name: 'EUDR Compliance Framework', type: 'PDF', uploaded: '2024-11-15', verified: true },
+   486→      { name: 'Satellite Monitoring Contract', type: 'PDF', uploaded: '2024-12-20', verified: true }
+   487→    ],
+   488→    findings: [
+   489→      { severity: 'HIGH', description: 'BrazilAgro - Deforestation risk in sourcing area', remediation: 'Obtain geolocation data immediately', deadline: '2025-02-15' }
+   490→    ]
+   491→  },
+   492→  {
+   493→    framework: 'CSDDD (Corporate Sustainability Diligence)', status: 'non-compliant', score: 45,
+   494→    lastAssessed: '2025-01-10', nextReview: '2025-07-10', owner: 'Legal/ESG Team',
+   495→    notes: 'Phased implementation. Full compliance required by 2027 for large companies.',
+   496→    requirements: [
+   497→      { name: 'Environmental Due Diligence', status: false, description: 'Climate transition plan not formalized' },
+   498→      { name: 'Human Rights Assessment', status: true, description: 'Initial assessment completed' },
+   499→      { name: 'Stakeholder Engagement', status: false, description: 'Formal process not established' },
+   500→      { name: 'Grievance Mechanism', status: false, description: 'External reporting channel needed' },
+   501→      { name: 'Climate Transition Plan', status: false, description: 'SBTi-aligned plan in development' }
+   502→    ],
+   503→    documents: [],
+   504→    findings: [
+   505→      { severity: 'CRITICAL', description: 'Asian suppliers largely non-compliant with CSDDD requirements', remediation: 'Engage suppliers on compliance roadmap', deadline: '2025-06-30' }
+   506→    ]
+   507→  },
+   508→  {
+   509→    framework: 'SOX (Sarbanes-Oxley)', status: 'compliant', score: 95,
+   510→    lastAssessed: '2024-12-15', nextReview: '2025-06-15', owner: 'Finance/Audit',
+   511→    notes: 'US-listed entities fully compliant. Non-US suppliers exempt.',
+   512→    requirements: [
+   513→      { name: 'Internal Controls', status: true, description: 'ICFR framework maintained', evidence: 'SOX 404 assessment' },
+   514→      { name: 'Financial Reporting', status: true, description: 'Accurate and timely reporting' },
+   515→      { name: 'Auditor Independence', status: true, description: 'External auditor relationships documented' },
+   516→      { name: 'Document Retention', status: true, description: '7-year retention policy enforced' },
+   517→      { name: 'Whistleblower Program', status: true, description: 'Anonymous reporting channel active' }
+   518→    ],
+   519→    documents: [
+   520→      { name: 'SOX Compliance Attestation', type: 'PDF', uploaded: '2024-12-15', verified: true }
+   521→    ],
+   522→    findings: []
+   523→  },
+   524→  {
+   525→    framework: 'GDPR (Data Protection)', status: 'compliant', score: 88,
+   526→    lastAssessed: '2025-01-05', nextReview: '2025-07-05', owner: 'Data Privacy Office',
+   527→    notes: 'EU operations fully compliant. Non-EU suppliers require DPAs.',
+   528→    requirements: [
+   529→      { name: 'Lawful Basis Documentation', status: true, description: 'All data processing activities documented' },
+   530→      { name: 'Data Processing Agreements', status: false, description: 'DPAs pending with 4 Asian suppliers' },
+   531→      { name: 'Data Subject Rights Process', status: true, description: 'SAR response process established' },
+   532→      { name: 'Breach Notification Procedure', status: true, description: '72-hour notification process tested' },
+   533→      { name: 'DPO Appointment', status: true, description: 'DPO appointed and registered' }
+   534→    ],
+   535→    documents: [
+   536→      { name: 'GDPR Data Inventory', type: 'XLSX', uploaded: '2025-01-05', verified: true },
+   537→      { name: 'DPA Template Library', type: 'PDF', uploaded: '2024-11-20', verified: true }
+   538→    ],
+   539→    findings: [
+   540→      { severity: 'MEDIUM', description: 'Missing DPAs with Asian suppliers', remediation: 'Execute DPAs by Q1 2025', deadline: '2025-03-31' }
+   541→    ]
+   542→  },
+   543→  {
+   544→    framework: 'REACH (Chemical Regulation)', status: 'compliant', score: 91,
+   545→    lastAssessed: '2024-12-10', nextReview: '2025-06-10', owner: 'EHS/Regulatory',
+   546→    notes: 'Chemical suppliers well-managed. Authorization tracking active.',
+   547→    requirements: [
+   548→      { name: 'Substance Registration', status: true, description: 'All relevant substances >1t/yr registered' },
+   549→      { name: 'SVHC Monitoring', status: true, description: 'Candidate list updates tracked automatically' },
+   550→      { name: 'Authorization Management', status: true, description: '2 substances under authorization managed' },
+   551→      { name: 'SDS Distribution', status: true, description: 'Safety data sheets current and distributed' },
+   552→      { name: 'Restriction Compliance', status: true, description: 'No restricted substances in supply chain' }
+   553→    ],
+   554→    documents: [
+   555→      { name: 'REACH Registration Portfolio', type: 'PDF', uploaded: '2024-12-10', verified: true }
+   556→    ],
+   557→    findings: []
+   558→  }
+   559→]
+   560→
+   561→const riskRadarData = [
+   562→  { category: 'Geopolitical', score: 62, fullScore: 100 },
+   563→  { category: 'Financial', score: 52, fullScore: 100 },
+   564→  { category: 'Operational', score: 48, fullScore: 100 },
+   565→  { category: 'Compliance', score: 68, fullScore: 100 },
+   566→  { category: 'Environmental', score: 42, fullScore: 100 },
+   567→  { category: 'Cybersecurity', score: 55, fullScore: 100 },
+   568→  { category: 'Reputational', score: 38, fullScore: 100 },
+   569→  { category: 'Strategic', score: 45, fullScore: 100 }
+   570→]
+   571→
+   572→// ============== UTILITY COMPONENTS ==============
+   573→
+   574→function RequiredMarker({ required }: { required: boolean }) {
+   575→  return required ? (
+   576→    <span className="text-red-500 ml-0.5" title="Required field">*</span>
+   577→  ) : (
+   578→    <span className="text-gray-400 ml-0.5 text-xs" title="Optional field">(opt)</span>
+   579→  )
+   580→}
+   581→
+   582→function ExpandableText({ 
+   583→  title, 
+   584→  content, 
+   585→  maxLines = 3, 
+   586→  defaultOpen = false 
+   587→}: { 
+   588→  title?: string; 
+   589→  content: string; 
+   590→  maxLines?: number; 
+   591→  defaultOpen?: boolean;
+   592→}) {
+   593→  const [isOpen, setIsOpen] = useState(defaultOpen)
+   594→  
+   595→  return (
+   596→    <div className="border border-gray-700/50 rounded-lg overflow-hidden">
+   597→      <button
+   598→        onClick={() => setIsOpen(!isOpen)}
+   599→        className="w-full flex items-center justify-between p-3 bg-gray-800/30 hover:bg-gray-800/50 transition-colors"
+   600→      >
+   601→        <span className="text-sm font-medium text-gray-200">{title || 'Details'}</span>
+   602→        <ChevronDown className={`w-4 h-4 text-gray-400 transition-transform ${isOpen ? 'rotate-180' : ''}`} />
+   603→      </button>
+   604→      {isOpen && (
+   605→        <div className="p-3 text-sm text-gray-300 bg-gray-900/20 whitespace-pre-wrap">
+   606→          {content}
+   607→        </div>
+   608→      )}
+   609→    </div>
+   610→  )
+   611→}
+   612→
+   613→function SectionChatWidget({ portalName }: { portalName: string }) {
+   614→  const [isOpen, setIsOpen] = useState(false)
+   615→  const [messages, setMessages] = useState<ChatMessage[]>([
+   616→    {
+   617→      id: '1',
+   618→      role: 'assistant',
+   619→      content: `Hello! I'm your AI assistant for the ${portalName}. How can I help you today?`,
+   620→      timestamp: new Date(),
+   621→      portal: portalName
+   622→    }
+   623→  ])
+   624→  const [input, setInput] = useState('')
+   625→  const messagesEndRef = useRef<HTMLDivElement>(null)
+   626→
+   627→  useEffect(() => {
+   628→    messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' })
+   629→  }, [messages])
+   630→
+   631→  const handleSend = () => {
+   632→    if (!input.trim()) return
+   633→    
+   634→    const userMsg: ChatMessage = {
+   635→      id: Date.now().toString(),
+   636→      role: 'user',
+   637→      content: input,
+   638→      timestamp: new Date(),
+   639→      portal: portalName
+   640→    }
+   641→    
+   642→    setMessages(prev => [...prev, userMsg])
+   643→    setInput('')
+   644→    
+   645→    setTimeout(() => {
+   646→      const aiResponse: ChatMessage = {
+   647→        id: (Date.now() + 1).toString(),
+   648→        role: 'assistant',
+   649→        content: `I understand you're asking about "${input}". In the ${portalName}, I can help you analyze data, generate reports, or provide insights. Would you like me to elaborate on any specific aspect?`,
+   650→        timestamp: new Date(),
+   651→        portal: portalName
+   652→      }
+   653→      setMessages(prev => [...prev, aiResponse])
+   654→    }, 800)
+   655→  }
+   656→
+   657→  return (
+   658→    <>
+   659→      <Button
+   660→        variant="outline"
+   661→        size="sm"
+   662→        onClick={() => setIsOpen(!isOpen)}
+   663→        className="gap-2 border-cyan-500/30 hover:bg-cyan-500/10"
+   664→      >
+   665→        <MessageCircle className="w-4 h-4" />
+   666→        AI Assistant
+   667→        {isOpen ? <ChevronDown className="w-3 h-3" /> : <ChevronUp className="w-3 h-3" />}
+   668→      </Button>
+   669→      
+   670→      <Dialog open={isOpen} onOpenChange={setIsOpen}>
+   671→        <DialogContent className="sm:max-w-[480px] bg-gray-900 border-gray-700">
+   672→          <DialogHeader>
+   673→            <DialogTitle className="flex items-center gap-2">
+   674→              <Bot className="w-5 h-5 text-cyan-400" />
+   675→              {portalName} - AI Assistant
+   676→            </DialogTitle>
+   677→            <Description>Ask questions about this section</Description>
+   678→          </DialogHeader>
+   679→          
+   680→          <div className="h-[300px] overflow-y-auto space-y-3 p-3 bg-gray-950 rounded-lg mb-3">
+   681→            {messages.map((msg) => (
+   682→              <div key={msg.id} className={`flex ${msg.role === 'user' ? 'justify-end' : 'justify-start'}`}>
+   683→                <div className={`max-w-[80%] p-3 rounded-lg ${
+   684→                  msg.role === 'user' ? 'bg-cyan-600 text-white' : 'bg-gray-800 text-gray-200'
+   685→                }`}>
+   686→                  <p className="text-sm">{msg.content}</p>
+   687→                </div>
+   688→              </div>
+   689→            ))}
+   690→            <div ref={messagesEndRef} />
+   691→          </div>
+   692→          
+   693→          <div className="flex gap-2">
+   694→            <Input
+   695→              value={input}
+   696→              onChange={(e) => setInput(e.target.value)}
+   697→              onKeyDown={(e) => e.key === 'Enter' && handleSend()}
+   698→              placeholder="Ask about this section..."
+   699→              className="bg-gray-800 border-gray-600"
+   700→            />
+   701→            <Button onClick={handleSend} size="icon" className="bg-cyan-600 hover:bg-cyan-700">
+   702→              <Send className="w-4 h-4" />
+   703→            </Button>
+   704→          </div>
+   705→          
+   706→          <div className="flex items-center gap-3 pt-2 border-t border-gray-700">
+   707→            <Button variant="ghost" size="sm" className="text-gray-400 gap-1">
+   708→              <Mail className="w-3 h-3" /> Email Support
+   709→            </Button>
+   710→            <span className="text-xs text-gray-500">|</span>
+   711→            <span className="text-xs text-gray-500">Response time: &lt;2 min</span>
+   712→          </div>
+   713→        </DialogContent>
+   714→      </Dialog>
+   715→    </>
+   716→  )
+   717→}
+   718→
+   719→function RiskBadge({ level }: { level: string }) {
+   720→  const config = {
+   721→    low: { color: 'bg-green-500/20 text-green-400 border-green-500/30', icon: CheckCircle2 },
+   722→    medium: { color: 'bg-yellow-500/20 text-yellow-400 border-yellow-500/30', icon: AlertTriangle },
+   723→    high: { color: 'bg-orange-500/20 text-orange-400 border-orange-500/30', icon: AlertTriangle },
+   724→    critical: { color: 'bg-red-500/20 text-red-400 border-red-500/30', icon: XCircle }
+   725→  }
+   726→  const { color, icon: Icon } = config[level as keyof typeof config] || config.medium
+   727→  
+   728→  return (
+   729→    <Badge variant="outline" className={`${color} gap-1`}>
+   730→      <Icon className="w-3 h-3" />
+   731→      {level.toUpperCase()}
+   732→    </Badge>
+   733→  )
+   734→}
+   735→
+   736→function StatusBadge({ status }: { status: string }) {
+   737→  const config: Record<string, string> = {
+   738→    active: 'bg-green-500/20 text-green-400 border-green-500/30',
+   739→    inactive: 'bg-gray-500/20 text-gray-400 border-gray-500/30',
+   740→    'under-review': 'bg-yellow-500/20 text-yellow-400 border-yellow-500/30',
+   741→    suspended: 'bg-red-500/20 text-red-400 border-red-500/30',
+   742→    compliant: 'bg-green-500/20 text-green-400 border-green-500/30',
+   743→    partial: 'bg-yellow-500/20 text-yellow-400 border-yellow-500/30',
+   744→    'non-compliant': 'bg-red-500/20 text-red-400 border-red-500/30',
+   745→    'pending-review': 'bg-blue-500/20 text-blue-400 border-blue-500/30',
+   746→    exempt: 'bg-gray-500/20 text-gray-400 border-gray-500/30'
+   747→  }
+   748→  
+   749→  return (
+   750→    <Badge variant="outline" className={`${config[status] || config['pending-review']}`}>
+   751→      {status.replace('-', ' ').toUpperCase()}
+   752→    </Badge>
+   753→  )
+   754→}
+   755→
+   756→// ============== MAIN APPLICATION ==============
+   757→
+   758→export default function CommandCenter() {
+   759→  const [activeTab, setActiveTab] = useState('dashboard')
+   760→  const [selectedSupplier, setSelectedSupplier] = useState<Supplier | null>(null)
+   761→  const [searchTerm, setSearchTerm] = useState('')
+   762→  const [regionFilter, setRegionFilter] = useState('all')
+   763→  const [tierFilter, setTierFilter] = useState('all')
+   764→  const [riskFilter, setRiskFilter] = useState('all')
+   765→  const [categoryFilter, setCategoryFilter] = useState('all')
+   766→  const [showShapModal, setShowShapModal] = useState<RiskAlert | null>(null)
+   767→  const [isStreaming, setIsStreaming] = useState(true)
+   768→  const [streamedAlerts, setStreamedAlerts] = useState<RiskAlert[]>([])
+   769→
+   770→  // Simulate alert streaming
+   771→  useEffect(() => {
+   772→    if (!isStreaming) return
+   773→    let index = 0
+   774→    const interval = setInterval(() => {
+   775→      if (index < alertsData.length) {
+   776→        setStreamedAlerts(prev => [...prev, alertsData[index]])
+   777→        index++
+   778→      } else {
+   779→        clearInterval(interval)
+   780→      }
+   781→    }, 1500)
+   782→    return () => clearInterval(interval)
+   783→  }, [isStreaming])
+   784→
+   785→  const filteredSuppliers = suppliersData.filter(s => {
+   786→    const matchSearch = searchTerm === '' || 
+   787→      s.companyName.toLowerCase().includes(searchTerm.toLowerCase()) ||
+   788→      s.id.toLowerCase().includes(searchTerm.toLowerCase()) ||
+   789→      s.country.toLowerCase().includes(searchTerm.toLowerCase())
+   790→    const matchRegion = regionFilter === 'all' || s.region === regionFilter
+   791→    const matchTier = tierFilter === 'all' || s.tier === tierFilter
+   792→    const matchRisk = riskFilter === 'all' || s.riskLevel === riskFilter
+   793→    const matchCategory = categoryFilter === 'all' || s.category === categoryFilter
+   794→    return matchSearch && matchRegion && matchTier && matchRisk && matchCategory
+   795→  })
+   796→
+   797→  const totalSuppliers = suppliersData.length
+   798→  const highRiskCount = suppliersData.filter(s => s.riskLevel === 'high' || s.riskLevel === 'critical').length
+   799→  const avgEsgScore = Math.round(suppliersData.reduce((acc, s) => acc + s.esgScore, 0) / suppliersData.length)
+   800→  const compliantCount = suppliersData.filter(s => s.uflpaStatus === 'Compliant').length
+   801→
+   802→  return (
+   803→    <TooltipProvider>
+   804→      <div className="min-h-screen bg-gradient-to-br from-gray-950 via-gray-900 to-black text-white">
+   805→        {/* Header */}
+   806→        <header className="sticky top-0 z-50 backdrop-blur-xl bg-gray-950/80 border-b border-gray-800/50">
+   807→          <div className="max-w-[1800px] mx-auto px-4 py-3 flex items-center justify-between">
+   808→            <div className="flex items-center gap-3">
+   809→              <div className="relative">
+   810→                <ShieldAlert className="w-8 h-8 text-cyan-400" />
+   811→                <div className="absolute inset-0 bg-cyan-400/20 blur-xl rounded-full" />
+   812→              </div>
+   813→              <div>
+   814→                <h1 className="text-xl font-bold bg-gradient-to-r from-cyan-400 to-blue-500 bg-clip-text text-transparent">
+   815→                  Supply Chain Command Center
+   816→                </h1>
+   817→                <p className="text-xs text-gray-400">AI-Powered Risk Intelligence Platform</p>
+   818→              </div>
+   819→            </div>
+   820→            
+   821→            <div className="flex items-center gap-4">
+   822→              <div className="hidden md:flex items-center gap-6 text-sm">
+   823→                <div className="flex items-center gap-2">
+   824→                  <Building2 className="w-4 h-4 text-cyan-400" />
+   825→                  <span>{totalSuppliers} Suppliers</span>
+   826→                </div>
+   827→                <div className="flex items-center gap-2">
+   828→                  <AlertTriangle className={`w-4 h-4 ${highRiskCount > 0 ? 'text-red-400' : 'text-green-400'}`} />
+   829→                  <span>{highRiskCount} High Risk</span>
+   830→                </div>
+   831→                <div className="flex items-center gap-2">
+   832→                  <Leaf className="w-4 h-4 text-green-400" />
+   833→                  <span>ESG: {avgEsgScore}</span>
+   834→                </div>
+   835→              </div>
+   836→              
+   837→              <div className="flex items-center gap-2">
+   838→                <Button variant="ghost" size="icon" className="relative">
+   839→                  <Bell className="w-5 h-5" />
+   840→                  <span className="absolute -top-1 -right-1 w-4 h-4 bg-red-500 rounded-full text-[10px] flex items-center justify-center">
+   841→                    {alertsData.filter(a => a.status === 'active').length}
+   842→                  </span>
+   843→                </Button>
+   844→                <Button variant="ghost" size="icon">
+   845→                  <Settings className="w-5 h-5" />
+   846→                </Button>
+   847→              </div>
+   848→            </div>
+   849→          </div>
+   850→        </header>
+   851→
+   852→        {/* Main Content */}
+   853→        <main className="max-w-[1800px] mx-auto p-4">
+   854→          <Tabs value={activeTab} onValueChange={setActiveTab} className="space-y-6">
+   855→            {/* Navigation Tabs */}
+   856→            <TabsList className="grid w-full grid-cols-5 bg-gray-900/80 border border-gray-800/50 p-1 rounded-xl">
+   857→              <TabsTrigger value="dashboard" className="data-[state=active]:bg-cyan-600 data-[state=active]:text-white gap-2">
+   858→                <LayoutDashboard className="w-4 h-4" />
+   859→                <span className="hidden sm:inline">Dashboard</span>
+   860→              </TabsTrigger>
+   861→              <TabsTrigger value="directory" className="data-[state=active]:bg-cyan-600 data-[state=active]:text-white gap-2">
+   862→                <DatabaseZap className="w-4 h-4" />
+   863→                <span className="hidden sm:inline">Supply Directory</span>
+   864→              </TabsTrigger>
+   865→              <TabsTrigger value="intelligence" className="data-[state=active]:bg-cyan-600 data-[state=active]:text-white gap-2">
+   866→                <Brain className="w-4 h-4" />
+   867→                <span className="hidden sm:inline">Risk Intelligence</span>
+   868→              </TabsTrigger>
+   869→              <TabsTrigger value="forecasting" className="data-[state=active]:bg-cyan-600 data-[state=active]:text-white gap-2">
+   870→                <LineChart className="w-4 h-4" />
+   871→                <span className="hidden sm:inline">Demand Forecast</span>
+   872→              </TabsTrigger>
+   873→              <TabsTrigger value="compliance" className="data-[state=active]:bg-cyan-600 data-[state=active]:text-white gap-2">
+   874→                <Scale className="w-4 h-4" />
+   875→                <span className="hidden sm:inline">Compliance</span>
+   876→              </TabsTrigger>
+   877→            </TabsList>
+   878→
+   879→            {/* ==================== DASHBOARD TAB ==================== */}
+   880→            <TabsContent value="dashboard" className="space-y-6">
+   881→              {/* KPI Cards */}
+   882→              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+   883→                <Card className="bg-gradient-to-br from-gray-900 to-gray-800 border-gray-700/50">
+   884→                  <CardContent className="p-6">
+   885→                    <div className="flex items-center justify-between">
+   886→                      <div>
+   887→                        <p className="text-sm text-gray-400">Total Suppliers</p>
+   888→                        <p className="text-3xl font-bold mt-1">{totalSuppliers}</p>
+   889→                        <p className="text-xs text-green-400 mt-1 flex items-center gap-1">
+   890→                          <TrendingUp className="w-3 h-3" /> +3 this quarter
+   891→                        </p>
+   892→                      </div>
+   893→                      <div className="p-3 bg-cyan-500/10 rounded-lg">
+   894→                        <Users className="w-6 h-6 text-cyan-400" />
+   895→                      </div>
+   896→                    </div>
+   897→                  </CardContent>
+   898→                </Card>
+   899→
+   900→                <Card className="bg-gradient-to-br from-gray-900 to-gray-800 border-gray-700/50">
+   901→                  <CardContent className="p-6">
+   902→                    <div className="flex items-center justify-between">
+   903→                      <div>
+   904→                        <p className="text-sm text-gray-400">High Risk Suppliers</p>
+   905→                        <p className="text-3xl font-bold mt-1 text-red-400">{highRiskCount}</p>
+   906→                        <p className="text-xs text-red-400 mt-1 flex items-center gap-1">
+   907→                          <TrendingDown className="w-3 h-3" /> Requires attention
+   908→                        </p>
+   909→                      </div>
+   910→                      <div className="p-3 bg-red-500/10 rounded-lg">
+   911→                        <AlertTriangle className="w-6 h-6 text-red-400" />
+   912→                      </div>
+   913→                    </div>
+   914→                  </CardContent>
+   915→                </Card>
+   916→
+   917→                <Card className="bg-gradient-to-br from-gray-900 to-gray-800 border-gray-700/50">
+   918→                  <CardContent className="p-6">
+   919→                    <div className="flex items-center justify-between">
+   920→                      <div>
+   921→                        <p className="text-sm text-gray-400">Avg ESG Score</p>
+   922→                        <p className="text-3xl font-bold mt-1 text-green-400">{avgEsgScore}</p>
+   923→                        <p className="text-xs text-green-400 mt-1 flex items-center gap-1">
+   924→                          <TrendingUp className="w-3 h-3" /> +5 vs last year
+   925→                        </p>
+   926→                      </div>
+   927→                      <div className="p-3 bg-green-500/10 rounded-lg">
+   928→                        <Leaf className="w-6 h-6 text-green-400" />
+   929→                      </div>
+   930→                    </div>
+   931→                  </CardContent>
+   932→                </Card>
+   933→
+   934→                <Card className="bg-gradient-to-br from-gray-900 to-gray-800 border-gray-700/50">
+   935→                  <CardContent className="p-6">
+   936→                    <div className="flex items-center justify-between">
+   937→                      <div>
+   938→                        <p className="text-sm text-gray-400">UFLPA Compliant</p>
+   939→                        <p className="text-3xl font-bold mt-1">{compliantCount}/{totalSuppliers}</p>
+   940→                        <p className="text-xs text-yellow-400 mt-1 flex items-center gap-1">
+   941→                          <Minus className="w-3 h-3" /> {totalSuppliers - compliantCount} under review
+   942→                        </p>
+   943→                      </div>
+   944→                      <div className="p-3 bg-yellow-500/10 rounded-lg">
+   945→                        <Gavel className="w-6 h-6 text-yellow-400" />
+   946→                      </div>
+   947→                    </div>
+   948→                  </CardContent>
+   949→                </Card>
+   950→              </div>
+   951→
+   952→              {/* Charts Row */}
+   953→              <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+   954→                {/* Risk Trend Chart */}
+   955→                <Card className="bg-gray-900/80 border-gray-700/50">
+   956→                  <CardHeader className="flex flex-row items-center justify-between pb-2">
+   957→                    <div>
+   958→                      <CardTitle className="text-lg">Risk Trend Analysis</CardTitle>
+   959→                      <CardDescription>6-month risk trajectory by category</CardDescription>
+   960→                    </div>
+   961→                    <SectionChatWidget portalName="Dashboard Analytics" />
+   962→                  </CardHeader>
+   963→                  <CardContent>
+   964→                    <ResponsiveContainer width="100%" height={280}>
+   965→                      <AreaChart data={riskTrendData}>
+   966→                        <defs>
+   967→                          <linearGradient id="colorOverall" x1="0" y1="0" x2="0" y2="1">
+   968→                            <stop offset="5%" stopColor="#06b6d4" stopOpacity={0.3}/>
+   969→                            <stop offset="95%" stopColor="#06b6d4" stopOpacity={0}/>
+   970→                          </linearGradient>
+   971→                        </defs>
+   972→                        <CartesianGrid strokeDasharray="3 3" stroke="#374151" />
+   973→                        <XAxis dataKey="month" stroke="#9ca3af" fontSize={12} />
+   974→                        <YAxis stroke="#9ca3af" fontSize={12} />
+   975→                        <RechartsTooltip 
+   976→                          contentStyle={{ backgroundColor: '#1f2937', border: '1px solid #374151', borderRadius: '8px' }}
+   977→                        />
+   978→                        <Area type="monotone" dataKey="overallRisk" stroke="#06b6d4" fill="url(#colorOverall)" strokeWidth={2} name="Overall Risk" />
+   979→                        <Line type="monotone" dataKey="compliance" stroke="#ef4444" strokeWidth={2} dot={false} name="Compliance Risk" />
+   980→                        <Line type="monotone" dataKey="geopolitical" stroke="#f97316" strokeWidth={2} dot={false} name="Geopolitical" />
+   981→                        <Legend />
+   982→                      </AreaChart>
+   983→                    </ResponsiveContainer>
+   984→                  </CardContent>
+   985→                </Card>
+   986→
+   987→                {/* Risk by Region */}
+   988→                <Card className="bg-gray-900/80 border-gray-700/50">
+   989→                  <CardHeader className="flex flex-row items-center justify-between pb-2">
+   990→                    <div>
+   991→                      <CardTitle className="text-lg">Risk Distribution by Region</CardTitle>
+   992→                      <CardDescription>Supplier risk concentration analysis</CardDescription>
+   993→                    </div>
+   994→                    <SectionChatWidget portalName="Regional Risk Analysis" />
+   995→                  </CardHeader>
+   996→                  <CardContent>
+   997→                    <ResponsiveContainer width="100%" height={280}>
+   998→                      <BarChart data={riskByRegionData}>
+   999→                        <CartesianGrid strokeDasharray="3 3" stroke="#374151" />
+  1000→                        <XAxis dataKey="region" stroke="#9ca3af" fontSize={12} />
+  1001→                        <YAxis stroke="#9ca3af" fontSize={12} />
+  1002→                        <RechartsTooltip 
+  1003→                          contentStyle={{ backgroundColor: '#1f2937', border: '1px solid #374151', borderRadius: '8px' }}
+  1004→                        />
+  1005→                        <Bar dataKey="highRisk" stackId="a" fill="#ef4444" name="High Risk" />
+  1006→                        <Bar dataKey="mediumRisk" stackId="a" fill="#f97316" name="Medium Risk" />
+  1007→                        <Bar dataKey="lowRisk" stackId="a" fill="#22c55e" name="Low Risk" />
+  1008→                        <Legend />
+  1009→                      </BarChart>
+  1010→                    </ResponsiveContainer>
+  1011→                  </CardContent>
+  1012→                </Card>
+  1013→              </div>
+  1014→
+  1015→              {/* Live Alerts Feed */}
+  1016→              <Card className="bg-gray-900/80 border-gray-700/50">
+  1017→                <CardHeader className="flex flex-row items-center justify-between">
+  1018→                  <div>
+  1019→                    <CardTitle className="text-lg flex items-center gap-2">
+  1020→                      <Activity className="w-5 h-5 text-cyan-400 animate-pulse" />
+  1021→                      Live Risk Alerts
+  1022→                    </CardTitle>
+  1023→                    <CardDescription>Real-time threat intelligence stream</CardDescription>
+  1024→                  </div>
+  1025→                  <div className="flex items-center gap-2">
+  1026→                    <Button
+  1027→                      variant="outline"
+  1028→                      size="sm"
+  1029→                      onClick={() => {
+  1030→                        setIsStreaming(!isStreaming)
+  1031→                        if (!isStreaming) setStreamedAlerts([])
+  1032→                      }}
+  1033→                      className="gap-1"
+  1034→                    >
+  1035→                      {isStreaming ? <Pause className="w-3 h-3" /> : <Play className="w-3 h-3" />}
+  1036→                      {isStreaming ? 'Pause' : 'Resume'}
+  1037→                    </Button>
+  1038→                    <SectionChatWidget portalName="Alert Intelligence" />
+  1039→                  </div>
+  1040→                </CardHeader>
+  1041→                <CardContent>
+  1042→                  <div className="space-y-3 max-h-[400px] overflow-y-auto pr-2">
+  1043→                    {streamedAlerts.length === 0 && isStreaming && (
+  1044→                      <div className="text-center py-8 text-gray-400">
+  1045→                        <RefreshCw className="w-8 h-8 mx-auto mb-2 animate-spin" />
+  1046→                        <p>Streaming live alerts...</p>
+  1047→                      </div>
+  1048→                    )}
+  1049→                    {streamedAlerts.map((alert) => (
+  1050→                      <div
+  1051→                        key={alert.id}
+  1052→                        className={`p-4 rounded-lg border ${
+  1053→                          alert.severity === 'critical' ? 'bg-red-950/30 border-red-500/30' :
+  1054→                          alert.severity === 'warning' ? 'bg-yellow-950/20 border-yellow-500/30' :
+  1055→                          'bg-gray-800/50 border-gray-700/50'
+  1056→                        }`}
+  1057→                      >
+  1058→                        <div className="flex items-start justify-between">
+  1059→                          <div className="flex-1">
+  1060→                            <div className="flex items-center gap-2 mb-1">
+  1061→                              <Badge variant="outline" className={
+  1062→                                alert.severity === 'critical' ? 'border-red-500 text-red-400' :
+  1063→                                alert.severity === 'warning' ? 'border-yellow-500 text-yellow-400' :
+  1064→                                'border-blue-500 text-blue-400'
+  1065→                              }>
+  1066→                                {alert.severity.toUpperCase()}
+  1067→                              </Badge>
+  1068→                              <Badge variant="secondary" className="text-xs">
+  1069→                                {alert.type}
+  1070→                              </Badge>
+  1071→                            </div>
+  1072→                            <h4 className="font-medium text-white">{alert.title}</h4>
+  1073→                            <p className="text-sm text-gray-400 mt-1">{alert.description}</p>
+  1074→                            <div className="flex items-center gap-4 mt-2 text-xs text-gray-500">
+  1075→                              <span className="flex items-center gap-1"><Building2 className="w-3 h-3" />{alert.supplier}</span>
+  1076→                              <span className="flex items-center gap-1"><Globe className="w-3 h-3" />{alert.region}</span>
+  1077→                              <span className="flex items-center gap-1"><Clock className="w-3 h-3" />{new Date(alert.timestamp).toLocaleString()}</span>
+  1078→                            </div>
+  1079→                          </div>
+  1080→                          <div className="flex items-center gap-2 ml-4">
+  1081→                            {alert.shapValues && (
+  1082→                              <Button
+  1083→                                variant="outline"
+  1084→                                size="sm"
+  1085→                                onClick={() => setShowShapModal(alert)}
+  1086→                                className="text-cyan-400 border-cyan-500/30 hover:bg-cyan-500/10"
+  1087→                              >
+  1088→                                <Brain className="w-3 h-3 mr-1" /> SHAP
+  1089→                              </Button>
+  1090→                            )}
+  1091→                          </div>
+  1092→                        </div>
+  1093→                        
+  1094→                        <ExpandableText title="Impact & Mitigation" content={`Impact: ${alert.impact}\n\nProbability: ${alert.probability}%\n\nMitigation: ${alert.mitigation}`} />
+  1095→                      </div>
+  1096→                    ))}
+  1097→                  </div>
+  1098→                </CardContent>
+  1099→              </Card>
+  1100→            </TabsContent>
+  1101→
+  1102→            {/* ==================== SUPPLY DIRECTORY TAB ==================== */}
+  1103→            <TabsContent value="directory" className="space-y-6">
+  1104→              {/* Filters Section */}
+  1105→              <Card className="bg-gray-900/80 border-gray-700/50">
+  1106→                <CardHeader className="pb-4">
+  1107→                  <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-4">
+  1108→                    <div>
+  1109→                      <CardTitle className="text-lg flex items-center gap-2">
+  1110→                        <DatabaseZap className="w-5 h-5 text-cyan-400" />
+  1111→                        Supplier Directory
+  1112→                      </CardTitle>
+  1113→                      <CardDescription>Complete supplier database with advanced filtering</CardDescription>
+  1114→                    </div>
+  1115→                    <div className="flex items-center gap-2">
+  1116→                      <SectionChatWidget portalName="Supply Directory" />
+  1117→                      <Button className="bg-cyan-600 hover:bg-cyan-700 gap-1">
+  1118→                        <Plus className="w-4 h-4" /> Add Supplier
+  1119→                      </Button>
+  1120→                    </div>
+  1121→                  </div>
+  1122→                </CardHeader>
+  1123→                <CardContent>
+  1124→                  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-4">
+  1125→                    <div className="space-y-1">
+  1126→                      <Label className="text-xs text-gray-400 flex items-center gap-1">
+  1127→                        Search <RequiredMarker required={true} />
+  1128→                      </Label>
+  1129→                      <div className="relative">
+  1130→                        <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
+  1131→                        <Input
+  1132→                          placeholder="Name, ID, Country..."
+  1133→                          value={searchTerm}
+  1134→                          onChange={(e) => setSearchTerm(e.target.value)}
+  1135→                          className="pl-9 bg-gray-800 border-gray-600"
+  1136→                        />
+  1137→                      </div>
+  1138→                    </div>
+  1139→                    
+  1140→                    <div className="space-y-1">
+  1141→                      <Label className="text-xs text-gray-400 flex items-center gap-1">
+  1142→                        Region <RequiredMarker required={false} />
+  1143→                      </Label>
+  1144→                      <Select value={regionFilter} onValueChange={setRegionFilter}>
+  1145→                        <SelectTrigger className="bg-gray-800 border-gray-600">
+  1146→                          <SelectValue placeholder="All Regions" />
+  1147→                        </SelectTrigger>
+  1148→                        <SelectContent>
+  1149→                          <SelectItem value="all">All Regions</SelectItem>
+  1150→                          <SelectItem value="Europe">Europe</SelectItem>
+  1151→                          <SelectItem value="Asia Pacific">Asia Pacific</SelectItem>
+  1152→                          <SelectItem value="North America">North America</SelectItem>
+  1153→                          <SelectItem value="Latin America">Latin America</SelectItem>
+  1154→                          <SelectItem value="Middle East">Middle East</SelectItem>
+  1155→                          <SelectItem value="Africa">Africa</SelectItem>
+  1156→                        </SelectContent>
+  1157→                      </Select>
+  1158→                    </div>
+  1159→                    
+  1160→                    <div className="space-y-1">
+  1161→                      <Label className="text-xs text-gray-400 flex items-center gap-1">
+  1162→                        Tier <RequiredMarker required={false} />
+  1163→                      </Label>
+  1164→                      <Select value={tierFilter} onValueChange={setTierFilter}>
+  1165→                        <SelectTrigger className="bg-gray-800 border-gray-600">
+  1166→                          <SelectValue placeholder="All Tiers" />
+  1167→                        </SelectTrigger>
+  1168→                        <SelectContent>
+  1169→                          <SelectItem value="all">All Tiers</SelectItem>
+  1170→                          <SelectItem value="Tier 1">Tier 1 - Strategic</SelectItem>
+  1171→                          <SelectItem value="Tier 2">Tier 2 - Preferred</SelectItem>
+  1172→                          <SelectItem value="Tier 3">Tier 3 - Approved</SelectItem>
+  1173→                          <SelectItem value="Tier 4">Tier 4 - Limited</SelectItem>
+  1174→                        </SelectContent>
+  1175→                      </Select>
+  1176→                    </div>
+  1177→                    
+  1178→                    <div className="space-y-1">
+  1179→                      <Label className="text-xs text-gray-400 flex items-center gap-1">
+  1180→                        Risk Level <RequiredMarker required={false} />
+  1181→                      </Label>
+  1182→                      <Select value={riskFilter} onValueChange={setRiskFilter}>
+  1183→                        <SelectTrigger className="bg-gray-800 border-gray-600">
+  1184→                          <SelectValue placeholder="All Levels" />
+  1185→                        </SelectTrigger>
+  1186→                        <SelectContent>
+  1187→                          <SelectItem value="all">All Levels</SelectItem>
+  1188→                          <SelectItem value="low">Low Risk</SelectItem>
+  1189→                          <SelectItem value="medium">Medium Risk</SelectItem>
+  1190→                          <SelectItem value="high">High Risk</SelectItem>
+  1191→                          <SelectItem value="critical">Critical Risk</SelectItem>
+  1192→                        </SelectContent>
+  1193→                      </Select>
+  1194→                    </div>
+  1195→                    
+  1196→                    <div className="space-y-1">
+  1197→                      <Label className="text-xs text-gray-400 flex items-center gap-1">
+  1198→                        Category <RequiredMarker required={false} />
+  1199→                      </Label>
+  1200→                      <Select value={categoryFilter} onValueChange={setCategoryFilter}>
+  1201→                        <SelectTrigger className="bg-gray-800 border-gray-600">
+  1202→                          <SelectValue placeholder="All Categories" />
+  1203→                        </SelectTrigger>
+  1204→                        <SelectContent>
+  1205→                          <SelectItem value="all">All Categories</SelectItem>
+  1206→                          <SelectItem value="Electronics Manufacturing">Electronics Manufacturing</SelectItem>
+  1207→                          <SelectItem value="Precision Manufacturing">Precision Manufacturing</SelectItem>
+  1208→                          <SelectItem value="Chemicals">Chemicals</SelectItem>
+  1209→                          <SelectItem value="Advanced Materials">Advanced Materials</SelectItem>
+  1210→                          <SelectItem value="Logistics & Distribution">Logistics & Distribution</SelectItem>
+  1211→                          <SelectItem value="Renewable Energy">Renewable Energy</SelectItem>
+  1212→                          <SelectItem value="Electronics Assembly">Electronics Assembly</SelectItem>
+  1213→                          <SelectItem value="Agriculture & Forestry">Agriculture & Forestry</SelectItem>
+  1214→                        </SelectContent>
+  1215→                      </Select>
+  1216→                    </div>
+  1217→                  </div>
+  1218→                  
+  1219→                  <div className="mt-4 flex items-center justify-between text-sm">
+  1220→                    <span className="text-gray-400">
+  1221→                      Showing <span className="text-white font-medium">{filteredSuppliers.length}</span> of {totalSuppliers} suppliers
+  1222→                    </span>
+  1223→                    <div className="flex items-center gap-2">
+  1224→                      <Button variant="ghost" size="sm" className="text-gray-400">
+  1225→                        <Download className="w-4 h-4 mr-1" /> Export
+  1226→                      </Button>
+  1227→                      <Button variant="ghost" size="sm" className="text-gray-400">
+  1228→                        <Printer className="w-4 h-4 mr-1" /> Print
+  1229→                      </Button>
+  1230→                    </div>
+  1231→                  </div>
+  1232→                </CardContent>
+  1233→              </Card>
+  1234→
+  1235→              {/* Supplier Table */}
+  1236→              <Card className="bg-gray-900/80 border-gray-700/50">
+  1237→                <CardContent className="p-0">
+  1238→                  <Table>
+  1239→                    <TableHeader>
+  1240→                      <TableRow className="border-gray-700/50 hover:bg-transparent">
+  1241→                        <TableHead className="text-gray-300">Supplier</TableHead>
+  1242→                        <TableHead className="text-gray-300">Region</TableHead>
+  1243→                        <TableHead className="text-gray-300">Tier</TableHead>
+  1244→                        <TableHead className="text-gray-300">Category</TableHead>
+  1245→                        <TableHead className="text-gray-300">Risk</TableHead>
+  1246→                        <TableHead className="text-gray-300">ESG</TableHead>
+  1247→                        <TableHead className="text-gray-300">UFLPA</TableHead>
+  1248→                        <TableHead className="text-gray-300">Status</TableHead>
+  1249→                        <TableHead className="text-right">Actions</TableHead>
+  1250→                      </TableRow>
+  1251→                    </TableHeader>
+  1252→                    <TableBody>
+  1253→                      {filteredSuppliers.map((supplier) => (
+  1254→                        <TableRow 
+  1255→                          key={supplier.id} 
+  1256→                          className="border-gray-700/30 cursor-pointer hover:bg-gray-800/50"
+  1257→                          onClick={() => setSelectedSupplier(supplier)}
+  1258→                        >
+  1259→                          <TableCell>
+  1260→                            <div>
+  1261→                              <p className="font-medium text-white">{supplier.companyName}</p>
+  1262→                              <p className="text-xs text-gray-500">{supplier.id}</p>
+  1263→                            </div>
+  1264→                          </TableCell>
+  1265→                          <TableCell>
+  1266→                            <span className="flex items-center gap-1 text-sm">
+  1267→                              <Globe2 className="w-3 h-3 text-gray-400" />
+  1268→                              {supplier.region}
+  1269→                            </span>
+  1270→                          </TableCell>
+  1271→                          <TableCell>
+  1272→                            <Badge variant="secondary">{supplier.tier}</Badge>
+  1273→                          </TableCell>
+  1274→                          <TableCell className="max-w-[200px] truncate text-sm">
+  1275→                            {supplier.category}
+  1276→                          </TableCell>
+  1277→                          <TableCell>
+  1278→                            <RiskBadge level={supplier.riskLevel} />
+  1279→                          </TableCell>
+  1280→                          <TableCell>
+  1281→                            <div className="flex items-center gap-2">
+  1282→                              <Progress value={supplier.esgScore} className="w-16 h-2" />
+  1283→                              <span className="text-sm text-gray-300">{supplier.esgScore}</span>
+  1284→                            </div>
+  1285→                          </TableCell>
+  1286→                          <TableCell>
+  1287→                            <Badge variant="outline" className={
+  1288→                              supplier.uflpaStatus === 'Compliant' ? 'border-green-500 text-green-400' :
+  1289→                              supplier.uflpaStatus === 'High Risk' ? 'border-red-500 text-red-400' :
+  1290→                              'border-yellow-500 text-yellow-400'
+  1291→                            }>
+  1292→                              {supplier.uflpaStatus}
+  1293→                            </Badge>
+  1294→                          </TableCell>
+  1295→                          <TableCell>
+  1296→                            <StatusBadge status={supplier.status} />
+  1297→                          </TableCell>
+  1298→                          <TableCell className="text-right">
+  1299→                            <div className="flex items-center justify-end gap-1">
+  1300→                              <Button variant="ghost" size="icon" className="h-8 w-8">
+  1301→                                <Eye className="w-4 h-4" />
+  1302→                              </Button>
+  1303→                              <Button variant="ghost" size="icon" className="h-8 w-8">
+  1304→                                <Edit3 className="w-4 h-4" />
+  1305→                              </Button>
+  1306→                              <Button variant="ghost" size="icon" className="h-8 w-8 text-gray-400 hover:text-cyan-400">
+  1307→                                <Mail className="w-4 h-4" />
+  1308→                              </Button>
+  1309→                            </div>
+  1310→                          </TableCell>
+  1311→                        </TableRow>
+  1312→                      ))}
+  1313→                    </TableBody>
+  1314→                  </Table>
+  1315→                </CardContent>
+  1316→              </Card>
+  1317→            </TabsContent>
+  1318→
+  1319→            {/* ==================== RISK INTELLIGENCE TAB ==================== */}
+  1320→            <TabsContent value="intelligence" className="space-y-6">
+  1321→              <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+  1322→                {/* Risk Radar Chart */}
+  1323→                <Card className="bg-gray-900/80 border-gray-700/50 lg:col-span-1">
+  1324→                  <CardHeader>
+  1325→                    <CardTitle className="text-lg flex items-center gap-2">
+  1326→                      <Radar className="w-5 h-5 text-purple-400" />
+  1327→                      Risk Radar
+  1328→                    </CardTitle>
+  1329→                    <CardDescription>Multi-dimensional risk assessment</CardDescription>
+  1330→                  </CardHeader>
+  1331→                  <CardContent>
+  1332→                    <ResponsiveContainer width="100%" height={300}>
+  1333→                      <RadarChart data={riskRadarData}>
+  1334→                        <PolarGrid stroke="#374151" />
+  1335→                        <PolarAngleAxis dataKey="category" stroke="#9ca3af" fontSize={11} />
+  1336→                        <PolarRadiusAxis angle={30} domain={[0, 100]} stroke="#374151" />
+  1337→                        <Radar name="Risk Score" dataKey="score" stroke="#a855f7" fill="#a855f7" fillOpacity={0.3} />
+  1338→                      </RadarChart>
+  1339→                    </ResponsiveContainer>
+  1340→                  </CardContent>
+  1341→                </Card>
+  1342→
+  1343→                {/* Risk Categories Breakdown */}
+  1344→                <Card className="bg-gray-900/80 border-gray-700/50 lg:col-span-2">
+  1345→                  <CardHeader className="flex flex-row items-center justify-between">
+  1346→                    <div>
+  1347→                      <CardTitle className="text-lg">Risk Category Analysis</CardTitle>
+  1348→                      <CardDescription>Detailed breakdown by risk type</CardDescription>
+  1349→                    </div>
+  1350→                    <SectionChatWidget portalName="Risk Intelligence" />
+  1351→                  </CardHeader>
+  1352→                  <CardContent>
+  1353→                    <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+  1354→                      {[
+  1355→                        { name: 'Geopolitical', value: 62, icon: Globe, color: 'text-orange-400', bg: 'bg-orange-500/10' },
+  1356→                        { name: 'Financial', value: 52, icon: DollarSign, color: 'text-yellow-400', bg: 'bg-yellow-500/10' },
+  1357→                        { name: 'Operational', value: 48, icon: Cpu, color: 'text-blue-400', bg: 'bg-blue-500/10' },
+  1358→                        { name: 'Compliance', value: 68, icon: Gavel, color: 'text-red-400', bg: 'bg-red-500/10' },
+  1359→                        { name: 'Environmental', value: 42, icon: Leaf, color: 'text-green-400', bg: 'bg-green-500/10' },
+  1360→                        { name: 'Cybersecurity', value: 55, icon: Shield, color: 'text-purple-400', bg: 'bg-purple-500/10' },
+  1361→                        { name: 'Reputational', value: 38, icon: Star, color: 'text-pink-400', bg: 'bg-pink-500/10' },
+  1362→                        { name: 'Strategic', value: 45, icon: Target, color: 'text-cyan-400', bg: 'bg-cyan-500/10' },
+  1363→                      ].map((item) => (
+  1364→                        <div key={item.name} className={`p-4 rounded-lg ${item.bg} border border-gray-700/30`}>
+  1365→                          <div className="flex items-center justify-between mb-2">
+  1366→                            <item.icon className={`w-5 h-5 ${item.color}`} />
+  1367→                            <span className={`text-lg font-bold ${item.color}`}>{item.value}</span>
+  1368→                          </div>
+  1369→                          <p className="text-xs text-gray-400">{item.name}</p>
+  1370→                          <Progress value={item.value} className="mt-2 h-1.5" />
+  1371→                        </div>
+  1372→                      ))}
+  1373→                    </div>
+  1374→                  </CardContent>
+  1375→                </Card>
+  1376→              </div>
+  1377→
+  1378→              {/* SHAP Explanation Modal Trigger Area */}
+  1379→              <Card className="bg-gray-900/80 border-gray-700/50">
+  1380→                <CardHeader>
+  1381→                  <CardTitle className="text-lg flex items-center gap-2">
+  1382→                    <Brain className="w-5 h-5 text-cyan-400" />
+  1383→                    AI Explainability - SHAP Analysis
+  1384→                  </CardTitle>
+  1385→                  <CardDescription>Click on any alert with SHAP data to view feature attribution</CardDescription>
+  1386→                </CardHeader>
+  1387→                <CardContent>
+  1388→                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+  1389→                    {alertsData.filter(a => a.shapValues).map(alert => (
+  1390→                      <button
+  1391→                        key={alert.id}
+  1392→                        onClick={() => setShowShapModal(alert)}
+  1393→                        className="p-4 rounded-lg bg-gray-800/50 border border-gray-700/50 hover:border-cyan-500/50 transition-colors text-left"
+  1394→                      >
+  1395→                        <div className="flex items-center justify-between mb-2">
+  1396→                          <Badge variant="outline" className={
+  1397→                            alert.severity === 'critical' ? 'border-red-500 text-red-400' : 'border-yellow-500 text-yellow-400'
+  1398→                          }>
+  1399→                            {alert.severity}
+  1400→                          </Badge>
+  1401→                          <Brain className="w-4 h-4 text-cyan-400" />
+  1402→                        </div>
+  1403→                        <p className="font-medium text-sm">{alert.title}</p>
+  1404→                        <p className="text-xs text-gray-500 mt-1">{alert.supplier}</p>
+  1405→                      </button>
+  1406→                    ))}
+  1407→                  </div>
+  1408→                </CardContent>
+  1409→              </Card>
+  1410→            </TabsContent>
+  1411→
+  1412→            {/* ==================== DEMAND FORECASTING TAB ==================== */}
+  1413→            <TabsContent value="forecasting" className="space-y-6">
+  1414→              <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+  1415→                {/* Main Forecast Chart */}
+  1416→                <Card className="bg-gray-900/80 border-gray-700/50 lg:col-span-2">
+  1417→                  <CardHeader className="flex flex-row items-center justify-between">
+  1418→                    <div>
+  1419→                      <CardTitle className="text-lg flex items-center gap-2">
+  1420→                        <LineChart className="w-5 h-5 text-green-400" />
+  1421→                        Demand Forecast
+  1422→                      </CardTitle>
+  1423→                      <CardDescription>AI-powered demand prediction with confidence intervals</CardDescription>
+  1424→                    </div>
+  1425→                    <SectionChatWidget portalName="Demand Forecasting" />
+  1426→                  </CardHeader>
+  1427→                  <CardContent>
+  1428→                    <ResponsiveContainer width="100%" height={350}>
+  1429→                      <ComposedChart data={demandForecastData}>
+  1430→                        <defs>
+  1431→                          <linearGradient id="confidenceGrad" x1="0" y1="0" x2="0" y2="1">
+  1432→                            <stop offset="5%" stopColor="#22c55e" stopOpacity={0.2}/>
+  1433→                            <stop offset="95%" stopColor="#22c55e" stopOpacity={0}/>
+  1434→                          </linearGradient>
+  1435→                        </defs>
+  1436→                        <CartesianGrid strokeDasharray="3 3" stroke="#374151" />
+  1437→                        <XAxis dataKey="month" stroke="#9ca3af" fontSize={12} />
+  1438→                        <YAxis stroke="#9ca3af" fontSize={12} />
+  1439→                        <RechartsTooltip 
+  1440→                          contentStyle={{ backgroundColor: '#1f2937', border: '1px solid #374151', borderRadius: '8px' }}
+  1441→                        />
+  1442→                        <Area type="monotone" dataKey="upper" stroke="transparent" fill="url(#confidenceGrad)" />
+  1443→                        <Area type="monotone" dataKey="lower" stroke="transparent" fill="#111827" />
+  1444→                        <Line type="monotone" dataKey="actual" stroke="#3b82f6" strokeWidth={2} dot={{ r: 4 }} name="Actual" />
+  1445→                        <Line type="monotone" dataKey="forecast" stroke="#22c55e" strokeWidth={2} strokeDasharray="5 5" dot={false} name="Forecast" />
+  1446→                        <Legend />
+  1447→                      </ComposedChart>
+  1448→                    </ResponsiveContainer>
+  1449→                  </CardContent>
+  1450→                </Card>
+  1451→
+  1452→                {/* Forecast Metrics */}
+  1453→                <Card className="bg-gray-900/80 border-gray-700/50">
+  1454→                  <CardHeader>
+  1455→                    <CardTitle className="text-lg">Forecast Accuracy</CardTitle>
+  1456→                    <CardDescription>Model performance metrics</CardDescription>
+  1457→                  </CardHeader>
+  1458→                  <CardContent className="space-y-6">
+  1459→                    {[
+  1460→                      { label: 'MAPE', value: '4.2%', desc: 'Mean Absolute Percentage Error', good: true },
+  1461→                      { label: 'RMSE', value: '342', desc: 'Root Mean Square Error', good: true },
+  1462→                      { label: 'Bias', value: '+1.8%', desc: 'Forecast bias (under/over)', good: true },
+  1463→                      { label: 'Coverage', value: '94%', desc: 'Confidence interval coverage', good: true },
+  1464→                    ].map(metric => (
+  1465→                      <div key={metric.label} className="space-y-2">
+  1466→                        <div className="flex items-center justify-between">
+  1467→                          <span className="text-sm text-gray-400">{metric.label}</span>
+  1468→                          <span className={`font-mono font-bold ${metric.good ? 'text-green-400' : 'text-yellow-400'}`}>
+  1469→                            {metric.value}
+  1470→                          </span>
+  1471→                        </div>
+  1472→                        <p className="text-xs text-gray-500">{metric.desc}</p>
+  1473→                        <Progress value={metric.good ? 94 : 72} className="h-1.5" />
+  1474→                      </div>
+  1475→                    ))}
+  1476→                  </CardContent>
+  1477→                </Card>
+  1478→              </div>
+  1479→
+  1480→              {/* Scenario Planning */}
+  1481→              <Card className="bg-gray-900/80 border-gray-700/50">
+  1482→                <CardHeader>
+  1483→                  <CardTitle className="text-lg flex items-center gap-2">
+  1484→                    <Zap className="w-5 h-5 text-yellow-400" />
+  1485→                    Scenario Planning
+  1486→                  </CardTitle>
+  1487→                  <CardDescription>What-if analysis for demand planning</CardDescription>
+  1488→                </CardHeader>
+  1489→                <CardContent>
+  1490→                  <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+  1491→                    {[
+  1492→                      { scenario: 'Baseline', change: '0%', demand: '15,200', color: 'border-blue-500', icon: Minus },
+  1493→                      { scenario: 'Optimistic', change: '+15%', demand: '17,480', color: 'border-green-500', icon: TrendingUp },
+  1494→                      { scenario: 'Pessimistic', change: '-20%', demand: '12,160', color: 'border-red-500', icon: TrendingDown },
+  1495→                    ].map(s => (
+  1496→                      <div key={s.scenario} className={`p-4 rounded-lg border-l-4 ${s.color} bg-gray-800/30`}>
+  1497→                        <div className="flex items-center justify-between mb-2">
+  1498→                          <span className="font-medium">{s.scenario}</span>
+  1499→                          <s.icon className={`w-4 h-4 ${
+  1500→                            s.scenario === 'Optimistic' ? 'text-green-400' :
+  1501→                            s.scenario === 'Pessimistic' ? 'text-red-400' : 'text-blue-400'
+  1502→                          }`} />
+  1503→                        </div>
+  1504→                        <p className="text-2xl font-bold">{s.demand}</p>
+  1505→                        <p className={`text-sm ${
+  1506→                          s.change.startsWith('+') ? 'text-green-400' :
+  1507→                          s.change.startsWith('-') ? 'text-red-400' : 'text-gray-400'
+  1508→                        }`}>{s.change} vs baseline</p>
+  1509→                      </div>
+  1510→                    ))}
+  1511→                  </div>
+  1512→                  
+  1513→                  <ExpandableText 
+  1514→                    title="Scenario Assumptions & Methodology"
+  1515→                    content={`BASELINE SCENARIO:
+  1516→- Assumes current market conditions continue
+  1517→- No major supply chain disruptions
+  1518→- Historical growth rate of 3% QoQ maintained
+  1519→
+  1520→OPTIMISTIC SCENARIO:
+  1521→- New customer contracts secured (+8% volume)
+  1522→- Supplier capacity expansion successful (-5% lead time)
+  1523→- Favorable currency movements (+2% margin)
+  1524→- Total impact: ~15% demand increase
+  1525→
+  1526→PESSIMISTIC SCENARIO:
+  1527→- Key supplier disruption (Shanghai Advanced)
+  1528→- Economic slowdown in primary markets (-10%)
+  1529→- Regulatory delays affecting product launches (-5%)
+  1530→- Logistics cost increases reducing competitiveness (-5%)
+  1531→- Total impact: ~20% demand decrease
+  1532→
+  1533→MODEL METHODOLOGY:
+  1534→- Prophet time series forecasting with seasonality
+  1535→- Ensemble of ARIMA and Neural Network models
+  1536→- External regressors: economic indicators, commodity prices
+  1537→- Confidence intervals at 95% significance level
+  1538→- Monthly retraining with rolling window`}
+  1539→                  />
+  1540→                </CardContent>
+  1541→              </Card>
+  1542→            </TabsContent>
+  1543→
+  1544→            {/* ==================== COMPLIANCE TAB ==================== */}
+  1545→            <TabsContent value="compliance" className="space-y-6">
+  1546→              {/* Compliance Overview Cards */}
+  1547→              <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-6 gap-4">
+  1548→                {complianceData.map(comp => (
+  1549→                  <Card key={comp.framework} className="bg-gray-900/80 border-gray-700/50">
+  1550→                    <CardContent className="p-4">
+  1551→                      <div className="flex items-center justify-between mb-2">
+  1552→                        <Badge variant="outline" className={
+  1553→                          comp.status === 'compliant' ? 'border-green-500 text-green-400' :
+  1554→                          comp.status === 'partial' ? 'border-yellow-500 text-yellow-400' :
+  1555→                          'border-red-500 text-red-400'
+  1556→                        }>
+  1557→                          {comp.status}
+  1558→                        </Badge>
+  1559→                      </div>
+  1560→                      <p className="text-xs font-medium text-gray-300 line-clamp-2 h-8">
+  1561→                        {comp.framework.split('(')[0].trim()}
+  1562→                      </p>
+  1563→                      <p className="text-2xl font-bold mt-2">{comp.score}<span className="text-sm text-gray-500">/100</span></p>
+  1564→                      <Progress value={comp.score} className="mt-2 h-1.5" />
+  1565→                    </CardContent>
+  1566→                  </Card>
+  1567→                ))}
+  1568→              </div>
+  1569→
+  1570→              {/* Detailed Compliance Frameworks */}
+  1571→              <div className="space-y-4">
+  1572→                {complianceData.map((comp) => (
+  1573→                  <Card key={comp.framework} className="bg-gray-900/80 border-gray-700/50">
+  1574→                    <CardHeader className="pb-3">
+  1575→                      <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-4">
+  1576→                        <div className="flex-1">
+  1577→                          <div className="flex items-center gap-3 mb-1">
+  1578→                            <CardTitle className="text-lg">{comp.framework}</CardTitle>
+  1579→                            <StatusBadge status={comp.status} />
+  1580→                          </div>
+  1581→                          <CardDescription>
+  1582→                            Last assessed: {comp.lastAssessed} | Next review: {comp.nextReview} | Owner: {comp.owner}
+  1583→                          </CardDescription>
+  1584→                        </div>
+  1585→                        <div className="flex items-center gap-2">
+  1586→                          <SectionChatWidget portalName={`${comp.framework.split('(')[0].trim()} Compliance`} />
+  1587→                          <Button variant="outline" size="sm" className="gap-1">
+  1588→                            <FileText className="w-3 h-3" /> Report
+  1589→                          </Button>
+  1590→                        </div>
+  1591→                      </div>
+  1592→                    </CardHeader>
+  1593→                    <CardContent className="space-y-4">
+  1594→                      {/* Requirements Checklist */}
+  1595→                      <div>
+  1596→                        <h4 className="text-sm font-medium text-gray-300 mb-3 flex items-center gap-2">
+  1597→                          <ClipboardCheck className="w-4 h-4" />
+  1598→                          Requirements Status
+  1599→                        </h4>
+  1600→                        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-2">
+  1601→                          {comp.requirements.map((req, idx) => (
+  1602→                            <div key={idx} className={`p-3 rounded-lg border ${
+  1603→                              req.status ? 'border-green-500/30 bg-green-950/10' : 'border-red-500/30 bg-red-950/10'
+  1604→                            }`}>
+  1605→                              <div className="flex items-start gap-2">
+  1606→                                {req.status ? (
+  1607→                                  <CheckCircle2 className="w-4 h-4 text-green-400 mt-0.5 shrink-0" />
+  1608→                                ) : (
+  1609→                                  <XCircle className="w-4 h-4 text-red-400 mt-0.5 shrink-0" />
+  1610→                                )}
+  1611→                                <div>
+  1612→                                  <p className="text-sm font-medium">{req.name} <RequiredMarker required={req.status} /></p>
+  1613→                                  <p className="text-xs text-gray-400 mt-0.5">{req.description}</p>
+  1614→                                                                  {req.evidence && (
+  1615→                                    <p className="text-xs text-cyan-400 mt-1 flex items-center gap-1">
+  1616→                                      <FileText className="w-3 h-3" /> {req.evidence}
+  1617→                                    </p>
+  1618→                                  )}
+  1619→                                </div>
+  1620→                              </div>
+  1621→                            </div>
+  1622→                          ))}
+  1623→                        </div>
+  1624→                      </div>
+  1625→
+  1626→                      {/* Documents */}
+  1627→                      {comp.documents.length > 0 && (
+  1628→                        <ExpandableText 
+  1629→                          title={`Documents (${comp.documents.length})`}
+  1630→                          content={comp.documents.map(d => 
+  1631→                            `[${d.type}] ${d.name}\nUploaded: ${d.uploaded} | Verified: ${d.verified ? '✓ Yes' : '✗ Pending'}`
+  1632→                          ).join('\n\n')}
+  1633→                        />
+  1634→                      )}
+  1635→
+  1636→                      {/* Findings */}
+  1637→                      {comp.findings.length > 0 && (
+  1638→                        <div className="space-y-2">
+  1639→                          <h4 className="text-sm font-medium text-gray-300 flex items-center gap-2">
+  1640→                            <AlertTriangle className="w-4 h-4 text-yellow-400" />
+  1641→                            Findings & Remediation
+  1642→                          </h4>
+  1643→                          {comp.findings.map((finding, idx) => (
+  1644→                            <div key={idx} className={`p-3 rounded-lg border ${
+  1645→                              finding.severity === 'CRITICAL' ? 'border-red-500/30 bg-red-950/10' :
+  1646→                              finding.severity === 'HIGH' ? 'border-orange-500/30 bg-orange-950/10' :
+  1647→                              'border-yellow-500/30 bg-yellow-950/10'
+  1648→                            }`}>
+  1649→                              <div className="flex items-center justify-between mb-1">
+  1650→                                <Badge variant="outline" className={
+  1651→                                  finding.severity === 'CRITICAL' ? 'border-red-500 text-red-400' :
+  1652→                                  finding.severity === 'HIGH' ? 'border-orange-500 text-orange-400' :
+  1653→                                  'border-yellow-500 text-yellow-400'
+  1654→                                }>
+  1655→                                  {finding.severity}
+  1656→                                </Badge>
+  1657→                                <span className="text-xs text-gray-500">Deadline: {finding.deadline}</span>
+  1658→                              </div>
+  1659→                              <p className="text-sm text-gray-300">{finding.description}</p>
+  1660→                              <p className="text-xs text-cyan-400 mt-1">Remediation: {finding.remediation}</p>
+  1661→                            </div>
+  1662→                          ))}
+  1663→                        </div>
+  1664→                      )}
+  1665→
+  1666→                      {/* Notes */}
+  1667→                      {comp.notes && (
+  1668→                        <ExpandableText title="Notes" content={comp.notes} />
+  1669→                      )}
+  1670→                    </CardContent>
+  1671→                  </Card>
+  1672→                ))}
+  1673→              </div>
+  1674→            </TabsContent>
+  1675→          </Tabs>
+  1676→        </main>
+  1677→
+  1678→        {/* ==================== MODALS ==================== */}
+  1679→
+  1680→        {/* Supplier Detail Modal */}
+  1681→        <Dialog open={!!selectedSupplier} onOpenChange={() => setSelectedSupplier(null)}>
+  1682→          <DialogContent className="sm:max-w-[900px] max-h-[90vh] overflow-y-auto bg-gray-900 border-gray-700">
+  1683→            {selectedSupplier && (
+  1684→              <>
+  1685→                <DialogHeader>
+  1686→                  <DialogTitle className="flex items-center gap-3">
+  1687→                    <Building2 className="w-6 h-6 text-cyan-400" />
+  1688→                    {selectedSupplier.companyName}
+  1689→                    <RiskBadge level={selectedSupplier.riskLevel} />
+  1690→                    <StatusBadge status={selectedSupplier.status} />
+  1691→                  </DialogTitle>
+  1692→                  <Description>{selectedSupplier.id} | {selectedSupplier.category}</Description>
+  1693→                </DialogHeader>
+  1694→                
+  1695→                <div className="space-y-6 mt-4">
+  1696→                  {/* Quick Stats */}
+  1697→                  <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+  1698→                    <div className="p-3 bg-gray-800/50 rounded-lg">
+  1699→                      <p className="text-xs text-gray-400">ESG Score</p>
+  1700→                      <p className="text-xl font-bold text-green-400">{selectedSupplier.esgScore}</p>
+  1701→                    </div>
+  1702→                    <div className="p-3 bg-gray-800/50 rounded-lg">
+  1703→                      <p className="text-xs text-gray-400">Delivery Perf.</p>
+  1704→                      <p className="text-xl font-bold text-blue-400">{selectedSupplier.deliveryPerformance}%</p>
+  1705→                    </div>
+  1706→                    <div className="p-3 bg-gray-800/50 rounded-lg">
+  1707→                      <p className="text-xs text-gray-400">Quality Metrics</p>
+  1708→                      <p className="text-xl font-bold text-purple-400">{selectedSupplier.qualityMetrics}%</p>
+  1709→                    </div>
+  1710→                    <div className="p-3 bg-gray-800/50 rounded-lg">
+  1711→                      <p className="text-xs text-gray-400">Risk Score</p>
+  1712→                      <p className="text-xl font-bold text-red-400">{selectedSupplier.riskScore}</p>
+  1713→                    </div>
+  1714→                  </div>
+  1715→
+  1716→                  {/* Company Information */}
+  1717→                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+  1718→                    <div className="space-y-3">
+  1719→                      <h4 className="font-medium text-cyan-400 flex items-center gap-2">
+  1720→                        <Building className="w-4 h-4" /> Company Information
+  1721→                      </h4>
+  1722→                      
+  1723→                      <div className="space-y-2 text-sm">
+  1724→                        <div className="flex justify-between py-1 border-b border-gray-800">
+  1725→                          <span className="text-gray-400">Legal Entity Name <RequiredMarker required={true} /></span>
+  1726→                          <span className="text-white">{selectedSupplier.legalEntityName}</span>
+  1727→                        </div>
+  1728→                        <div className="flex justify-between py-1 border-b border-gray-800">
+  1729→                          <span className="text-gray-400">Registration Number <RequiredMarker required={true} /></span>
+  1730→                          <span className="text-white font-mono text-xs">{selectedSupplier.registrationNumber}</span>
+  1731→                        </div>
+  1732→                        <div className="flex justify-between py-1 border-b border-gray-800">
+  1733→                          <span className="text-gray-400">DUNS Number <RequiredMarker required={false} /></span>
+  1734→                          <span className="text-white font-mono text-xs">{selectedSupplier.dunsNumber}</span>
+  1735→                        </div>
+  1736→                        <div className="flex justify-between py-1 border-b border-gray-800">
+  1737→                          <span className="text-gray-400">Tax ID <RequiredMarker required={true} /></span>
+  1738→                          <span className="text-white font-mono text-xs">{selectedSupplier.taxId}</span>
+  1739→                        </div>
+  1740→                        <div className="flex justify-between py-1 border-b border-gray-800">
+  1741→                          <span className="text-gray-400">Founded Year <RequiredMarker required={false} /></span>
+  1742→                          <span className="text-white">{selectedSupplier.foundedYear}</span>
+  1743→                        </div>
+  1744→                        <div className="flex justify-between py-1 border-b border-gray-800">
+  1745→                          <span className="text-gray-400">Employees <RequiredMarker required={false} /></span>
+  1746→                          <span className="text-white">{selectedSupplier.employeeCount.toLocaleString()}</span>
+  1747→                        </div>
+  1748→                        <div className="flex justify-between py-1 border-b border-gray-800">
+  1749→                          <span className="text-gray-400">Revenue <RequiredMarker required={false} /></span>
+  1750→                          <span className="text-white">${(selectedSupplier.revenue / 1000000000).toFixed(2)}B</span>
+  1751→                        </div>
+  1752→                        <div className="flex justify-between py-1 border-b border-gray-800">
+  1753→                          <span className="text-gray-400">Financial Rating <RequiredMarker required={true} /></span>
+  1754→                          <span className="text-white font-bold">{selectedSupplier.financialRating}</span>
+  1755→                        </div>
+  1756→                      </div>
+  1757→                    </div>
+  1758→
+  1759→                    <div className="space-y-3">
+  1760→                      <h4 className="font-medium text-cyan-400 flex items-center gap-2">
+  1761→                        <MapPin className="w-4 h-4" /> Location & Operations
+  1762→                      </h4>
+  1763→                      
+  1764→                      <div className="space-y-2 text-sm">
+  1765→                        <div className="flex justify-between py-1 border-b border-gray-800">
+  1766→                          <span className="text-gray-400">Address <RequiredMarker required={true} /></span>
+  1767→                          <span className="text-white text-right max-w-[200px]">{selectedSupplier.address}</span>
+  1768→                        </div>
+  1769→                        <div className="flex justify-between py-1 border-b border-gray-800">
+  1770→                          <span className="text-gray-400">City <RequiredMarker required={true} /></span>
+  1771→                          <span className="text-white">{selectedSupplier.city}</span>
+  1772→                        </div>
+  1773→                        <div className="flex justify-between py-1 border-b border-gray-800">
+  1774→                          <span className="text-gray-400">State/Province <RequiredMarker required={false} /></span>
+  1775→                          <span className="text-white">{selectedSupplier.stateProvince}</span>
+  1776→                        </div>
+  1777→                        <div className="flex justify-between py-1 border-b border-gray-800">
+  1778→                          <span className="text-gray-400">Postal Code <RequiredMarker required={true} /></span>
+  1779→                          <span className="text-white">{selectedSupplier.postalCode}</span>
+  1780→                        </div>
+  1781→                        <div className="flex justify-between py-1 border-b border-gray-800">
+  1782→                          <span className="text-gray-400">Country <RequiredMarker required={true} /></span>
+  1783→                          <span className="text-white">{selectedSupplier.country}</span>
+  1784→                        </div>
+  1785→                        <div className="flex justify-between py-1 border-b border-gray-800">
+  1786→                          <span className="text-gray-400">Region <RequiredMarker required={true} /></span>
+  1787→                          <span className="text-white">{selectedSupplier.region}</span>
+  1788→                        </div>
+  1789→                        <div className="flex justify-between py-1 border-b border-gray-800">
+  1790→                          <span className="text-gray-400">Tier <RequiredMarker required={true} /></span>
+  1791→                          <Badge variant="secondary">{selectedSupplier.tier}</Badge>
+  1792→                        </div>
+  1793→                        <div className="flex justify-between py-1 border-b border-gray-800">
+  1794→                          <span className="text-gray-400">Category <RequiredMarker required={true} /></span>
+  1795→                          <span className="text-white text-right max-w-[180px]">{selectedSupplier.category}</span>
+  1796→                        </div>
+  1797→                      </div>
+  1798→                    </div>
+  1799→                  </div>
+  1800→
+  1801→                  {/* Products & Certifications */}
+  1802→                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+  1803→                    <div>
+  1804→                      <h4 className="font-medium text-cyan-400 flex items-center gap-2 mb-2">
+  1805→                        <Package className="w-4 h-4" /> Products <RequiredMarker required={true} />
+  1806→                      </h4>
+  1807→                      <div className="flex flex-wrap gap-2">
+  1808→                        {selectedSupplier.products.map(product => (
+  1809→                          <Badge key={product} variant="secondary" className="bg-gray-800">{product}</Badge>
+  1810→                        ))}
+  1811→                      </div>
+  1812→                    </div>
+  1813→                    <div>
+  1814→                      <h4 className="font-medium text-cyan-400 flex items-center gap-2 mb-2">
+  1815→                        <Certificate className="w-4 h-4" /> Certifications <RequiredMarker required={false} />
+  1816→                      </h4>
+  1817→                      <div className="flex flex-wrap gap-2">
+  1818→                        {selectedSupplier.certifications.map(cert => (
+  1819→                          <Badge key={cert} variant="outline" className="border-green-500/30 text-green-400">{cert}</Badge>
+  1820→                        ))}
+  1821→                      </div>
+  1822→                    </div>
+  1823→                  </div>
+  1824→
+  1825→                  {/* Regulatory Compliance Status */}
+  1826→                  <div>
+  1827→                    <h4 className="font-medium text-cyan-400 flex items-center gap-2 mb-3">
+  1828→                      <Gavel className="w-4 h-4" /> Regulatory Compliance Status
+  1829→                    </h4>
+  1830→                    <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
+  1831→                      {[
+  1832→                        { name: 'UFLPA', status: selectedSupplier.uflpaStatus },
+  1833→                        { name: 'EUDR', status: selectedSupplier.eudrStatus },
+  1834→                        { name: 'CSDDD', status: selectedSupplier.csdddStatus },
+  1835→                        { name: 'SOX', status: selectedSupplier.soxCompliant ? 'Compliant' : 'N/A' },
+  1836→                        { name: 'GDPR', status: selectedSupplier.gdprCompliant ? 'Compliant' : 'Non-Compliant' },
+  1837→                        { name: 'REACH', status: selectedSupplier.reachCompliant ? 'Compliant' : 'N/A' },
+  1838→                      ].map(reg => (
+  1839→                        <div key={reg.name} className="p-2 bg-gray-800/50 rounded text-center">
+  1840→                          <p className="text-xs text-gray-400">{reg.name}</p>
+  1841→                          <p className={`text-sm font-medium mt-1 ${
+  1842→                            reg.status === 'Compliant' ? 'text-green-400' :
+  1843→                            reg.status.includes('Non') || reg.status === 'High Risk' ? 'text-red-400' :
+  1844→                            'text-yellow-400'
+  1845→                          }`}>{reg.status}</p>
+  1846→                        </div>
+  1847→                      ))}
+  1848→                    </div>
+  1849→                  </div>
+  1850→
+  1851→                  {/* Operational Metrics */}
+  1852→                  <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+  1853→                    {[
+  1854→                      { label: 'Delivery Performance', value: `${selectedSupplier.deliveryPerformance}%`, icon: Truck },
+  1855→                      { label: 'Quality Metrics', value: `${selectedSupplier.qualityMetrics}%`, icon: ShieldCheck },
+  1856→                      { label: 'Cost Competitiveness', value: `${selectedSupplier.costCompetitiveness}%`, icon: DollarSign },
+  1857→                      { label: 'Innovation Score', value: `${selectedSupplier.innovationScore}`, icon: Lightbulb },
+  1858→                      { label: 'Lead Time', value: `${selectedSupplier.leadTimeDays} days`, icon: Clock },
+  1859→                      { label: 'MOQ', value: selectedSupplier.moq.toLocaleString(), icon: Package },
+  1860→                      { label: 'Capacity Util.', value: `${selectedSupplier.capacityUtilization}%`, icon: Activity },
+  1861→                      { label: 'Cyber Rating', value: selectedSupplier.cybersecurityRating, icon: Shield },
+  1862→                    ].map(metric => (
+  1863→                      <div key={metric.label} className="p-3 bg-gray-800/30 rounded-lg">
+  1864→                        <div className="flex items-center gap-2 text-gray-400 mb-1">
+  1865→                          <metric.icon className="w-3 h-3" />
+  1866→                          <span className="text-xs">{metric.label}</span>
+  1867→                        </div>
+  1868→                        <p className="text-lg font-semibold">{metric.value}</p>
+  1869→                      </div>
+  1870→                    ))}
+  1871→                  </div>
+  1872→
+  1873→                  {/* Sustainability Metrics */}
+  1874→                  <div>
+  1875→                    <h4 className="font-medium text-cyan-400 flex items-center gap-2 mb-3">
+  1876→                      <Leaf className="w-4 h-4" /> Sustainability & ESG
+  1877→                    </h4>
+  1878→                    <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+  1879→                      <div className="p-3 bg-gray-800/30 rounded-lg">
+  1880→                        <p className="text-xs text-gray-400">Carbon Footprint</p>
+  1881→                        <p className="text-lg font-semibold">{selectedSupplier.carbonFootprint.toLocaleString()} tCO2e</p>
+  1882→                      </div>
+  1883→                      <div className="p-3 bg-gray-800/30 rounded-lg">
+  1884→                        <p className="text-xs text-gray-400">Water Usage</p>
+  1885→                        <p className="text-lg font-semibold">{(selectedSupplier.waterUsage / 1000).toFixed(1)}M m³</p>
+  1886→                      </div>
+  1887→                      <div className="p-3 bg-gray-800/30 rounded-lg">
+  1888→                        <p className="text-xs text-gray-400">Waste Reduction</p>
+  1889→                        <p className="text-lg font-semibold text-green-400">{selectedSupplier.wasteReduction}%</p>
+  1890→                      </div>
+  1891→                      <div className="p-3 bg-gray-800/30 rounded-lg">
+  1892→                        <p className="text-xs text-gray-400">D&I Score</p>
+  1893→                        <p className="text-lg font-semibold">{selectedSupplier.diversityInclusion}%</p>
+  1894→                      </div>
+  1895→                    </div>
+  1896→                  </div>
+  1897→
+  1898→                  {/* Contact Information */}
+  1899→                  <div>
+  1900→                    <h4 className="font-medium text-cyan-400 flex items-center gap-2 mb-3">
+  1901→                      <Users className="w-4 h-4" /> Contact Information
+  1902→                    </h4>
+  1903→                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+  1904→                      <div className="space-y-2 text-sm">
+  1905→                        <div className="flex items-center gap-2 p-2 bg-gray-800/30 rounded">
+  1906→                          <User className="w-4 h-4 text-gray-400" />
+  1907→                          <div>
+  1908→                            <p className="text-xs text-gray-400">Primary Contact <RequiredMarker required={true} /></p>
+  1909→                            <p className="text-white">{selectedSupplier.primaryContactName}</p>
+  1910→                          </div>
+  1911→                        </div>
+  1912→                        <div className="flex items-center gap-2 p-2 bg-gray-800/30 rounded">
+  1913→                          <Mail className="w-4 h-4 text-gray-400" />
+  1914→                          <div>
+  1915→                            <p className="text-xs text-gray-400">Email <RequiredMarker required={true} /></p>
+  1916→                            <p className="text-cyan-400">{selectedSupplier.primaryContactEmail}</p>
+  1917→                          </div>
+  1918→                        </div>
+  1919→                        <div className="flex items-center gap-2 p-2 bg-gray-800/30 rounded">
+  1920→                          <Phone className="w-4 h-4 text-gray-400" />
+  1921→                          <div>
+  1922→                            <p className="text-xs text-gray-400">Phone <RequiredMarker required={false} /></p>
+  1923→                            <p className="text-white">{selectedSupplier.primaryContactPhone}</p>
+  1924→                          </div>
+  1925→                        </div>
+  1926→                      </div>
+  1927→                      <div className="space-y-2 text-sm">
+  1928→                        <div className="flex items-center gap-2 p-2 bg-gray-800/30 rounded">
+  1929→                          <User className="w-4 h-4 text-gray-400" />
+  1930→                          <div>
+  1931→                            <p className="text-xs text-gray-400">Secondary Contact <RequiredMarker required={false} /></p>
+  1932→                            <p className="text-white">{selectedSupplier.secondaryContactName}</p>
+  1933→                          </div>
+  1934→                        </div>
+  1935→                        <div className="flex items-center gap-2 p-2 bg-gray-800/30 rounded">
+  1936→                          <Mail className="w-4 h-4 text-gray-400" />
+  1937→                          <div>
+  1938→                            <p className="text-xs text-gray-400">Email <RequiredMarker required={false} /></p>
+  1939→                            <p className="text-cyan-400">{selectedSupplier.secondaryContactEmail}</p>
+  1940→                          </div>
+  1941→                        </div>
+  1942→                        <div className="flex items-center gap-2 p-2 bg-gray-800/30 rounded">
+  1943→                          <Globe2 className="w-4 h-4 text-gray-400" />
+  1944→                          <div>
+  1945→                            <p className="text-xs text-gray-400">Website <RequiredMarker required={false} /></p>
+  1946→                            <p className="text-cyan-400">{selectedSupplier.website}</p>
+  1947→                          </div>
+  1948→                        </div>
+  1949→                      </div>
+  1950→                    </div>
+  1951→                  </div>
+  1952→
+  1953→                  {/* Contract & Audit Info */}
+  1954→                  <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+  1955→                    <div className="p-3 bg-gray-800/30 rounded-lg">
+  1956→                      <p className="text-xs text-gray-400">Last Audit <RequiredMarker required={true} /></p>
+  1957→                      <p className="text-white">{selectedSupplier.lastAuditDate}</p>
+  1958→                    </div>
+  1959→                    <div className="p-3 bg-gray-800/30 rounded-lg">
+  1960→                      <p className="text-xs text-gray-400">Next Audit <RequiredMarker required={true} /></p>
+  1961→                      <p className="text-white">{selectedSupplier.nextAuditDate}</p>
+  1962→                    </div>
+  1963→                    <div className="p-3 bg-gray-800/30 rounded-lg">
+  1964→                      <p className="text-xs text-gray-400">Contract Expiry <RequiredMarker required={true} /></p>
+  1965→                      <p className="text-white">{selectedSupplier.contractExpiry}</p>
+  1966→                    </div>
+  1967→                    <div className="p-3 bg-gray-800/30 rounded-lg">
+  1968→                      <p className="text-xs text-gray-400">Payment Terms <RequiredMarker required={false} /></p>
+  1969→                      <p className="text-white">{selectedSupplier.paymentTerms}</p>
+  1970→                    </div>
+  1971→                  </div>
+  1972→
+  1973→                  {/* Notes & Tags */}
+  1974→                  <ExpandableText 
+  1975→                    title="Internal Notes" 
+  1976→                    content={selectedSupplier.notes || 'No internal notes available.'} 
+  1977→                    defaultOpen={true}
+  1978→                  />
+  1979→                  
+  1980→                  <div>
+  1981→                    <h4 className="font-medium text-cyan-400 flex items-center gap-2 mb-2">
+  1982→                      <Tags className="w-4 h-4" /> Tags
+  1983→                    </h4>
+  1984→                    <div className="flex flex-wrap gap-2">
+  1985→                      {selectedSupplier.tags.map(tag => (
+  1986→                        <Badge key={tag} variant="secondary" className="bg-gray-800">{tag}</Badge>
+  1987→                      ))}
+  1988→                    </div>
+  1989→                  </div>
+  1990→                </div>
+  1991→
+  1992→                <DialogFooter className="gap-2">
+  1993→                  <Button variant="outline" className="gap-1">
+  1994→                    <Mail className="w-4 h-4" /> Email Contact
+  1995→                  </Button>
+  1996→                  <Button variant="outline" className="gap-1">
+  1997→                    <MessageSquare className="w-4 h-4" /> Chat
+  1998→                  </Button>
+  1999→                  <Button className="bg-cyan-600 hover:bg-cyan-700 gap-1">
+  2000→                    <Edit3 className="w-4 h-4" /> Edit Supplier
+
+[showing lines 1-2000 of 2120; use offset=2001 with limit to continue reading]
