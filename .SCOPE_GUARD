@@ -1,0 +1,56 @@
+# Repository Scope Guard
+# ===================================
+# This file defines the BOUNDARIES of this repository.
+# Before creating ANY files, verify alignment with this scope.
+
+## Repository Identity
+REPO_NAME: Demo4AISupChn
+PURPOSE: AI Supervision Command Center - Interactive UI/UX Demonstration
+TYPE: Static Website / HTML Prototype / GitHub Pages Deployment
+
+## Allowed Content Types
+ACCEPTABLE_FILES:
+  - *.html (web pages)
+  - *.css (stylesheets)  
+  - *.js (frontend JavaScript)
+  - *.json (configuration/data)
+  - *.png, *.jpg, *.gif, *.svg (images/screenshots)
+  - *.md (documentation/README only)
+
+## Forbidden Content Types (VIOLATIONS)
+BLOCKED_FILES:
+  - *.docx (Word documents - WRONG REPO!)
+  - *.xlsx (Excel spreadsheets - WRONG REPO!)
+  - *.pptx (PowerPoint presentations - WRONG REPO!)
+  - Business documents of ANY kind
+  - Email templates
+  - Investor lists
+  - Fundraising materials
+  - Contract templates
+  - Reports unrelated to AI demo
+
+## Correct Locations for Other Document Types
+BUSINESS_DOCS_REPO: ~/business-docs/ or separate dedicated repository
+EMAIL_TEMPLATES: Should be in CRM/Outreach tooling repository
+INVESTOR_LISTS: Should be in BD/Sales enablement repository
+CODE_PROJECTS: Should have their OWN repositories
+
+## Pre-Action Checklist (MUST VERIFY BEFORE CREATING FILES)
+1. [ ] What is this repository FOR? (Check PURPOSE above)
+2. [ ] Does this file match ACCEPTABLE_FILES list?
+3. [ ] Am I putting business docs in an AI demo project? → STOP!
+4. [ ] Would this file confuse someone who clones this repo?
+5. [ ] Is there a BETTER location for this content?
+
+## Emergency Procedures
+IF SCOPE VIOLATION DETECTED:
+1. STOP immediately - do not create more files
+2. Move contaminated files to correct location
+3. Git checkout -- . to restore clean state
+4. Document what happened and why
+5. Review session context for root cause
+
+## Version History
+CREATED: 2025-08-28
+TRIGGER: Repository contamination incident - business docs created in AI demo repo
+LESSON: Always verify repository scope before generating deliverables
